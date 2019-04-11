@@ -17,13 +17,13 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.software.rateit")
 @EnableTransactionManagement
-public class PgAdminConfig{
+public class DbConfig{
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "com.packt.project1" });
+        em.setPackagesToScan(new String[] { "com.software.rateit" });
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
