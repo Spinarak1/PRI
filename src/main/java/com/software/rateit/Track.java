@@ -1,16 +1,31 @@
 package com.software.rateit;
 
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "Track")
 public class Track {
+    @Id
     @GeneratedValue
+    @Column(name = "id")
     private int id;
+    @Column(name = "title")
     private String title;
-    private String release_date;
-    //@ManyToMany
+    @Column(name = "releaseDate")
+    private String releaseDate;
+
+    @ManyToMany
     private Artist artist;
-    //@ManyToMany
+    @ManyToMany
     private CD cd;
+
+    public Track() {}
+    public Track(String title, String releaseDate, Artist artist, CD cd) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.artist = artist;
+        this.cd = cd;
+    }
 
     public int getId() {
         return id;
@@ -28,12 +43,12 @@ public class Track {
         this.title = title;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(String release_date) {
+        this.releaseDate = releaseDate;
     }
 
     public Artist getArtist() {

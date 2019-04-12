@@ -1,15 +1,28 @@
 package com.software.rateit;
 
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "Genre")
 public class Genre {
+    @Id
     @GeneratedValue
+    @Column(name = "id")
     private int id;
+    @Column(name = "type")
     private String type;
-    //@ManyToMany
+
+    @ManyToMany
     private CD cd;
-    //@ManyToMany
+    @ManyToMany
     private Track track;
+
+    public Genre() {}
+    public Genre(String type, CD cd, Track track) {
+        this.type = type;
+        this.cd = cd;
+        this.track = track;
+    }
 
     public int getId() {
         return id;

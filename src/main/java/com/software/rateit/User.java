@@ -1,16 +1,39 @@
 package com.software.rateit;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "User")
 public class User {
+    @Id@GeneratedValue
+    @Column(name = "id")
     private int id;
+    @Column(name = "nick")
     private String nick;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
-    //@ManyToMany
-    private CD cd;
+    @Column(name = "score")
     private int score;
-    private String Badges;
-    //@OneToMany
+    @Column(name = "badges")
+    private String badges;
+
+    @ManyToMany
+    private CD cd;
+    @OneToMany
     private User user;
+
+    public User() {}
+    public User(String nick, String email, String password, int score, String badges, CD cd, User user) {
+        this.nick = nick;
+        this.email = email;
+        this.password = password;
+        this.score = score;
+        this.badges = badges;
+        this.cd = cd;
+        this.user = user;
+    }
 
     public int getId() {
         return id;
@@ -61,11 +84,11 @@ public class User {
     }
 
     public String getBadges() {
-        return Badges;
+        return badges;
     }
 
     public void setBadges(String badges) {
-        Badges = badges;
+        this.badges = badges;
     }
 
     public User getUser() {
