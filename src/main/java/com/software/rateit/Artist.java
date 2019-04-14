@@ -11,7 +11,7 @@ public class Artist {
     @Column(name = "stageName")
     private String stageName;
 
-    @ManyToMany
+    //@ManyToMany
     private CD cd;
     @ManyToMany
     private Track track;
