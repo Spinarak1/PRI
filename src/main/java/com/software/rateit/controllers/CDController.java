@@ -2,29 +2,32 @@ package com.software.rateit.controllers;
 
 import com.software.rateit.CD;
 import com.software.rateit.repositories.CDRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CDController {
+
+    @Autowired
     private CDRepository repository;
 
-    @GetMapping("/CDs")
+    @GetMapping("/cds")
     Iterable<CD> getAllCDs() {
         return repository.findAll();
     }
 
-    @GetMapping("/CDs/{id}")
+    @GetMapping("/cds/{id}")
     CD getCDById(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
 
-    @PostMapping("/CDs")
-    CD newCD(@RequestBody CD newArtist) {
-        return repository.save(newArtist);
+    @PostMapping("/cds")
+    CD newCD(@RequestBody CD newCD) {
+        return repository.save(newCD);
     }
 
-    @PutMapping("/CDs/{id}")
+    @PutMapping("/cds/{id}")
     CD replaceCD(@RequestBody CD newCD, @PathVariable Long id) {
         return repository.findById(id)
                 .map(cd -> {
@@ -41,7 +44,7 @@ public class CDController {
                 });
     }
 
-    @DeleteMapping("/CDs/{id}")
+    @DeleteMapping("/cds/{id}")
     void deleteCD(@PathVariable Long id) {
         repository.deleteById(id);
     }

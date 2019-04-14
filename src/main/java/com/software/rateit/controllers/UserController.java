@@ -2,16 +2,21 @@ package com.software.rateit.controllers;
 
 import com.software.rateit.User;
 import com.software.rateit.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
 
+    @Autowired
     private UserRepository repository;
-    @GetMapping("/users")
+
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     Iterable<User> getAllUsers() {
         return repository.findAll();
     }
+
     @GetMapping("/users/{id}")
     User getUsersById(@PathVariable Long id) {
         return repository.findById(id)

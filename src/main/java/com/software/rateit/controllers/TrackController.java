@@ -2,29 +2,31 @@ package com.software.rateit.controllers;
 
 import com.software.rateit.Track;
 import com.software.rateit.repositories.TrackRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TrackController {
 
+    @Autowired
     private TrackRepository repository;
 
-    @GetMapping("/artists")
-    Iterable<Track> getAllArtists() {
+    @GetMapping("/tracks")
+    Iterable<Track> getAllTracks() {
         return repository.findAll();
     }
-    @GetMapping("/artists/{id}")
+    @GetMapping("/tracks/{id}")
     Track getTrackById(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
 
-    @PostMapping("/artists")
+    @PostMapping("/tracks")
     Track newTrack(@RequestBody Track newTrack){
         return repository.save(newTrack);
     }
 
-    @PutMapping("/artists/{id}")
+    @PutMapping("/tracks/{id}")
     Track replaceTrack(@RequestBody Track newTrack, @PathVariable Long id){
         return repository.findById(id)
                 .map(track -> {
@@ -40,7 +42,7 @@ public class TrackController {
                 });
     }
 
-    @DeleteMapping("/artists/{id}")
+    @DeleteMapping("/tracks/{id}")
     void deleteTrack(@PathVariable Long id){
         repository.deleteById(id);
     }

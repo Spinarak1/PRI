@@ -2,18 +2,22 @@ package com.software.rateit.controllers;
 
 import com.software.rateit.Artist;
 import com.software.rateit.repositories.ArtistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ArtistController {
+
+    @Autowired
     private ArtistRepository repository;
 
     @GetMapping("/artists")
-    Iterable<Artist> getAllArtists() {
+    Iterable<Artist> getArtists() {
         return repository.findAll();
     }
+
     @GetMapping("/artists/{id}")
-    Artist getArtistById(@PathVariable Long id) {
+    Artist getOneArtistById(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }

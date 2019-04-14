@@ -2,14 +2,17 @@ package com.software.rateit.controllers;
 
 import com.software.rateit.Genre;
 import com.software.rateit.repositories.GenreRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class GenreController {
 
+    @Autowired
     private GenreRepository repository;
 
-    @GetMapping("/genres")
+    @GetMapping(value = "/genres", produces = MediaType.APPLICATION_JSON_VALUE)
     Iterable<Genre> getAllGenres() {
         return repository.findAll();
     }

@@ -1,5 +1,7 @@
 package com.software.rateit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,7 +34,8 @@ public class CD {
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> genres = new HashSet<>();
 
-   @ManyToMany(mappedBy = "userscd")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "userscd")
     private Set<User> user = new HashSet<>();
 
     public CD(){}
