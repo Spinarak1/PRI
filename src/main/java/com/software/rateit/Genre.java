@@ -1,12 +1,17 @@
 package com.software.rateit;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "Genre")
-public class Genre {
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+public class Genre{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -14,10 +19,10 @@ public class Genre {
     @Column(name = "type")
     private String type;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CD> cd = new HashSet<>();
 
-    @ManyToMany(mappedBy = "genre")
+    @ManyToMany(mappedBy = "genre", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Track> track;
 
     public Genre() {}

@@ -1,6 +1,6 @@
 package com.software.rateit;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CD")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class CD {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,23 +20,22 @@ public class CD {
     @Column(name = "released")
     private Date released = new Date();
 
-    @ManyToMany(mappedBy = "cd")
+    @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "cd_track",
             joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"))
     private Set<Track> cdtracks = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "cd_genre",
             joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> genres = new HashSet<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "userscd")
+    @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> user = new HashSet<>();
 
     public CD(){}

@@ -1,5 +1,10 @@
 package com.software.rateit;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -7,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Track")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,13 +23,13 @@ public class Track {
     @Column(name = "releaseDate")
     private Date releaseDate = new Date();
 
-    @ManyToMany(mappedBy = "tracks")
+    @ManyToMany(mappedBy = "tracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
 
-    @ManyToMany(mappedBy = "cdtracks")
+    @ManyToMany(mappedBy = "cdtracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CD> cd = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "track_genre",
             joinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
