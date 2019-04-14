@@ -1,13 +1,16 @@
 package com.software.rateit;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
 public class User {
-    @Id@GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "nick")
     private String nick;
     @Column(name = "email")
@@ -19,27 +22,27 @@ public class User {
     @Column(name = "badges")
     private String badges;
 
-    @ManyToMany
-    private CD cd;
-    @OneToMany
-    private User user;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_cd",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"))
+    private Set<CD> userscd = new HashSet<>();
 
     public User() {}
-    public User(String nick, String email, String password, int score, String badges, CD cd, User user) {
+    public User(String nick, String email, String password, int score, String badges, Set<CD> cd) {
         this.nick = nick;
         this.email = email;
         this.password = password;
         this.score = score;
         this.badges = badges;
-        this.cd = cd;
-        this.user = user;
+        this.userscd = cd;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,14 +70,6 @@ public class User {
         this.password = password;
     }
 
-    public CD getCd() {
-        return cd;
-    }
-
-    public void setCd(CD cd) {
-        this.cd = cd;
-    }
-
     public int getScore() {
         return score;
     }
@@ -91,11 +86,11 @@ public class User {
         this.badges = badges;
     }
 
-    public User getUser() {
-        return user;
+    public Set<CD> getUserscd() {
+        return userscd;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserscd(Set<CD> userscd) {
+        this.userscd = userscd;
     }
 }
