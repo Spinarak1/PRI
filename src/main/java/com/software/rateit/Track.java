@@ -1,37 +1,54 @@
 package com.software.rateit;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Track")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Track {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "title")
     private String title;
     @Column(name = "releaseDate")
-    private String releaseDate;
+    private Date releaseDate = new Date();
 
-    @ManyToMany
-    private Artist artist;
-    @ManyToMany
-    private CD cd;
+    @ManyToMany(mappedBy = "tracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Artist> artist = new HashSet<>();
+
+    @ManyToMany(mappedBy = "cdtracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CD> cd = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "track_genre",
+            joinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
+    private Set<Genre> genre = new HashSet<>();
 
     public Track() {}
-    public Track(String title, String releaseDate, Artist artist, CD cd) {
+    public Track(String title, Date releaseDate, Set<Artist> artist, Set<CD> cd, Set<Genre> genre) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.artist = artist;
         this.cd = cd;
+        this.genre = genre;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,27 +60,35 @@ public class Track {
         this.title = title;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String release_date) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public Artist getArtist() {
+    public Set<Artist> getArtist() {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
+    public void setArtist(Set<Artist> artist) {
         this.artist = artist;
     }
 
-    public CD getCd() {
+    public Set<CD> getCd() {
         return cd;
     }
 
-    public void setCd(CD cd) {
+    public void setCd(Set<CD> cd) {
         this.cd = cd;
+    }
+
+    public Set<Genre> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Set<Genre> genre) {
+        this.genre = genre;
     }
 }
