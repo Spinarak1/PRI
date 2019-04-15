@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +27,10 @@ public class User {
     private int score;
     @Column(name = "badges")
     private String badges;
+    @Column(name = "registrationDate")
+    private Date registrationDate = new Date();
+    @Transient
+    private String confirmPasswd;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_cd",
@@ -97,5 +102,21 @@ public class User {
 
     public void setUserscd(Set<CD> userscd) {
         this.userscd = userscd;
+    }
+
+    public String getConfirmPasswd() {
+        return confirmPasswd;
+    }
+
+    public void setConfirmPasswd(String confirmPasswd) {
+        this.confirmPasswd = confirmPasswd;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }
