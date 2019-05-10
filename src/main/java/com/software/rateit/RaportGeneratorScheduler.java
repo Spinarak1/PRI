@@ -19,10 +19,9 @@ public class RaportGeneratorScheduler {
     private static final Logger log = LoggerFactory.getLogger(RaportGeneratorScheduler.class);
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    
+
     @Scheduled(cron = "0 * * * * *")
     public void reportCurrentTime() {
-        System.out.println("XDD");
         log.info("The time is now {}", dateFormat.format(new Date()));
         try {
             RaportGenerator generator = new RaportGenerator();
