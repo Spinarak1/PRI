@@ -1,7 +1,7 @@
 package com.software.rateit;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -30,6 +30,7 @@ public class User {
     @Column(name = "registrationDate")
     private Date registrationDate = new Date();
     @Transient
+    @JsonIgnore
     private String confirmPasswd;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -37,6 +38,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"))
     private Set<CD> userscd = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public User() {}
     public User(String nick, String email, String password, int score, String badges, Set<CD> cd) {
