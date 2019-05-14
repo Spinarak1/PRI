@@ -29,7 +29,9 @@ public class FileStorageService {
         throw new FileStorageException("Could not store this File" + fileName + ". Please try again", ex);
         }
     }
-    public File getFile(String fileId) throws Exception{
+    public File getFile(String fileId) throws Exception
+
+    {
         return fileRepository.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
     }
