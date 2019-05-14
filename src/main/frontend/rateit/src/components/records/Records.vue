@@ -1,22 +1,33 @@
 <template>
     <div>
-        <app-record v-for="record in records" :record="record"></app-record>
+        <app-record v-for="record in records" :record="record" ></app-record>
     </div>
 </template>
 
 <script>
+
 import Record from './Record.vue'
+import axios from 'axios'
+
 export default {
     data() {
         return {
-            records: [
-                { id: 1, bandName: 'Slayer', albumName: 'Reign in Blood', year: 1986},
-                { id: 2, bandName: 'Rzabka', albumName: 'Frankenrzab', year: 2013},
-                { id: 3, bandName: 'Anthrax', albumName: 'Among the Living', year: 1986},
-                { id: 4, bandName: 'Metallica', albumName: 'Master of Puppets', year: 1986},
-                { id: 5, bandName: 'Metallica', albumName: 'Master of Puppets', year: 1986},
-            ]
+          res: '',
+          records: []
         }
+    },
+    created() {
+      axios.get('http://localhost:8080/cds')
+        .then(resp => {
+          const data = resp.data;
+          //console.log(data[0].name);
+          data.forEach(cur => {
+            //console.log(cur);
+            this.records.push(cur)
+          })
+        })
+        .catch(error => console.log(error))
+
     },
     components: {
         appRecord: Record
