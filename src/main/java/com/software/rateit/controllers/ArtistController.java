@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8082")
 @RequestMapping("/api")
 public class ArtistController {
 
