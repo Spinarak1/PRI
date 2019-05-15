@@ -3,9 +3,19 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import App from './App.vue'
 import { routes } from './routes'
+import axios from 'axios'
+
+import { store } from './store/store'
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
+
+export const AXIOS = axios.create({
+  baseURL: 'http://localhost:8080',
+  headers: {
+    'Access-Control-Allow-Origin': 'http://localhost:8082'
+  }
+});
 
 const router = new VueRouter({
   mode: 'history',
@@ -15,5 +25,6 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
