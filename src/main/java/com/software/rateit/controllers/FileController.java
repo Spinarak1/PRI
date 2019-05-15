@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api")
 public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
