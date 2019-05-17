@@ -16,7 +16,7 @@ public class ArtistController {
     @Autowired
     private ArtistRepository repository;
 
-    @GetMapping("/artists")
+    @GetMapping("/artis ts")
     Iterable<Artist> getArtists() {
         return repository.findAll();
     }

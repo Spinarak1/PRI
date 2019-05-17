@@ -1,34 +1,51 @@
 <template>
     <div>
-        <app-record v-for="record in records" :record="record" ></app-record>
+        <app-record></app-record>
+        <button @click="addTo">No dawaj</button>
+        <button @click="addTo2">No dawaj2</button>
     </div>
 </template>
 
 <script>
-
+import { AXIOS } from '../../main';
 import Record from './Record.vue'
-import axios from 'axios'
+import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
     data() {
-        return {
-          res: '',
-          records: []
-        }
+      return {
+        data: { id: 1, nick: 'ss', email: 'sss@gmail.com', password: 'qwerty', score: 143, badges: 'ss', cd: [] }
+      }
     },
-    created() {
-      axios.get('http://localhost:8080/cds')
-        .then(resp => {
-          const data = resp.data;
-          //console.log(data[0].name);
-          data.forEach(cur => {
-            //console.log(cur);
-            this.records.push(cur)
-          })
-        })
-        .catch(error => console.log(error))
 
+    methods: {
+      addTo2() {
+        AXIOS.get('api/users')
+          .then(resp => {
+            console.log(resp)
+          })
+          .catch(error => console.log(error));
+      },
+      addTo() {
+        AXIOS.post('api/users', this.data)
+          .then(resp => {
+            console.log(resp);
+          })
+          .catch(error => console.log(error))
+      }
     },
+    computed: {
+      /*...mapGetters([
+        'arrLen',
+        'stringU'
+        ])
+
+      ...mapActions([
+        'addTo'
+      ])*/
+      },
+
     components: {
         appRecord: Record
     }
