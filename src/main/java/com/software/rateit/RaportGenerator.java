@@ -1,5 +1,6 @@
 package com.software.rateit;
 
+import com.software.rateit.Entity.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

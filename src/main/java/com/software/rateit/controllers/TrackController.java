@@ -1,6 +1,6 @@
 package com.software.rateit.controllers;
 
-import com.software.rateit.Track;
+import com.software.rateit.Entity.Track;
 import com.software.rateit.repositories.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

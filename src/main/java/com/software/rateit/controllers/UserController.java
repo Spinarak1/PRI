@@ -1,6 +1,6 @@
 package com.software.rateit.controllers;
 
-import com.software.rateit.User;
+import com.software.rateit.Entity.User;
 import com.software.rateit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

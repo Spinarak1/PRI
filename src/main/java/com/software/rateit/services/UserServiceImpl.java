@@ -1,6 +1,6 @@
 package com.software.rateit.services;
 
-import com.software.rateit.User;
+import com.software.rateit.Entity.User;
 import com.software.rateit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

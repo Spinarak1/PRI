@@ -1,6 +1,6 @@
 package com.software.rateit.controllers;
 
-import com.software.rateit.File;
+import com.software.rateit.Entity.File;
 import com.software.rateit.UploadFileResponse;
 import com.software.rateit.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;

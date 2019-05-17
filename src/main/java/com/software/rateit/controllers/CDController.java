@@ -1,6 +1,6 @@
 package com.software.rateit.controllers;
 
-import com.software.rateit.CD;
+import com.software.rateit.Entity.CD;
 import com.software.rateit.repositories.CDRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

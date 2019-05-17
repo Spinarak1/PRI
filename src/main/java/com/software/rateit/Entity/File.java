@@ -1,4 +1,4 @@
-package com.software.rateit;
+package com.software.rateit.Entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
