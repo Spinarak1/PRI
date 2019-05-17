@@ -83,8 +83,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {AXIOS} from "../../main";
+  import axios from '../../axios-auth';
   export default {
     data () {
       return {
@@ -104,7 +103,7 @@
         const newHobby = {
           id: Math.random() * Math.random() * 1000,
           value: ''
-        }
+        };
         this.hobbyInputs.push(newHobby)
       },
       onDeleteHobby (id) {
@@ -119,7 +118,7 @@
           password: this.password,
           score: this.score
         };
-        AXIOS.post('api/users', formData)
+        axios.post('api/users', formData)
           .then(resp => {
             console.log(resp);
           })

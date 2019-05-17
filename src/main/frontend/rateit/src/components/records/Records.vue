@@ -8,6 +8,7 @@
 
 <script>
 import { AXIOS } from '../../main';
+import axios from 'axios'
 import Record from './Record.vue'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -21,14 +22,14 @@ export default {
 
     methods: {
       addTo2() {
-        AXIOS.get('api/users')
+        axios.get('api/users')
           .then(resp => {
             console.log(resp)
           })
           .catch(error => console.log(error));
       },
       addTo() {
-        AXIOS.post('api/users', this.data)
+        axios.post('api/users', this.data)
           .then(resp => {
             console.log(resp);
           })

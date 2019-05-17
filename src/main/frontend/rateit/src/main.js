@@ -10,12 +10,20 @@ import { store } from './store/store'
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
+/*
 export const AXIOS = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
-    'Access-Control-Allow-Origin': 'http://localhost:8082'
+    'Access-Control-Allow-Origin': 'http://localhost:8081'
   }
-});
+}); */
+
+
+axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8081';
+/*axios.defaults.headers = {
+  'Access-Control-Allow-Origin': 'http://localhost:8081'
+};*/
 
 const router = new VueRouter({
   mode: 'history',
