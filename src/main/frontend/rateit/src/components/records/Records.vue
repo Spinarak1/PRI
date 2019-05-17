@@ -1,8 +1,8 @@
 <template>
     <div>
         <app-record></app-record>
-        <button @click="addTo">No dawaj</button>
-        <button @click="addTo2">No dawaj2</button>
+        <button @click="addTo">POST </button>
+        <button @click="addTo2">GET </button>
     </div>
 </template>
 
@@ -15,7 +15,7 @@ import { mapActions } from 'vuex'
 export default {
     data() {
       return {
-        data: { id: 1, nick: 'ss', email: 'sss@gmail.com', password: 'qwerty', score: 143, badges: 'ss', cd: [] }
+        data: { id: 3, nick: 'GolyJelen', email: 'golyjelen@gmail.com', password: 'qwerty', score: 143, badges: 'ss', cd: [] }
       }
     },
 

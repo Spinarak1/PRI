@@ -11,7 +11,7 @@
 
 <script>
 
-import Header from './components/Header.vue'
+import Header from './components/header/Header.vue'
     export default {
         components: {
             appHeader: Header
@@ -20,7 +20,8 @@ import Header from './components/Header.vue'
 </script>
 
 <style>
-    body {
-        padding: 30px;
-    }
+  body, html {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
 </style>
