@@ -1,20 +1,41 @@
 <template>
-    <div class="col-sm-6 com-md-4">
-        <div v-for="record in records" class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{record.name}}</h3>
-            </div>
-            <div class="panel-body">
-              {{record.released}}
-            </div>
+  <div>
+      <div class="col-sm-6 col-md-3" v-for="ar in arr">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            {{ ar.name }} <br/>
+            <small>{{ parseInt(ar.released)}}</small>
+          </div>
         </div>
     </div>
+  </div>
 </template>
 
 <script>
-import User from '../user/User.vue'
+  import axios from 'axios'
+  import User from '../user/User.vue'
 
 export default {
+    data() {
+      return {
+        arr: [],
+      }
+    },
+    created() {
+      axios.get('/api/cds')
+        .then(resp => {
+          const data = resp.data;
+          data.forEach(current => {
+            this.arr.push(current);
+            console.log(current)
+          })
+          //console.log(data[0].name);
+
+          //console.log(this.arr);
+          //this.arr.push(data);
+        })
+        .catch(error => console.log(error));
+    },
     computed: {
       records() {
         return this.$store.state.records;
@@ -25,3 +46,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+  .panel-body:hover {
+    cursor: pointer;
+    background-color: #8d4288;
+    color: white;
+  }
+</style>
