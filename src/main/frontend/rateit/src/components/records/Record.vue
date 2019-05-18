@@ -5,6 +5,7 @@
           <div class="panel-body">
             {{ ar.name }} <br/>
             <small>{{ parseInt(ar.released)}}</small>
+
             <star-rating v-model="rating"></star-rating>
           </div>
         </div>
@@ -22,7 +23,7 @@ export default {
       return {
         arr: [],
         rating: {
-
+          // TODO
         }
       }
     },
