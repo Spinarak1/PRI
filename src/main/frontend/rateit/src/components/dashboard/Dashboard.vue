@@ -8,7 +8,7 @@
 
 <script>
   import { AXIOS} from "../../main";
-
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -16,10 +16,16 @@
       }
     },
     created() {
-      AXIOS.get('/api/users')
+      axios.get('/api/users')
         .then(resp => {
-          console.log(resp.data[1].nick);
-          this.user = resp.data[1].nick;
+          const data = resp.data;
+          const users = [];
+          for(let key in data) {
+            const user = data[key];
+            users.push(user);
+          }
+          console.log(users);
+          this.user = users[1].nick;
 
         })
         .catch(e => console.log(e));
