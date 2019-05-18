@@ -31,8 +31,7 @@ public class User {
     @Column(name = "registrationDate")
     private Date registrationDate = new Date();
     @Transient
-    @JsonIgnore
-    private String confirmPasswd;
+    private String passwordConfirm;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_cd",
@@ -45,13 +44,14 @@ public class User {
     private Set<Role> roles;
 
     public User() {}
-    public User(String nick, String email, String password, int score, String badges, Set<CD> cd) {
+    public User(String nick, String email, String password, int score, String badges, Set<CD> cd, Set<Role> role) {
         this.nick = nick;
         this.email = email;
         this.password = password;
         this.score = score;
         this.badges = badges;
         this.userscd = cd;
+        this.roles = role;
     }
 
     public Long getId() {
@@ -110,12 +110,12 @@ public class User {
         this.userscd = userscd;
     }
 
-    public String getConfirmPasswd() {
-        return confirmPasswd;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
 
-    public void setConfirmPasswd(String confirmPasswd) {
-        this.confirmPasswd = confirmPasswd;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public Date getRegistrationDate() {
@@ -124,5 +124,13 @@ public class User {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
