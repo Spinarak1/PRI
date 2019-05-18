@@ -5,6 +5,8 @@
           <div class="panel-body">
             {{ ar.name }} <br/>
             <small>{{ parseInt(ar.released)}}</small>
+
+            <star-rating v-model="rating"></star-rating>
           </div>
         </div>
     </div>
@@ -14,11 +16,15 @@
 <script>
   import axios from 'axios'
   import User from '../user/User.vue'
+  import StarRating from 'vue-star-rating'
 
 export default {
     data() {
       return {
         arr: [],
+        rating: {
+          // TODO
+        }
       }
     },
     created() {
@@ -42,7 +48,8 @@ export default {
       }
     },
     components: {
-        appUser: User
+        appUser: User,
+        StarRating
     }
 }
 </script>
