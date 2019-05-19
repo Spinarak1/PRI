@@ -6,7 +6,12 @@
             {{ ar.name }} <br/>
             <small>{{ parseInt(ar.released)}}</small>
 
-            <star-rating v-model="rating"></star-rating>
+            <star-rating
+                :star-size="15"
+                :rating="1.5"
+                @rating-selected ="setRating">
+
+            </star-rating>
           </div>
         </div>
     </div>
@@ -22,9 +27,14 @@ export default {
     data() {
       return {
         arr: [],
-        rating: {
-          // TODO
-        }
+        size: 15,
+        rating: 0
+      }
+    },
+    methods: {
+      setRating: (rating) => {
+        this.rating = rating;
+        console.log(`Your rating is ${rating},`)
       }
     },
     created() {

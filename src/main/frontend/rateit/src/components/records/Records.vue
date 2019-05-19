@@ -13,10 +13,7 @@
 
 
 <script>
-import axios from 'axios'
 import Record from './Record.vue'
-import { mapGetters } from 'vuex'
-import { mapActions } from 'vuex'
 
 export default {
 

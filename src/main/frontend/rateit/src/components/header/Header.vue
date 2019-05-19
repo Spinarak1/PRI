@@ -6,13 +6,19 @@
     <nav>
       <ul>
         <li>
+          <router-link to="/user">User</router-link>
+        </li>
+        <li>
+          <router-link to="/records">Records</router-link>
+        </li>
+        <li>
+          <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+        <li>
           <router-link to="/signup">Sign Up</router-link>
         </li>
         <li>
           <router-link to="/signin">Sign In</router-link>
-        </li>
-        <li>
-          <router-link to="/dashboard">Dashboard</router-link>
         </li>
       </ul>
     </nav>
