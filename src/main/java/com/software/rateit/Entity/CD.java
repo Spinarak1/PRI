@@ -21,7 +21,7 @@ public class CD {
     @Column(name = "released")
     private Date released = new Date();
     @Column(name = "rating")
-    private int rating;
+    private float rating;
 
     @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
@@ -74,11 +74,11 @@ public class CD {
     public void setReleased(Date released) {
         this.released = released;
     }
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
     public Set<Artist> getArtist() {
