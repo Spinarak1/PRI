@@ -32,6 +32,14 @@ public class ArtistController {
         else
             throw new CouldNotFindException(stageName);
     }
+    /*@GetMapping("/artistsByCdName")
+    public Artist findArtistByCdName(
+            @RequestParam("cdName") String name) {
+        if(name != null)
+            return repository.findByCdName(name);
+        else
+            throw new CouldNotFindException(stageName);
+    }*/
 
     @PostMapping("/artists")
     Artist newArtist(@RequestBody Artist newArtist){

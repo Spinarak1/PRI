@@ -5,6 +5,8 @@ import com.software.rateit.repositories.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
@@ -21,6 +23,22 @@ public class TrackController {
     Track getTrackById(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
+    }
+    @GetMapping("/TrackByTitle")
+    public Track findByTitle(
+            @RequestParam("title") String title) {
+        if(title != null)
+            return repository.findByTitle(title);
+        else
+            throw new CouldNotFindException(title);
+    }
+    @GetMapping("/TrackByReleaseDate")
+    public Track findTrackByReleaseDate(
+            @RequestParam("releaseDate") Date releaseDate) {
+        if(releaseDate != null)
+            return repository.findByReleaseDate(releaseDate);
+        else
+            throw new CouldNotFindException(releaseDate);
     }
 
     @PostMapping("/tracks")

@@ -24,6 +24,22 @@ public class UserController {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
+    @GetMapping("/UserByNick")
+    public User findUserByNick(
+            @RequestParam("nick") String nick) {
+        if(nick != null)
+            return repository.findByNick(nick);
+        else
+            throw new CouldNotFindException(nick);
+    }
+    @GetMapping("/UserByEmail")
+    public User findUserByEmail(
+            @RequestParam("email") String email) {
+        if(email != null)
+            return repository.findByEmail(email);
+        else
+            throw new CouldNotFindException(email);
+    }
 
     @PostMapping("/users")
     User newUsers(@RequestBody User newArtist){
