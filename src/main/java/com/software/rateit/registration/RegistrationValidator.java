@@ -32,9 +32,9 @@ public class RegistrationValidator implements Validator {
             errors.rejectValue("nick","Duplicate.userForm.nick");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"password","NotEmpty");
-        if(user.getPassword().length() < 8 || user.getNick().length() > 32)
+        if(user.getPassword().length() < 8)
             errors.rejectValue("password", "Size.userForm.password");
-        if(!user.getPassword().equals(user.getConfirmPasswd()))
+        if(!user.getPassword().equals(user.getPasswordConfirm()))
             errors.rejectValue("passwordConfirm","Diff.userForm.passwordConfirm");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"email","NotEmpty");
