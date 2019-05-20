@@ -118,7 +118,13 @@
           password: this.password,
           score: this.score
         };
-        this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
+
+        axios.post('/users', formData, {crossdomain: true})
+          .then(resp => {
+            console.log(resp);
+          })
+          .catch(error => console.log(error));
+        //this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
       }
     }
   }

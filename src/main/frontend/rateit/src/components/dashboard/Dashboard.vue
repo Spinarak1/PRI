@@ -15,8 +15,8 @@
           user: ''
       }
     },
-    /*created() {
-      axios.get('/api/users')
+    created() {
+      axios.get(`/api/users`)
         .then(resp => {
           const data = resp.data;
           const users = [];
@@ -29,7 +29,7 @@
 
         })
         .catch(e => console.log(e));
-    }*/
+    }
   }
 </script>
 
