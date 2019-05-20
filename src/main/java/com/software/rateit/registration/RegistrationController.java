@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:8081")
 public class RegistrationController {
 
     @Autowired
@@ -23,6 +24,7 @@ public class RegistrationController {
         model.addAttribute("userForm", new User());
 
         return "singup";
+
     }
 
     @PostMapping("/signup")
@@ -32,7 +34,7 @@ public class RegistrationController {
             return "/signup";
         }
         service.registerNewUser(userForm);
-        return ("redirect:/dashboard");
+        return ("redirect:http://localhost:8081/dashboard");
     }
 
     @GetMapping("/signin")
