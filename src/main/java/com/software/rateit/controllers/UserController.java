@@ -4,6 +4,7 @@ import com.software.rateit.Entity.User;
 import com.software.rateit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newUsers(@RequestBody User newArtist){
-        return repository.save(newArtist);
+    User newUsers(@RequestBody User newUser){
+        return repository.save(newUser);
     }
 
     @PutMapping("/users/{id}")
@@ -68,4 +69,6 @@ public class UserController {
     void deleteUsers(@PathVariable Long id){
         repository.deleteById(id);
     }
+
+
 }

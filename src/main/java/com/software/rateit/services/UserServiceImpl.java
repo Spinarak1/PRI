@@ -6,7 +6,6 @@ import com.software.rateit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,5 +47,16 @@ public class UserServiceImpl implements UserService {
         pattern = Pattern.compile(emailPattern);
         matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    @Override
+    public void changePassword(User user, String password) {
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        repository.save(user);
+    }
+
+    @Override
+    public Boolean checkIfOldPasswordMatches(User user, String oldpassword) {
+        return bCryptPasswordEncoder.matches(oldpassword, user.getPassword());
     }
 }

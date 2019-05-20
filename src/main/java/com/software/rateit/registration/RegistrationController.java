@@ -1,15 +1,13 @@
 package com.software.rateit.registration;
 
-
 import com.software.rateit.Entity.User;
 import com.software.rateit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrationController {
@@ -45,7 +43,17 @@ public class RegistrationController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
-        return "singnin";
+        return "signin";
+    }
+
+    @PostMapping("/user/changePassword")
+    String changePassword(@RequestParam("password") String password, @RequestParam("oldpassword") String oldPassword) {
+        User user = service.findByNick(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(!service.checkIfOldPasswordMatches(user, oldPassword)){
+            return "user/changePassword";
+        }
+        service.changePassword(user,password);
+        return ("redirect:/dashboard");
     }
 
 
