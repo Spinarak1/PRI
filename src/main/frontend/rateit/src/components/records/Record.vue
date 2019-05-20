@@ -19,7 +19,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import User from '../user/User.vue'
   import StarRating from 'vue-star-rating'
 
@@ -38,19 +37,7 @@ export default {
       }
     },
     created() {
-      axios.get('/api/cds')
-        .then(resp => {
-          const data = resp.data;
-          data.forEach(current => {
-            this.arr.push(current);
-            console.log(current)
-          })
-          //console.log(data[0].name);
 
-          //console.log(this.arr);
-          //this.arr.push(data);
-        })
-        .catch(error => console.log(error));
     },
     computed: {
       records() {

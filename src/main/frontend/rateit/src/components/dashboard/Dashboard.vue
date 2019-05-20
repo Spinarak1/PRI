@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import { AXIOS} from "../../main";
+
   import axios from 'axios'
   export default {
     data() {
@@ -15,7 +15,7 @@
           user: ''
       }
     },
-    created() {
+    /*created() {
       axios.get('/api/users')
         .then(resp => {
           const data = resp.data;
@@ -29,7 +29,7 @@
 
         })
         .catch(e => console.log(e));
-    }
+    }*/
   }
 </script>
 

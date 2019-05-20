@@ -118,11 +118,7 @@
           password: this.password,
           score: this.score
         };
-        axios.post('api/users', formData)
-          .then(resp => {
-            console.log(resp);
-          })
-          .catch(error => console.log(error));
+        this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
       }
     }
   }
