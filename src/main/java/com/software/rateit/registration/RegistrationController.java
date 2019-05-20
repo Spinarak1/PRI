@@ -20,24 +20,24 @@ public class RegistrationController {
     @Autowired
     RegistrationValidator validator;
 
-    @GetMapping("/registration")
+    @GetMapping("/signup")
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return "registration";
+        return "singup";
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/signup")
     String registration(@RequestBody User userForm, BindingResult result){
         validator.validate(userForm, result);
         if (result.hasErrors()){
-            return "/registration";
+            return "/signup";
         }
         service.registerNewUser(userForm);
-        return ("redirect:/api/users");
+        return ("redirect:/dashboard");
     }
 
-    @GetMapping("/login")
+    @GetMapping("/signin")
     public String login(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
@@ -45,7 +45,7 @@ public class RegistrationController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
-        return "login";
+        return "singnin";
     }
 
 
