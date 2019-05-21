@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Controller
-@CrossOrigin(origins = "http://localhost:8081")
 public class RegistrationController {
 
     @Autowired
