@@ -29,6 +29,11 @@ export default {
     data() {
       return {
         arr: [],
+        obj: {
+          name: 'Paździoch',
+          released: '2010-01-01',
+          rating: 4
+        }
       }
     },
     methods: {
@@ -47,7 +52,7 @@ export default {
       }
     },
     created() {
-      axios.get(`/api/cds`)
+      axios.get(`/api/cds`,{crossDomain : true})
         .then(resp => {
           const data = resp.data;
           //console.log(data);
@@ -59,7 +64,13 @@ export default {
         .catch(e => console.log(e));
       setTimeout(() => {
         console.log(`Tablitza: ${this.arr[0].name}`)
-      }, 1500)
+      }, 1500);
+
+      axios.post('/api/cds', this.obj)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(error => console.log(error));
 
     },
     components: {

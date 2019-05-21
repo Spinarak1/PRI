@@ -22,11 +22,11 @@ export const eventBus = new Vue();
 
 
 axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080';
-/*axios.defaults.headers = {
-  'Access-Control-Allow-Origin': 'http://localhost:8081'
+//axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080';
+axios.defaults.headers = {
+  'Access-Control-Allow-Origin': '*'
 
-};*/
+};
 
 const router = new VueRouter({
   mode: 'history',
