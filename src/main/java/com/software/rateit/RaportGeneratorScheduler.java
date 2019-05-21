@@ -25,7 +25,7 @@ public class RaportGeneratorScheduler {
         log.info("The time is now {}", dateFormat.format(new Date()));
         try {
             RaportGenerator generator = new RaportGenerator();
-            generator.sumUsersRegistrationOfYesterday(entityManager, "C:\\Users\\spina\\Desktop\\XML\\");
+            generator.sumUsersRegistrationOfYesterday(entityManager, "C:\\Users\\Spinarak\\Desktop\\XML\\");
         }catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
         } finally {
