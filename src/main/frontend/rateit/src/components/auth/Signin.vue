@@ -25,6 +25,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     data () {
       return {
@@ -37,7 +38,12 @@
         const formData = {
           email: this.email,
           password: this.password,
-        }
+        };
+        axios.post('/api/login')
+          .then(resp => {
+            console.log(resp)
+          })
+          .catch(e => console.log(e));
         console.log(formData)
       }
     }

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  import { eventBus } from '../../main'
   import User from '../user/User.vue'
   import axios from 'axios'
   import StarRating from 'vue-star-rating'
@@ -33,14 +34,16 @@ export default {
     methods: {
       setRating: (rating) => {
         this.rating = rating;
-        console.log(`Your rating is ${rating},`)
+        console.log(`Your rating is ${rating}`);
       },
       addAlbum(name, rating) {
         var album = {
           name: name,
           rating: rating
         };
-        console.log(album)
+        console.log(album);
+        var a = 'aaaa';
+        eventBus.$emit('addedAlbum', album);
       }
     },
     created() {
