@@ -25,6 +25,25 @@
   </header>
 </template>
 
+<script>
+  import { eventBus} from "../../main";
+
+  export default {
+    data() {
+      return {
+        role: ''
+      }
+    },
+    // TODO
+    /*created() {
+      eventBus.$on('roleWasChosen', (role) => {
+        this.role = role;
+        console.log(`Poszlo ${role}`);
+      })
+    }*/
+  }
+</script>
+
 <style scoped>
   #header {
     height: 56px;
