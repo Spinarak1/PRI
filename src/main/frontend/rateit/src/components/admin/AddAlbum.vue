@@ -1,64 +1,27 @@
 <template>
-  <div id="signup">
-    <div class="signup-form">
+  <div id="addAlbum">
+    <div class="addAlbum-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="email">Mail</label>
+          <label for="name">Name</label>
           <input
-            type="email"
-            id="email"
-            v-model="email">
+            type="name"
+            id="name"
+            v-model="name">
         </div>
         <div class="input">
-          <label for="nick">Nick</label>
+          <label for="released">Release date</label>
           <input
             type="text"
-            id="nick"
-            v-model="nick">
+            id="released"
+            v-model="released">
         </div>
         <div class="input">
-          <label for="password">Password</label>
+          <label for="rating">Rating</label>
           <input
-            type="password"
-            id="password"
-            v-model="password">
-        </div>
-        <div class="input">
-          <label for="confirm-password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirm-password"
-            v-model="confirmPassword">
-        </div>
-        <div class="input">
-          <label for="country">Country</label>
-          <select id="country" v-model="country">
-            <option value="usa">USA</option>
-            <option value="india">India</option>
-            <option value="uk">UK</option>
-            <option value="germany">Germany</option>
-          </select>
-        </div>
-        <div class="hobbies">
-          <h3>Add some Hobbies</h3>
-          <button @click="onAddHobby" type="button">Add Hobby</button>
-          <div class="hobby-list">
-            <div
-              class="input"
-              v-for="(hobbyInput, index) in hobbyInputs"
-              :key="hobbyInput.id">
-              <label :for="hobbyInput.id">Hobby #{{ index }}</label>
-              <input
-                type="text"
-                :id="hobbyInput.id"
-                v-model="hobbyInput.value">
-              <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
-            </div>
-          </div>
-        </div>
-        <div class="input inline">
-          <input type="checkbox" id="terms" v-model="terms">
-          <label for="terms">Accept Terms of Use</label>
+            type="number"
+            id="rating"
+            v-model="rating">
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -73,35 +36,20 @@
   export default {
     data () {
       return {
-        email: '',
-        nick: '',
-        password: '',
-        confirmPassword: '',
-        country: 'usa',
-        hobbyInputs: [],
-        terms: false
+        name: '',
+        released: '',
+        rating: null,
       }
     },
     methods: {
-      onAddHobby () {
-        const newHobby = {
-          id: Math.random() * Math.random() * 1000,
-          value: ''
-        };
-        this.hobbyInputs.push(newHobby)
-      },
-      onDeleteHobby (id) {
-        this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
-      },
       onSubmit () {
         const formData = {
-          nick: this.nick,
-          email: this.email,
-          password: this.password,
-          passwordConfirm: this.confirmPassword
+          name: this.name,
+          released: this.released,
+          rating: this.rating,
         };
 
-        axios.post('/signup', formData,{crossDomain : true})
+        axios.post('/api/cds', formData)
           .then(resp => {
             console.log(resp);
           })
@@ -113,7 +61,7 @@
 </script>
 
 <style scoped>
-  .signup-form {
+  .addAlbum-form {
     width: 400px;
     margin: 30px auto;
     border: 1px solid #eee;
