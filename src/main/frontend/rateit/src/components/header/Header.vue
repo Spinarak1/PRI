@@ -4,7 +4,7 @@
       <router-link to="/">Rate It!</router-link>
     </div>
     <nav>
-      <ul>
+      <ul v-if="role==='user'">
         <li>
           <router-link to="/user">User</router-link>
         </li>
@@ -12,13 +12,24 @@
           <router-link to="/records">Records</router-link>
         </li>
         <li>
-          <router-link to="/dashboard">Dashboard</router-link>
+          <router-link to="/user/dashboard">Dashboard</router-link>
         </li>
         <li>
           <router-link to="/signup">Sign Up</router-link>
         </li>
         <li>
           <router-link to="/signin">Sign In</router-link>
+        </li>
+        <li>
+          <router-link to="/">Logout</router-link>
+        </li>
+      </ul>
+      <ul v-else>
+        <li>
+          <router-link to="/admin/dashboard">Admin Dashboard</router-link>
+        </li>
+        <li>
+          <router-link to="/admin/addalbum">Add album</router-link>
         </li>
       </ul>
     </nav>
@@ -28,19 +39,20 @@
 <script>
   import { eventBus} from "../../main";
 
+
   export default {
     data() {
       return {
-        role: ''
+        role: null
       }
     },
-    // TODO
-    /*created() {
+    created() {
       eventBus.$on('roleWasChosen', (role) => {
         this.role = role;
         console.log(`Poszlo ${role}`);
-      })
-    }*/
+      });
+      console.log(this.role);
+    }
   }
 </script>
 

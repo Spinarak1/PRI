@@ -2,19 +2,24 @@
   <div id="welcome">
     <h1>Pick the role: </h1>
     <form>
-      <input
-        type="radio"
-        name="role"
-        value="user"
-        v-model="role">
-      User <br>
-      <input
-        type="radio"
-        name="role"
-        value="admin"
-        v-model="role"
-        @click="roleChosen">
-      Admin <br>
+      <label for="user">
+        <input
+          type="radio"
+          name="role"
+          id="user"
+          value="user"
+          v-model="role"
+          @click="roleChosen"> User
+      </label>
+      <label for="admin">
+        <input
+          type="radio"
+          name="role"
+          id="admin"
+          value="admin"
+          v-model="role"
+          @click="roleChosen"> Admin
+      </label>
     </form>
     <p>{{role}}</p>
     <hr>
@@ -33,7 +38,7 @@
   export default {
     data() {
       return {
-        role: ''
+        role: null
       }
     },
     methods: {

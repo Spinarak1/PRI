@@ -3,11 +3,11 @@
     <div class="signin-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="email">Mail</label>
+          <label for="nick">Nick</label>
           <input
-            type="email"
-            id="email"
-            v-model="email">
+            type="nick"
+            id="nick"
+            v-model="nick">
         </div>
         <div class="input">
           <label for="password">Password</label>
@@ -29,14 +29,14 @@
   export default {
     data () {
       return {
-        email: '',
+        nick: '',
         password: ''
       }
     },
     methods: {
       onSubmit () {
         const formData = {
-          email: this.email,
+          nick: this.nick,
           password: this.password,
         };
         axios.post('/api/login')
