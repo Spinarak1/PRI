@@ -24,11 +24,8 @@
 
 <script>
   import User from '../user/User.vue'
-  import axios from 'axios'
   import StarRating from 'vue-star-rating'
-  import { mapState } from 'vuex'
   import { mapGetters } from 'vuex'
-  import { mapActions } from 'vuex'
 
 export default {
     data() {
@@ -57,29 +54,9 @@ export default {
       }
     },
     created() {
-
       this.$store.dispatch("fetchAlbums");
-      /*axios.get(`/api/cds`,{crossDomain : true})
-        .then(resp => {
-          const data = resp.data;
-          //console.log(data);
-          data.forEach(cur => {
-            console.log(cur);
-            this.arr.push(cur);
-          });
-          console.log(this.arr);
-        })
-        .catch(e => console.log(e));
-
-      axios.post('/api/cds', this.obj)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(error => console.log(error)); */
-
     },
     computed: {
-
       ...mapGetters([
         "showRecords"
       ])

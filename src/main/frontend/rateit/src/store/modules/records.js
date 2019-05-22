@@ -11,7 +11,7 @@ const records = {
     }
   },
   mutations: {
-    SET_ALBUMS(state, albums) {
+    setAlbums(state, albums) {
       state.records = albums;
       console.log(`Mutationes ${state.records.length}`)
     }
@@ -21,7 +21,7 @@ const records = {
       axios.get('api/cds')
         .then(resp => {
           console.log(`Pozdro z Vuex ;) ${resp.data[0].name}`);
-          commit('SET_ALBUMS', resp.data);
+          commit('setAlbums', resp.data);
         })
     }
   }
