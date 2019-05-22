@@ -19,12 +19,14 @@
       axios.get(`/api/users`)
         .then(resp => {
           const data = resp.data;
+          console.log(resp);
           const users = [];
           for(let key in data) {
             const user = data[key];
             users.push(user);
+
+            //sconsole.log(user);
           }
-          console.log(users);
           this.user = users[1].nick;
 
         })

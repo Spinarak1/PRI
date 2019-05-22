@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="col-sm-6 col-md-3" v-for="ar in arr">
+      <div class="col-sm-6 col-md-3" v-for="ar in showRecords">
         <div class="panel panel-default">
           <div class="panel-body">
             {{ ar.name }} <br/>
@@ -16,14 +16,19 @@
           </div>
         </div>
     </div>
+   <!-- <p>Store : {{records[0].name}}</p>
+    <p>Getters : {{showRecords}}</p> -->
+
   </div>
 </template>
 
 <script>
-  import { eventBus } from '../../main'
   import User from '../user/User.vue'
   import axios from 'axios'
   import StarRating from 'vue-star-rating'
+  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
 
 export default {
     data() {
@@ -52,26 +57,32 @@ export default {
       }
     },
     created() {
-      axios.get(`/api/cds`,{crossDomain : true})
+
+      this.$store.dispatch("fetchAlbums");
+      /*axios.get(`/api/cds`,{crossDomain : true})
         .then(resp => {
           const data = resp.data;
           //console.log(data);
           data.forEach(cur => {
             console.log(cur);
             this.arr.push(cur);
-          })
+          });
+          console.log(this.arr);
         })
         .catch(e => console.log(e));
-      setTimeout(() => {
-        console.log(`Tablitza: ${this.arr[0].name}`)
-      }, 1500);
 
       axios.post('/api/cds', this.obj)
         .then(res => {
           console.log(res)
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error)); */
 
+    },
+    computed: {
+
+      ...mapGetters([
+        "showRecords"
+      ])
     },
     components: {
         appUser: User,
