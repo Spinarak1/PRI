@@ -43,7 +43,8 @@
   export default {
     data() {
       return {
-        role: null
+        role: null,
+        search: ''
       }
     },
     created() {
@@ -52,6 +53,11 @@
         console.log(`Poszlo ${role}`);
       });
       console.log(this.role);
+    },
+    methods: {
+      searchValue(event) {
+        //this.eventBus.$emit('searchValue', this.search);
+      }
     }
   }
 </script>
