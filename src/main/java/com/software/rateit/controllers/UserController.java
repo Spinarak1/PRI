@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
 public class UserController {
 
@@ -24,10 +24,26 @@ public class UserController {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
+    @GetMapping("/UserByNick")
+    public User findUserByNick(
+            @RequestParam("nick") String nick) {
+        if(nick != null)
+            return repository.findByNick(nick);
+        else
+            throw new CouldNotFindException(nick);
+    }
+    @GetMapping("/UserByEmail")
+    public User findUserByEmail(
+            @RequestParam("email") String email) {
+        if(email != null)
+            return repository.findByEmail(email);
+        else
+            throw new CouldNotFindException(email);
+    }
 
     @PostMapping("/users")
-    User newUsers(@RequestBody User newArtist){
-        return repository.save(newArtist);
+    User newUsers(@RequestBody User newUser){
+        return repository.save(newUser);
     }
 
     @PutMapping("/users/{id}")
@@ -52,4 +68,6 @@ public class UserController {
     void deleteUsers(@PathVariable Long id){
         repository.deleteById(id);
     }
+
+
 }

@@ -3,20 +3,17 @@ package com.software.rateit.controllers;
 import com.software.rateit.Entity.Artist;
 import com.software.rateit.repositories.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
 public class ArtistController {
 
     @Autowired
     private ArtistRepository repository;
 
-    @GetMapping("/artis ts")
+    @GetMapping("/artists")
     Iterable<Artist> getArtists() {
         return repository.findAll();
     }
@@ -27,16 +24,21 @@ public class ArtistController {
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
     @GetMapping("/artistsByName")
-    public Page<Artist> findCustomersByFirstName(
-            @RequestParam("stageName") String stageName,
-            Pageable pageable) {
-
-        if (stageName == null) {
-            return repository.findAll(pageable);
-        } else {
-            return repository.findByStageName(stageName, pageable);
-        }
+    public Artist findArtistByName(
+            @RequestParam("stageName") String stageName) {
+        if(stageName != null)
+            return repository.findByStageName(stageName);
+        else
+            throw new CouldNotFindException(stageName);
     }
+    /*@GetMapping("/artistsByCdName")
+    public Artist findArtistByCdName(
+            @RequestParam("cdName") String name) {
+        if(name != null)
+            return repository.findByCdName(name);
+        else
+            throw new CouldNotFindException(stageName);
+    }*/
 
     @PostMapping("/artists")
     Artist newArtist(@RequestBody Artist newArtist){

@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
 public class FileController {
     @Autowired

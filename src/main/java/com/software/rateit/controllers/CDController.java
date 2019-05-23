@@ -5,8 +5,10 @@ import com.software.rateit.repositories.CDRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
 public class CDController {
 
@@ -23,6 +25,23 @@ public class CDController {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
+    @GetMapping("/CDByName")
+    public CD findCdByName(
+            @RequestParam("name") String name) {
+        if(name != null)
+            return repository.findByName(name);
+        else
+            throw new CouldNotFindException(name);
+    }
+    @GetMapping("/CDByReleased")
+    public CD findCdByReleased(
+            @RequestParam("released")
+            Date released) {
+        if(released != null)
+            return repository.findByReleased(released);
+        else
+            throw new CouldNotFindException(released);
+    }
 
     @PostMapping("/cds")
     CD newCD(@RequestBody CD newCD) {
@@ -37,6 +56,7 @@ public class CDController {
                     cd.setGenres(newCD.getGenres());
                     cd.setName(newCD.getName());
                     cd.setReleased(newCD.getReleased());
+                    cd.setRating(newCD.getRating());
                     cd.setCdtracks(newCD.getCdtracks());
                     return repository.save(cd);
                 })

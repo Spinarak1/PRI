@@ -8,16 +8,20 @@ import Rates from './components/user/Rates.vue'
 import Owned from './components/user/OwnedAlbums.vue'
 import Reviews from './components/user/Reviews.vue'
 import Wishlist from './components/user/Wishlist.vue'
+import AdminDashboard from './components/admin/AdminDashboard'
+import AddAlbum from './components/admin/AddAlbum'
 
 export const routes = [
     { path: '/user', component: User },
     { path: '/records', component: Records },
-    { path: '/rates', component: Rates },
-    { path: '/owned', component: Owned },
-    { path: '/reviews', component: Reviews },
-    { path: '/wishlist', component: Wishlist },
+    { path: '/user/rates', component: Rates },
+    { path: '/user/owned', component: Owned },
+    { path: '/user/reviews', component: Reviews },
+    { path: '/user/wishlist', component: Wishlist },
     { path: '/', component: WelcomePage },
     { path: '/signup', component: SignupPage },
     { path: '/signin', component: SigninPage },
-    { path: '/dashboard', component: DashboardPage }
+    { path: '/dashboard', component: DashboardPage },
+    { path: '/admin/dashboard', component: AdminDashboard },
+    { path: '/admin/addalbum', component: AddAlbum },
 ];

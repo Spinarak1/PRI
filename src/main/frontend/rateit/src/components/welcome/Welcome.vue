@@ -1,5 +1,28 @@
 <template>
   <div id="welcome">
+    <h1>Pick the role: </h1>
+    <form>
+      <label for="user">
+        <input
+          type="radio"
+          name="role"
+          id="user"
+          value="user"
+          v-model="role"
+          @click="roleChosen"> User
+      </label>
+      <label for="admin">
+        <input
+          type="radio"
+          name="role"
+          id="admin"
+          value="admin"
+          v-model="role"
+          @click="roleChosen"> Admin
+      </label>
+    </form>
+    <p>{{role}}</p>
+    <hr>
     <h1>Rate your favourite music!</h1>
     <p>Share it with your friends</p>
     <div class="cta">
@@ -8,6 +31,23 @@
     </div>
   </div>
 </template>
+
+<script>
+  import { eventBus } from "../../main";
+
+  export default {
+    data() {
+      return {
+        role: null
+      }
+    },
+    methods: {
+      roleChosen() {
+        eventBus.$emit('roleWasChosen', this.role)
+      }
+    }
+  }
+</script>
 
 <style scoped>
   #welcome {
@@ -45,5 +85,8 @@
   .cta a:active {
     background-color: #521751;
     color: white;
+  }
+  form {
+    text-align: center;
   }
 </style>

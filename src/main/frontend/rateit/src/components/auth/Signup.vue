@@ -3,13 +3,6 @@
     <div class="signup-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="badges">Badges</label>
-          <input
-            type="text"
-            id="badges"
-            v-model="badges">
-        </div>
-        <div class="input">
           <label for="email">Mail</label>
           <input
             type="email"
@@ -36,13 +29,6 @@
             type="password"
             id="confirm-password"
             v-model="confirmPassword">
-        </div>
-        <div class="input">
-          <label for="score">Score</label>
-          <input
-            type="number"
-            id="score"
-            v-model="score">
         </div>
         <div class="input">
           <label for="country">Country</label>
@@ -83,17 +69,14 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {AXIOS} from "../../main";
+  import axios from '../../axios-auth';
   export default {
     data () {
       return {
-        badges: '',
         email: '',
         nick: '',
         password: '',
         confirmPassword: '',
-        score: '',
         country: 'usa',
         hobbyInputs: [],
         terms: false
@@ -104,7 +87,7 @@
         const newHobby = {
           id: Math.random() * Math.random() * 1000,
           value: ''
-        }
+        };
         this.hobbyInputs.push(newHobby)
       },
       onDeleteHobby (id) {
@@ -112,18 +95,18 @@
       },
       onSubmit () {
         const formData = {
-
-          badges: this.badges,
-          email: this.email,
           nick: this.nick,
+          email: this.email,
           password: this.password,
-          score: this.score
+          passwordConfirm: this.confirmPassword
         };
-        AXIOS.post('api/users', formData)
+
+        axios.post('/signup', formData,{crossDomain : true})
           .then(resp => {
             console.log(resp);
           })
           .catch(error => console.log(error));
+        //this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
       }
     }
   }

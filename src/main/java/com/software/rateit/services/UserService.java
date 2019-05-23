@@ -7,4 +7,6 @@ public interface UserService {
     User findByNick(String nick);
     void registerNewUser(User user);
     Boolean validateEmail(String email);
+    void changePassword(User user, String password);
+    Boolean checkIfOldPasswordMatches(User user, String oldpassword);
 }

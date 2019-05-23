@@ -1,20 +1,27 @@
 <template>
-  <div id="signin">
-    <div class="signin-form">
+  <div id="addAlbum">
+    <div class="addAlbum-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="nick">Nick</label>
+          <label for="name">Name</label>
           <input
-            type="nick"
-            id="nick"
-            v-model="nick">
+            type="name"
+            id="name"
+            v-model="name">
         </div>
         <div class="input">
-          <label for="password">Password</label>
+          <label for="released">Release date</label>
           <input
-            type="password"
-            id="password"
-            v-model="password">
+            type="text"
+            id="released"
+            v-model="released">
+        </div>
+        <div class="input">
+          <label for="rating">Rating</label>
+          <input
+            type="number"
+            id="rating"
+            v-model="rating">
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -25,33 +32,36 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from '../../axios-auth';
   export default {
     data () {
       return {
-        nick: '',
-        password: ''
+        name: '',
+        released: '',
+        rating: null,
       }
     },
     methods: {
       onSubmit () {
         const formData = {
-          nick: this.nick,
-          password: this.password,
+          name: this.name,
+          released: this.released,
+          rating: this.rating,
         };
-        axios.post('/api/login')
+
+        axios.post('/api/cds', formData)
           .then(resp => {
-            console.log(resp)
+            console.log(resp);
           })
-          .catch(e => console.log(e));
-        console.log(formData)
+          .catch(error => console.log(error));
+        //this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
       }
     }
   }
 </script>
 
 <style scoped>
-  .signin-form {
+  .addAlbum-form {
     width: 400px;
     margin: 30px auto;
     border: 1px solid #eee;
@@ -69,6 +79,10 @@
     margin-bottom: 6px;
   }
 
+  .input.inline label {
+    display: inline;
+  }
+
   .input input {
     font: inherit;
     width: 100%;
@@ -77,10 +91,37 @@
     border: 1px solid #ccc;
   }
 
+  .input.inline input {
+    width: auto;
+  }
+
   .input input:focus {
     outline: none;
     border: 1px solid #521751;
     background-color: #eee;
+  }
+
+  .input select {
+    border: 1px solid #ccc;
+    font: inherit;
+  }
+
+  .hobbies button {
+    border: 1px solid #521751;
+    background: #521751;
+    color: white;
+    padding: 6px;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .hobbies button:hover,
+  .hobbies button:active {
+    background-color: #8d4288;
+  }
+
+  .hobbies input {
+    width: 90%;
   }
 
   .submit button {

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
 public class GenreController {
 
