@@ -6,31 +6,30 @@
         type="text"
         placeholder="Search"
         aria-label="Search"
-        v-model="search">
-    </div><br>
-    <ul>
-      <li v-for="ta in tab"> {{ ta }} </li>
-    </ul>
-      <div class="col-sm-6 col-md-3" v-for="ar in showRecords">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            {{ ar.name }} <br/>
-            <small>{{ parseInt(ar.released)}}</small>
-
-            <star-rating
+        v-model="filterText">
+    </div>
+    <br>
+        <div class="col-sm-6 col-md-3" v-for="record in filterData">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              {{ record.name }} <br>
+              <small>{{ parseInt(record.released)}}</small>
+              <star-rating
                 :star-size="15"
-                :rating="ar.rating"
+                :rating="record.rating"
                 @rating-selected ="setRating">
+              </star-rating>
 
-            </star-rating>
-            <button class="btn btn-primary" style="float: right" @click="addAlbum(ar.name, ar.rating)">Add</button>
+              <button
+                class="btn btn-primary"
+                style="float: right"
+                @click="addAlbum(record.name, record.rating)"
+              >Add</button>
+            </div>
           </div>
         </div>
-        <p>{{search}}</p>
-    </div>
-   <!-- <p>Store : {{records[0].name}}</p>
-    <p>Getters : {{showRecords}}</p> -->
-    <p>{{tab}}</p>
+
+
   </div>
 </template>
 
@@ -43,15 +42,15 @@
 export default {
     data() {
       return {
-        arr: [],
-        search: '',
-        tab: []
+        filterText: '',
+        recordName: []
       }
     },
     methods: {
       setRating: (rating) => {
         this.rating = rating;
         console.log(`Your rating is ${rating}`);
+        console.log(`Pa jaka masz tablitze ${this.albums}`)
       },
       addAlbum(name, rating) {
         var album = {
@@ -59,14 +58,11 @@ export default {
           rating: rating
         };
         console.log(album);
-        var a = 'aaaa';
-        eventBus.$emit('addedAlbum', album);
-      }
+      },
     },
     created() {
       this.$store.dispatch("fetchAlbums");
-      this.tab = this.$store.state.records;
-      console.log(this.$store.state.records);
+
     },
    computed: {
       ...mapGetters([
@@ -75,13 +71,13 @@ export default {
       ...mapState([
         "records"
       ]),
-
-     filteredAlbums() {
-        return this.tab.filter(() => {
-          return element.match(this.search)
-        });
+     filterData() {
+       return this.showRecords.filter((element) => {
+          return (element.name.match(this.filterText));
+       });
      }
     },
+
     components: {
         appUser: User,
         StarRating

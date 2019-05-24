@@ -47,13 +47,13 @@
         search: ''
       }
     },
-    created() {
+    /*created() {
       eventBus.$on('roleWasChosen', (role) => {
         this.role = role;
         console.log(`Poszlo ${role}`);
       });
       console.log(this.role);
-    },
+    },*/
     methods: {
       searchValue(event) {
         //this.eventBus.$emit('searchValue', this.search);
