@@ -39,7 +39,7 @@
   export default {
     data() {
       return {
-        role: null
+        role: 'user'
       }
     },
     methods: {

@@ -36,6 +36,7 @@
   import StarRating from 'vue-star-rating'
   import { mapGetters } from 'vuex'
   import { mapState } from 'vuex'
+  import { mapActions } from 'vuex'
 
 export default {
     data() {
@@ -56,16 +57,24 @@ export default {
           name: name,
           rating: rating
         };
+        this.$store.dispatch("addRecords", album)
         console.log(album);
+        //console.log(this.recordsShow);
+        //this.$store.dispatch("user/addRecords", album);
       },
     },
     created() {
       this.$store.dispatch("fetchAlbums");
+      console.log(this.recordsShow)
 
     },
    computed: {
+      ...mapActions('user',[
+        "addRecords"
+      ]),
       ...mapGetters([
-        "showRecords"
+        "showRecords",
+        "recordsShow"
       ]),
       ...mapState([
         "records"

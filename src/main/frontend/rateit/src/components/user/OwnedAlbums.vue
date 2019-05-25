@@ -5,32 +5,38 @@
         <router-link to="/user">Back</router-link>
         <hr>
         <h2>Owned Albums</h2>
-        <h1>{{record}}</h1>
-        <button class="btn btn-primary" @click="poka">poka</button>
+        <div class="col-sm-6 col-md-3" v-for="record in recordsShow">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              {{ record.name }} <br>
+              <small>{{ parseInt(record.released)}}</small>
+              <star-rating
+                :star-size="15"
+                :rating="record.rating">
+              </star-rating>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { eventBus } from "../../main";
-
+  import { mapGetters } from 'vuex'
+  import StarRating from 'vue-star-rating'
   export default {
-    data() {
-      return {
-        record: {}
-      }
-    },
+
     created() {
-      eventBus.$on('addedAlbum', (album) => {
-        this.record = album;
-        console.log(album.name)
-      });
+
     },
-    methods: {
-      poka() {
-        console.log(this.record);
-      }
+    computed: {
+      ...mapGetters([
+        "recordsShow"
+      ])
+    },
+    components: {
+      StarRating
     }
 }
 </script>
