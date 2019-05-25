@@ -5,16 +5,16 @@
         <div class="card-header">
           <ul class="nav nav-pills card-header-pills">
             <li class="nav-item">
-              <router-link to="/owned">Owned Albums</router-link>
+              <router-link to="/user/owned">Owned Albums</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/reviews">Reviews</router-link>
+              <router-link to="/user/reviews">Reviews</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/wishlist">Wishlist</router-link>
+              <router-link to="/user/wishlist">Wishlist</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/rates">Rates</router-link>
+              <router-link to="/user/rates">Rates</router-link>
             </li>
           </ul>
         </div>
@@ -26,12 +26,11 @@
 <script>
 
 export default {
-    data() {
-        return {
-            record: []
-        }
+  data() {
+    return {
+      record: [],
     }
-   
+  },
 }
 </script>
 

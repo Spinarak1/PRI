@@ -23,13 +23,11 @@
               <button
                 class="btn btn-primary"
                 style="float: right"
-                @click="addAlbum(record.name, record.rating)"
+                @click="addAlbum(record.id, record.name, record.rating)"
               >Add</button>
             </div>
           </div>
         </div>
-
-
   </div>
 </template>
 
@@ -52,8 +50,9 @@ export default {
         console.log(`Your rating is ${rating}`);
         console.log(`Pa jaka masz tablitze ${this.albums}`)
       },
-      addAlbum(name, rating) {
-        var album = {
+      addAlbum(recordId, name, rating) {
+        const album = {
+          id: recordId,
           name: name,
           rating: rating
         };

@@ -31,6 +31,9 @@
         <li>
           <router-link to="/admin/addalbum">Add album</router-link>
         </li>
+        <li>
+          <router-link to="/admin/adduser">Add user</router-link>
+        </li>
       </ul>
     </nav>
   </header>
@@ -47,17 +50,12 @@
         search: ''
       }
     },
-    /*created() {
+    created() {
       eventBus.$on('roleWasChosen', (role) => {
         this.role = role;
         console.log(`Poszlo ${role}`);
       });
       console.log(this.role);
-    },*/
-    methods: {
-      searchValue(event) {
-        //this.eventBus.$emit('searchValue', this.search);
-      }
     }
   }
 </script>

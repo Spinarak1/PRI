@@ -1,7 +1,27 @@
 <template>
-  <div id="dashboard">
-    <h1>That's the admin dashboard!</h1>
-    <p>You should only get here if you're authenticated!</p>
+  <div class="panel panel-default">
+    <h1>Welcome to the Admin Dashboard!</h1>
+    <hr>
+    <div class="panel-body">
+      <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+              <router-link to="/admin/addalbum">Add Album</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/reviews">Edit Album</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/admin/adduser">Add User</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/rates">Edit User</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

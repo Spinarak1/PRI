@@ -10,13 +10,14 @@ import Reviews from './components/user/Reviews.vue'
 import Wishlist from './components/user/Wishlist.vue'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AddAlbum from './components/admin/AddAlbum'
+import AddUser from './components/admin/AddUser'
 
 export const routes = [
     { path: '/user', component: User },
-    { path: '/records', component: Records },
     { path: '/user/rates', component: Rates },
     { path: '/user/owned', component: Owned },
     { path: '/user/reviews', component: Reviews },
+    { path: '/records', component: Records },
     { path: '/user/wishlist', component: Wishlist },
     { path: '/', component: WelcomePage },
     { path: '/signup', component: SignupPage },
@@ -24,4 +25,5 @@ export const routes = [
     { path: '/dashboard', component: DashboardPage },
     { path: '/admin/dashboard', component: AdminDashboard },
     { path: '/admin/addalbum', component: AddAlbum },
+    { path: '/admin/adduser', component: AddUser },
 ];

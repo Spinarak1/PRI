@@ -1,6 +1,7 @@
 <template>
   <div id="welcome">
     <h1>Pick the role: </h1>
+    <p>(double click)</p>
     <form>
       <label for="user">
         <input
