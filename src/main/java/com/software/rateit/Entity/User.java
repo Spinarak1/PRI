@@ -1,17 +1,16 @@
 package com.software.rateit.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.software.rateit.Role;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "Users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User {
     @Id
@@ -41,10 +40,10 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Collection<Role> roles;
 
     public User() {}
-    public User(String nick, String email, String password, int score, String badges, Set<CD> cd, Set<Role> role) {
+    public User(String nick, String email, String password, int score, String badges, Set<CD> cd, Collection<Role> role) {
         this.nick = nick;
         this.email = email;
         this.password = password;
@@ -126,11 +125,21 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public Set<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", nick='" + nick + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + "*********" + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

@@ -1,7 +1,7 @@
 package com.software.rateit.registration;
 
 import com.software.rateit.Entity.User;
-import com.software.rateit.services.UserService;
+import com.software.rateit.controllers.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(origins = "localhost:8081")
 @Controller
 public class RegistrationController {
 
@@ -39,13 +39,15 @@ public class RegistrationController {
 
     @GetMapping("/signin")
     public String login(Model model, String error, String logout) {
-        if (error != null)
+        if (error != null) {
             model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
+            System.out.print("nie udalo sie");
+        }
+        if (logout != null) {
             model.addAttribute("message", "You have been logged out successfully.");
-
-        return "signin";
+        }
+        System.out.print("poszlo");
+        return "redirect:http://localhost:8081/dashboard";
     }
 
     @PostMapping("/user/changePassword")
