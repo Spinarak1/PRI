@@ -3,6 +3,7 @@ import DashboardPage from './components/dashboard/dashboard.vue'
 import SignupPage from './components/auth/signup.vue'
 import SigninPage from './components/auth/signin.vue'
 import User from './components/user/User.vue'
+  import UserStart from './components/user/UserStart'
 import Records from './components/records/Records.vue'
 import Rates from './components/user/Rates.vue'
 import Owned from './components/user/OwnedAlbums.vue'
@@ -14,6 +15,7 @@ import AddUser from './components/admin/AddUser'
 
 export const routes = [
     { path: '/user', component: User },
+    { path: '/userstart', component: UserStart },
     { path: '/user/rates', component: Rates },
     { path: '/user/owned', component: Owned },
     { path: '/user/reviews', component: Reviews },

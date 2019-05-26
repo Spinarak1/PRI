@@ -11,8 +11,10 @@
               {{ record.name }} <br>
               <small>{{ parseInt(record.released)}}</small>
               <star-rating
+                :increment=0.5
                 :star-size="15"
-                :rating="record.rating">
+                :rating="record.rating"
+              >
               </star-rating>
             </div>
           </div>

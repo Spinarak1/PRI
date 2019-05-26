@@ -1,7 +1,8 @@
 
 const user = {
   state: {
-    records: []
+    records: [],
+    recordRate: null
   },
   getters: {
     recordsShow(state) {
@@ -9,27 +10,44 @@ const user = {
     }
   },
   mutations: {
-    addRecord(state, /*{recordId, name, rating}*/ album) {
-      /*const record = state.records.find(element => element.id == recordId);
+    addRecord(state, {recordId, name, released, rating} ) {
+      const record = state.records.find(element => element.id == recordId);
       if(!record) {
         state.records.push({
           id: recordId,
           name: name,
+          released: released,
           rating: rating
         })
-      }*/
-      state.records.push(album)
+      } else {
+        alert('This record is already on your list!');
+      }
+      /*const record = state.records.find(element => {
+        console.log(element);
+
+      });
+
+      /*if(record) {
+        console.log('You\'ve already own this album');
+      }
+      state.records.push(album);*/
     },
     removeRecord(state, {recordId, name, rating}) {
-      const record = state.records.find(element => element.id == recordId);
+      const record = state.records.find(element => element.id === recordId);
       if(record) {
         state.records.splice(state.records.indexOf(record), 1);
       }
+    },
+    setRating(state, album) {
+
     }
   },
   actions: {
     addRecords({commit}, album) {
       commit('addRecord', album);
+    },
+    setRatings({commit}, album) {
+      commit()
     }
   }
 };

@@ -5,6 +5,7 @@ import users from './modules/users'
 import user from './modules/user'
 
 Vue.use(Vuex);
+Vue.config.devtools = true;
 
 export const store = new Vuex.Store({
   state: {

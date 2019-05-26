@@ -15,15 +15,17 @@
               {{ record.name }} <br>
               <small>{{ parseInt(record.released)}}</small>
               <star-rating
+                :increment=0.5
                 :star-size="15"
                 :rating="record.rating"
+                :read-only=true
                 @rating-selected ="setRating">
               </star-rating>
 
               <button
                 class="btn btn-primary"
                 style="float: right"
-                @click="addAlbum(record.id, record.name, record.rating)"
+                @click="addAlbum(record.id, record.name, record.released, record.rating)"
               >Add</button>
             </div>
           </div>
@@ -48,13 +50,15 @@ export default {
     methods: {
       setRating: (rating) => {
         this.rating = rating;
+        console.log(recordId, name, released, ratingg);
         console.log(`Your rating is ${rating}`);
         console.log(`Pa jaka masz tablitze ${this.albums}`)
       },
-      addAlbum(recordId, name, rating) {
+      addAlbum(recordId, name, released, rating) {
         const album = {
-          id: recordId,
+          recordId: recordId,
           name: name,
+          released: released,
           rating: rating
         };
         this.$store.dispatch("addRecords", album)
