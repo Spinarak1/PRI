@@ -4,7 +4,9 @@
       <div class="panel-body">
         <router-link to="/user">Back</router-link>
         <hr>
-        <h2>Owned Albums</h2>
+        <h2 style="text-align: center">Owned Albums</h2>
+        <!--<p>{{ getRating }}</p>-->
+        <hr>
         <div class="col-sm-6 col-md-3" v-for="record in recordsShow">
           <div class="panel panel-default">
             <div class="panel-body">
@@ -13,7 +15,7 @@
               <star-rating
                 :increment=0.5
                 :star-size="20"
-                :rating="record.rating"
+                :rating="getRating.rating"
                 @rating-selected="setRating">
 
               </star-rating>
@@ -41,7 +43,8 @@
     },
     computed: {
       ...mapGetters([
-        "recordsShow"
+        "recordsShow",
+        "getRating"
       ]),
       ...mapActions([
         "setRatings"

@@ -3,10 +3,14 @@ const user = {
   state: {
     records: [],
     userRate: [],
+    userReviews: []
   },
   getters: {
     recordsShow(state) {
       return state.records;
+    },
+    getRating(state, {recordId}) {
+      return state.userRate;
     }
   },
   mutations: {
@@ -45,7 +49,10 @@ const user = {
     },
     setRatings({commit}, userRate) {
       commit('setRating', userRate)
-    }
+    },
+    /*setReviews({commit}, review) {
+      commit('setReviews', review)
+    } */
   }
 };
 
