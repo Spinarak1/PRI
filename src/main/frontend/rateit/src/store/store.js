@@ -8,19 +8,6 @@ Vue.use(Vuex);
 Vue.config.devtools = true;
 
 export const store = new Vuex.Store({
-  state: {
-
-  },
-
-  getters: {
-
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  },
   modules: {
     records,
     users,

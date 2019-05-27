@@ -18,8 +18,7 @@
                 :increment=0.5
                 :star-size="15"
                 :rating="record.rating"
-                :read-only=true
-                @rating-selected ="setRating">
+                :read-only=true>
               </star-rating>
 
               <button
@@ -48,12 +47,6 @@ export default {
       }
     },
     methods: {
-      setRating: (rating) => {
-        this.rating = rating;
-        console.log(recordId, name, released, ratingg);
-        console.log(`Your rating is ${rating}`);
-        console.log(`Pa jaka masz tablitze ${this.albums}`)
-      },
       addAlbum(recordId, name, released, rating) {
         const album = {
           recordId: recordId,

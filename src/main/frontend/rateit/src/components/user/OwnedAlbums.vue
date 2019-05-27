@@ -12,10 +12,16 @@
               <small>{{ parseInt(record.released)}}</small>
               <star-rating
                 :increment=0.5
-                :star-size="15"
+                :star-size="20"
                 :rating="record.rating"
-              >
+                @rating-selected="setRating">
+
               </star-rating>
+              <button
+                class="btn btn-primary"
+                style="float:right"
+                @click="albumRated(record.id, record.name, record.released)"
+                >Save</button>
             </div>
           </div>
         </div>
@@ -26,6 +32,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
   import StarRating from 'vue-star-rating'
   export default {
 
@@ -35,7 +42,29 @@
     computed: {
       ...mapGetters([
         "recordsShow"
+      ]),
+      ...mapActions([
+        "setRatings"
       ])
+    },
+    methods: {
+      setRating(rating) {
+        this.rating = rating;
+        console.log(`User rate: ${rating}`);
+      },
+      albumRated(id, name, released){
+        //console.log(id,name,released, this.rating)
+        // sending to Vuex: recordId, name, released, rating
+
+        const userRate = {
+          recordId: id,
+          name: name,
+          released: released,
+          rating: this.rating
+        };
+        console.log(userRate);
+        this.$store.dispatch("setRatings", userRate);
+      },
     },
     components: {
       StarRating

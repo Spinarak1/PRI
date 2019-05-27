@@ -2,7 +2,7 @@
 const user = {
   state: {
     records: [],
-    recordRate: null
+    userRate: [],
   },
   getters: {
     recordsShow(state) {
@@ -22,15 +22,15 @@ const user = {
       } else {
         alert('This record is already on your list!');
       }
-      /*const record = state.records.find(element => {
-        console.log(element);
-
-      });
-
-      /*if(record) {
-        console.log('You\'ve already own this album');
-      }
-      state.records.push(album);*/
+    },
+    // recordId, name, released, rating
+    setRating(state, {recordId, name, released, rating}) {
+      state.userRate.push({
+        id: recordId,
+        name: name,
+        released: released,
+        rating: rating
+      })
     },
     removeRecord(state, {recordId, name, rating}) {
       const record = state.records.find(element => element.id === recordId);
@@ -38,16 +38,13 @@ const user = {
         state.records.splice(state.records.indexOf(record), 1);
       }
     },
-    setRating(state, album) {
-
-    }
   },
   actions: {
     addRecords({commit}, album) {
       commit('addRecord', album);
     },
-    setRatings({commit}, album) {
-      commit()
+    setRatings({commit}, userRate) {
+      commit('setRating', userRate)
     }
   }
 };
