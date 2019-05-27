@@ -22,6 +22,8 @@ public class CD {
     private Date released = new Date();
     @Column(name = "rating")
     private float rating;
+    @Column(name = "comment")
+    private String comment;
 
     @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
@@ -42,9 +44,11 @@ public class CD {
     private Set<User> user = new HashSet<>();
 
     public CD(){}
-    public CD(String name, Date released, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
+
+    public CD(String name, Date released, String comment, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
         this.name = name;
         this.released = released;
+        this.comment = comment;
         this.cdtracks = track;
         this.artist = artist;
         this.genres = genre;
@@ -83,6 +87,14 @@ public class CD {
     }
     public Set<Artist> getArtist() {
         return artist;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public void setArtist(Set<Artist> artist) {
