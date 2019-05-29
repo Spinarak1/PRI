@@ -2,12 +2,12 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="panel-body">
-        <router-link to="/user">Back</router-link>
+        <router-link to="/userProfile">Back</router-link>
         <hr>
         <h2 style="text-align: center">Owned Albums</h2>
         <!--<p>{{ getRating }}</p>-->
         <hr>
-        <div class="col-sm-6 col-md-3" v-for="record in recordsShow">
+        <div class="col-sm-6 col-md-3" v-for="record in ownedRecords">
           <div class="panel panel-default">
             <div class="panel-body">
               {{ record.name }} <br>
@@ -15,8 +15,8 @@
               <star-rating
                 :increment=0.5
                 :star-size="20"
-                :rating="getRating.rating"
-                @rating-selected="setRating">
+                @rating-selected="setRating" >
+                <!-- :rating="getRating.rating" -->
 
               </star-rating>
               <button
@@ -35,6 +35,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
+  import * as types from '../../store/types'
   import StarRating from 'vue-star-rating'
   export default {
 
@@ -42,13 +43,16 @@
 
     },
     computed: {
-      ...mapGetters([
+      /*...mapGetters([
         "recordsShow",
         "getRating"
-      ]),
-      ...mapActions([
-        "setRatings"
-      ])
+      ]),*/
+      ...mapActions({
+        setRatings: types.USER_RATE,
+      }),
+      ...mapGetters({
+        ownedRecords: types.OWNED_RECORDS,
+      })
     },
     methods: {
       setRating(rating) {
@@ -66,7 +70,7 @@
           rating: this.rating
         };
         console.log(userRate);
-        this.$store.dispatch("setRatings", userRate);
+        this.$store.dispatch(types.USER_RATE, userRate);
       },
     },
     components: {

@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="panel-body">
-        <router-link to="/user">Back</router-link>
+        <router-link to="/userProfile">Back</router-link>
         <hr>
         <h2 style="text-align: center">My Reviews</h2>
         <hr>
@@ -21,12 +21,11 @@
                   id=""
                   cols="60"
                   rows="10"
-                  v-model="review"
               ></textarea>
               <button
                 class="btn btn-primary"
                 style="float:right"
-                @click="albumRated(record.id, record.name, record.released)"
+                @click="albumReviewd"
               >Save</button>
             </div>
           </div>
@@ -58,7 +57,9 @@
       ])
     },
     methods: {
-
+      albumReviewd() {
+        console.log(this.review)
+      }
     },
     components: {
       StarRating

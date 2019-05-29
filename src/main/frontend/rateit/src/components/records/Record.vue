@@ -38,6 +38,7 @@
   import { mapGetters } from 'vuex'
   import { mapState } from 'vuex'
   import { mapActions } from 'vuex'
+  import * as types from '../../store/types'
 
 export default {
     data() {
@@ -54,25 +55,27 @@ export default {
           released: released,
           rating: rating
         };
-        this.$store.dispatch("addRecords", album)
+        this.$store.dispatch(types.ADD_TO_OWNED, album);
         console.log(album);
         //console.log(this.recordsShow);
-        //this.$store.dispatch("user/addRecords", album);
+        //this.$store.dispatch("userProfile/addRecords", album);
       },
     },
     created() {
-      this.$store.dispatch("fetchAlbums");
-      console.log(this.recordsShow)
+      this.$store.dispatch(types.FETCH_ALBUMS);
 
     },
    computed: {
-      ...mapActions('user',[
+      /*...mapActions('userProfile',[
         "addRecords"
-      ]),
-      ...mapGetters([
-        "showRecords",
-        "recordsShow"
-      ]),
+      ]),*/
+     ...mapActions({
+       fetchAlbums: types.FETCH_ALBUMS,
+       addRecords: types.ADD_TO_OWNED
+     }),
+      ...mapGetters({
+        showRecords: types.SHOW_RECORDS
+      }),
       ...mapState([
         "records"
       ]),

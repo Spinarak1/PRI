@@ -14,13 +14,13 @@ import AddAlbum from './components/admin/AddAlbum'
 import AddUser from './components/admin/AddUser'
 
 export const routes = [
-    { path: '/user', component: User },
+    { path: '/userProfile', component: User },
     { path: '/userstart', component: UserStart },
-    { path: '/user/rates', component: Rates },
-    { path: '/user/owned', component: Owned },
-    { path: '/user/reviews', component: Reviews },
+    { path: '/userProfile/rates', component: Rates },
+    { path: '/userProfile/owned', component: Owned },
+    { path: '/userProfile/reviews', component: Reviews },
     { path: '/records', component: Records },
-    { path: '/user/wishlist', component: Wishlist },
+    { path: '/userProfile/wishlist', component: Wishlist },
     { path: '/', component: WelcomePage },
     { path: '/signup', component: SignupPage },
     { path: '/signin', component: SigninPage },

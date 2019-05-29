@@ -1,20 +1,21 @@
+import * as types from '../types';
 
-const user = {
+const userProfile = {
   state: {
     records: [],
     userRate: [],
     userReviews: []
   },
   getters: {
-    recordsShow(state) {
+      [types.OWNED_RECORDS]: state => {
       return state.records;
     },
-    getRating(state, {recordId}) {
+    [types.GET_RATING]:(state, {recordId}) => {
       return state.userRate;
     }
   },
   mutations: {
-    addRecord(state, {recordId, name, released, rating} ) {
+    [types.ADD_RECORD]: (state, {recordId, name, released, rating}) => {
       const record = state.records.find(element => element.id == recordId);
       if(!record) {
         state.records.push({
@@ -26,9 +27,9 @@ const user = {
       } else {
         alert('This record is already on your list!');
       }
-    },
+    },  // 04.06.2019 godzina 19:00
     // recordId, name, released, rating
-    setRating(state, {recordId, name, released, rating}) {
+    [types.SET_RATING]: (state, {recordId, name, released, rating}) => {
       state.userRate.push({
         id: recordId,
         name: name,
@@ -36,7 +37,7 @@ const user = {
         rating: rating
       })
     },
-    removeRecord(state, {recordId, name, rating}) {
+    [types.DEL_ALBUM]: (state, {recordId, name, rating}) => {
       const record = state.records.find(element => element.id === recordId);
       if(record) {
         state.records.splice(state.records.indexOf(record), 1);
@@ -44,11 +45,11 @@ const user = {
     },
   },
   actions: {
-    addRecords({commit}, album) {
-      commit('addRecord', album);
+    [types.ADD_TO_OWNED]: ({commit}, album) => {
+      commit(types.ADD_RECORD, album);
     },
-    setRatings({commit}, userRate) {
-      commit('setRating', userRate)
+    [types.USER_RATE]: ({commit}, userRate) => {
+      commit(types.SET_RATING, userRate)
     },
     /*setReviews({commit}, review) {
       commit('setReviews', review)
@@ -56,4 +57,4 @@ const user = {
   }
 };
 
-export default user;
+export default userProfile;

@@ -8,7 +8,7 @@
           type="radio"
           name="role"
           id="user"
-          value="user"
+          value="userProfile"
           v-model="role"
           @click="roleChosen"> User
       </label>
@@ -39,7 +39,7 @@
   export default {
     data() {
       return {
-        role: 'user'
+        role: 'userProfile'
       }
     },
     methods: {

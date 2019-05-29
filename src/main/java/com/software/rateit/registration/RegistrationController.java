@@ -50,11 +50,11 @@ public class RegistrationController {
         return "redirect:http://localhost:8081/dashboard";
     }
 
-    @PostMapping("/user/changePassword")
+    @PostMapping("/userProfile/changePassword")
     String changePassword(@RequestParam("password") String password, @RequestParam("oldpassword") String oldPassword) {
         User user = service.findByNick(SecurityContextHolder.getContext().getAuthentication().getName());
         if(!service.checkIfOldPasswordMatches(user, oldPassword)){
-            return "user/changePassword";
+            return "userProfile/changePassword";
         }
         service.changePassword(user,password);
         return ("redirect:/dashboard");
