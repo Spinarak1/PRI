@@ -34,7 +34,7 @@ public class RegistrationController {
             return "/signup";
         }
         service.registerNewUser(userForm);
-        return ("redirect:http://localhost:8081/dashboard");
+        return ("registration");
     }
 
     @GetMapping("/signin")
@@ -47,7 +47,7 @@ public class RegistrationController {
             model.addAttribute("message", "You have been logged out successfully.");
         }
         System.out.print("poszlo");
-        return "redirect:http://localhost:8081/dashboard";
+        return "login";
     }
 
     @PostMapping("/user/changePassword")
@@ -57,7 +57,7 @@ public class RegistrationController {
             return "user/changePassword";
         }
         service.changePassword(user,password);
-        return ("redirect:/dashboard");
+        return ("change");
     }
 
 
