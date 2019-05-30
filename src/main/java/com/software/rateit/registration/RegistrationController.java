@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "localhost:8081")
+@CrossOrigin(origins = "http://localhost:8081")
 @Controller
 public class RegistrationController {
 
@@ -34,7 +34,7 @@ public class RegistrationController {
             return "/signup";
         }
         service.registerNewUser(userForm);
-        return ("registration");
+        return ("redirect:http://localhost:8081/dashboard");
     }
 
     @GetMapping("/signin")
@@ -47,7 +47,7 @@ public class RegistrationController {
             model.addAttribute("message", "You have been logged out successfully.");
         }
         System.out.print("poszlo");
-        return "login";
+        return "redirect:http://localhost:8081/dashboard";
     }
 
     @PostMapping("/userProfile/changePassword")
@@ -57,7 +57,7 @@ public class RegistrationController {
             return "userProfile/changePassword";
         }
         service.changePassword(user,password);
-        return ("change");
+        return ("redirect:http://localhost:8081/dashboard");
     }
 
 
