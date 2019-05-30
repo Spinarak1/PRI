@@ -6,7 +6,7 @@ const instance = axios.create({
 
 instance.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 instance.defaults.headers = {
-  'Access-Control-Allow-Origin': 'http://localhost:8081/dashboard'
+  'Access-Control-Allow-Origin': 'http://localhost:8080/dashboard'
 
 };
 

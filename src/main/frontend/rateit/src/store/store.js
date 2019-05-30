@@ -12,6 +12,6 @@ export const store = new Vuex.Store({
   modules: {
     records,
     users,
-    user: userProfile
+    userProfile
   }
 });

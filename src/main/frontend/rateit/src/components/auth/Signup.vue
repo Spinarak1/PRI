@@ -30,19 +30,6 @@
             id="confirm-password"
             v-model="confirmPassword">
         </div>
-        <div class="input">
-          <label for="country">Country</label>
-          <select id="country" v-model="country">
-            <option value="usa">USA</option>
-            <option value="india">India</option>
-            <option value="uk">UK</option>
-            <option value="germany">Germany</option>
-          </select>
-        </div>
-        <div class="input inline">
-          <input type="checkbox" id="terms" v-model="terms">
-          <label for="terms">Accept Terms of Use</label>
-        </div>
         <div class="submit">
           <button type="submit">Submit</button>
         </div>
@@ -56,12 +43,10 @@
   export default {
     data () {
       return {
-        email: '',
         nick: '',
+        email: '',
         password: '',
-        confirmPassword: '',
-        country: 'usa',
-        terms: false
+        confirmPassword: ''
       }
     },
     methods: {
@@ -73,7 +58,7 @@
           passwordConfirm: this.confirmPassword
         };
 
-        axios.post('/signup')
+        axios.post('/signup', formData)
           .then(resp => {
             console.log(resp);
           })
