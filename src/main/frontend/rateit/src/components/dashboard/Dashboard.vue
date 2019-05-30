@@ -2,7 +2,7 @@
   <div id="dashboard">
     <h1>That's the dashboard!</h1>
     <p>You should only get here if you're authenticated!</p>
-    <p>Hello {{ user }}, what are you listening to?</p>
+    <p>Hello {{ userProfile }}, what are you listening to?</p>
   </div>
 </template>
 
@@ -22,10 +22,10 @@
           console.log(resp);
           const users = [];
           for(let key in data) {
-            const user = data[key];
+            const userProfile = data[key];
             users.push(user);
 
-            //sconsole.log(user);
+            //sconsole.log(userProfile);
           }
           this.user = users[1].nick;
 

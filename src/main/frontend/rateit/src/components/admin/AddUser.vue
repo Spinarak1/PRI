@@ -81,7 +81,7 @@
           passwordConfirm: this.confirmPassword,
         };
 
-        axios.post('/api/users', formData,{crossDomain : true})
+        axios.post('/signup')
           .then(resp => {
             console.log(resp);
           })

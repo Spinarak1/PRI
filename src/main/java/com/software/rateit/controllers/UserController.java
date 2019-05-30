@@ -51,7 +51,7 @@ public class UserController {
         return repository.findById(id)
                 .map(user -> {
                     user.setBadges(newUser.getBadges());
-                   // user.setCd(newUser.getCd());
+                   // userProfile.setCd(newUser.getCd());
                     user.setEmail(newUser.getEmail());
                     user.setNick(newUser.getNick());
                     user.setPassword(newUser.getPassword());

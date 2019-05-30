@@ -4,15 +4,15 @@
       <router-link to="/">Rate It!</router-link>
     </div>
     <nav>
-      <ul v-if="role==='user'">
+      <ul v-if="role==='userProfile'">
         <li>
-          <router-link to="/user">User</router-link>
+          <router-link to="/userProfile">User</router-link>
         </li>
         <li>
           <router-link to="/records">Records</router-link>
         </li>
         <li>
-          <router-link to="/user/dashboard">Dashboard</router-link>
+          <router-link to="/userProfile/dashboard">Dashboard</router-link>
         </li>
         <li>
           <router-link to="/signup">Sign Up</router-link>
@@ -32,7 +32,7 @@
           <router-link to="/admin/addalbum">Add album</router-link>
         </li>
         <li>
-          <router-link to="/admin/adduser">Add user</router-link>
+          <router-link to="/admin/adduser">Add userProfile</router-link>
         </li>
       </ul>
     </nav>

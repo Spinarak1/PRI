@@ -3,20 +3,6 @@
     <div class="addAlbum-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
-          <label for="id">ID</label>
-          <input
-            type="number"
-            id="id"
-            v-model="id">
-        </div>
-        <div class="input">
-          <label for="name">Artist</label>
-          <input
-            type="text"
-            id="artist"
-            v-model="stagename">
-        </div>
-        <div class="input">
           <label for="name">Name</label>
           <input
             type="name"
@@ -50,8 +36,7 @@
   export default {
     data () {
       return {
-        id: '',
-        stagename: '',
+        //stagename: '',
         name: '',
         released: '',
         rating: null,
@@ -75,12 +60,15 @@
           })
           .catch(error => console.log(error));
 
-        axios.post('api/artist', artistData)
+        /*axios.post('api/artist', artistData)
           .then(resp => {
             console.log(resp);
           })
-          .catch(error => console.log(error));
+          .catch(error => console.log(error)); */
         //this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
+        this.name = '';
+        this.released = '';
+        this.rating = '';
       }
     }
   }
@@ -130,24 +118,6 @@
   .input select {
     border: 1px solid #ccc;
     font: inherit;
-  }
-
-  .hobbies button {
-    border: 1px solid #521751;
-    background: #521751;
-    color: white;
-    padding: 6px;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .hobbies button:hover,
-  .hobbies button:active {
-    background-color: #8d4288;
-  }
-
-  .hobbies input {
-    width: 90%;
   }
 
   .submit button {
