@@ -12,6 +12,7 @@ import Wishlist from './components/user/Wishlist.vue'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AddAlbum from './components/admin/AddAlbum'
 import AddUser from './components/admin/AddUser'
+import ListOfUsers from './components/admin/ListOfUsers'
 
 export const routes = [
     { path: '/userProfile', component: User },
@@ -28,4 +29,5 @@ export const routes = [
     { path: '/admin/dashboard', component: AdminDashboard },
     { path: '/admin/addalbum', component: AddAlbum },
     { path: '/admin/adduser', component: AddUser },
+    { path: '/admin/listofusers', component: ListOfUsers },
 ];

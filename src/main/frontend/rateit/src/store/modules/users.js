@@ -1,24 +1,24 @@
 import axios from '../../axios-auth'
-
+import * as types from '../types'
 const users = {
   state: {
       users: []
   },
   getters: {
-    showUsers(state) {
+    [types.SHOW_USERS]: state => {
       return state.users;
     }
   },
   mutations: {
-    setUsers(state, users) {
+    [types.SET_USERS]: (state, users) => {
       state.users = users;
     }
   },
   actions: {
-    fetchUsers({commit}) {
+    [types.FETCH_USERS]: ({commit}) => {
       axios.get('/api/users')
         .then(resp => {
-          commit('setUsers', resp.data);
+          commit(types.SET_USERS, resp.data);
         })
     }
   }

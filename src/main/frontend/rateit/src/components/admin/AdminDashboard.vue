@@ -18,6 +18,9 @@
             <li class="nav-item">
               <router-link to="/rates">Edit User</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/admin/listofusers">Show Users</router-link>
+            </li>
           </ul>
         </div>
       </div>

@@ -30,12 +30,17 @@ const userProfile = {
     },  // 04.06.2019 godzina 19:00
     // recordId, name, released, rating
     [types.SET_RATING]: (state, {recordId, name, released, rating}) => {
-      state.userRate.push({
-        id: recordId,
-        name: name,
-        released: released,
-        rating: rating
-      })
+      /*const userRating = state.userRate.find(element => element.id == recordId);
+      if(!userRating) {
+        state.userRate.push({
+          id: recordId,
+          name: name,
+          released: released,
+          rating: rating
+        })
+      } else {
+        alert("huj ci kurwa w dupe")
+      }*/
     },
     [types.DEL_ALBUM]: (state, {recordId, name, rating}) => {
       const record = state.records.find(element => element.id === recordId);
