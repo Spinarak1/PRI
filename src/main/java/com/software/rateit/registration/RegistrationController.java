@@ -33,21 +33,24 @@ public class RegistrationController {
         if (result.hasErrors()){
             return "/signup";
         }
-        service.registerNewUser(userForm);
-        return ("redirect:http://localhost:8081/dashboard");
+        else {
+            service.registerNewUser(userForm);
+            return ("redirect:http://localhost:8081/dashboard");
+        }
     }
 
     @GetMapping("/signin")
     public String login(Model model, String error, String logout) {
         if (error != null) {
             model.addAttribute("error", "Your username and password is invalid.");
-            System.out.print("nie udalo sie");
+            System.out.println("nie udalo sie");
+            return "redirect:/signin";
         }
-        if (logout != null) {
+        else {
             model.addAttribute("message", "You have been logged out successfully.");
+            System.out.println("udalo sie");
+            return "redirect:http://localhost:8081/dashboard";
         }
-        System.out.print("poszlo");
-        return "redirect:http://localhost:8081/dashboard";
     }
 
     @PostMapping("/userProfile/changePassword")
