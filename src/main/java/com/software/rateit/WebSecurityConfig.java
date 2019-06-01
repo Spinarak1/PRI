@@ -3,25 +3,18 @@ package com.software.rateit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -47,28 +40,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
  @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
+
+     http.authorizeRequests()
+             .antMatchers("/login").permitAll() // without this line login point will be unaccessible for authorized access
+             .antMatchers("/*").hasAnyAuthority();
 
      http.csrf().disable()
              .httpBasic().and()
              .authorizeRequests()
-             .anyRequest().authenticated()
-             .and().anonymous().disable()
-             .exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint() {
-         @Override
-         public void commence(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException authException) throws IOException, ServletException {
-             if(HttpMethod.OPTIONS.matches(request.getMethod())){
-                 response.setStatus(HttpServletResponse.SC_OK);
-                 response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, request.getHeader(HttpHeaders.ORIGIN));
-                 response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS));
-                 response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD));
-                 response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-             }else{
-                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
-             }
-         }
-     });
+             .antMatchers("/resources/**", "/registration").permitAll()
+             .and()
+             .formLogin()
+             .loginPage("/login")
+             .permitAll()
+             .and()
+             .logout();
 
  }
+
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*");
+    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.applyPermitDefaultValues();
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
 
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
