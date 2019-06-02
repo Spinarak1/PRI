@@ -15,6 +15,7 @@
               <star-rating
                 :increment=0.5
                 :star-size="20"
+                :rating="record.rating"
                 @rating-selected="setRating" >
                 <!-- :rating="getRating.rating" -->
 
@@ -38,7 +39,12 @@
   import * as types from '../../store/types'
   import StarRating from 'vue-star-rating'
   export default {
-
+    data() {
+      return {
+        rating: this.rating,
+        flag: true
+      }
+    },
     created() {
 
     },
@@ -60,7 +66,7 @@
         console.log(`User rate: ${rating}`);
       },
       albumRated(id, name, released){
-        //console.log(id,name,released, this.rating)
+        console.log(`Eloo ${id} ${name}, ${released}, ${this.rating}`)
         // sending to Vuex: recordId, name, released, rating
 
         const userRate = {

@@ -23,6 +23,13 @@
             id="rating"
             v-model="rating">
         </div>
+        <div class="input">
+          <label for="comment">Review</label>
+          <input
+            type="text"
+            id="comment"
+            v-model="comment">
+        </div>
         <div class="submit">
           <button type="submit">Submit</button>
         </div>
@@ -36,19 +43,19 @@
   export default {
     data () {
       return {
-        //stagename: '',
+        comment: '',
         name: '',
-        released: '',
         rating: null,
+        released: '',
       }
     },
     methods: {
       onSubmit () {
         const recordData = {
-          //artist: this.artist,
+          comment: this.comment,
           name: this.name,
-          released: this.released,
           rating: this.rating,
+          released: this.released,
         };
         const artistData = {
           stagename: this.stagename
@@ -69,6 +76,7 @@
         this.name = '';
         this.released = '';
         this.rating = '';
+        this.comment = '';
       }
     }
   }

@@ -11,22 +11,26 @@
             <div class="panel-body">
               {{ record.name }} <br>
               <small>{{ parseInt(record.released)}}</small>
+              <small>"{{record.comment}}"</small>
               <star-rating
                 :increment=0.5
                 :star-size="20"
-                :rating="getRating.rating"
+                :rating=1
                 :read-only=true>
               </star-rating>
               <textarea
                   id=""
                   cols="60"
                   rows="10"
+                  placeholder="add a review"
+                  v-model="review"
               ></textarea>
               <button
                 class="btn btn-primary"
                 style="float:right"
-                @click="albumReviewd"
+                @click="albumRevied(record.id, record.comment, record.name, record.rating, record.ratingCount, record.released)"
               >Save</button>
+              <p v-for="review in getReview">{{ review }}</p>
             </div>
           </div>
         </div>
@@ -39,26 +43,46 @@
   import { mapGetters } from 'vuex'
   import { mapActions } from 'vuex'
   import StarRating from 'vue-star-rating'
+  import * as types from '../../store/types'
   export default {
 
     data() {
       return {
-        review: 'lorem ipsum'
+        review: ''
       }
     },
 
     computed: {
-      ...mapGetters([
+      /*...mapGetters([
         "recordsShow",
         "getRating"
       ]),
       ...mapActions([
         "setRatings"
-      ])
+      ])*/
+      ...mapGetters({
+        recordsShow: types.OWNED_RECORDS,
+        getRating: types.GET_RATING,
+        getReview: types.GET_REVIEWS
+      }),
+      ...mapActions({
+
+      })
     },
     methods: {
-      albumReviewd() {
-        console.log(this.review)
+      albumRevied(id, comment, name, rating, ratingCount, released) {
+        //console.log(`${name}, ${this.review}, ${parseInt(released)}, ${rating}`);
+        const review = {
+          id: id,
+          comment: this.review,
+          name: name,
+          rating: rating,
+          ratingCount: ratingCount,
+          released: released,
+        };
+        console.log(review);
+        this.$store.dispatch(types.USER_REVIEW, review)
+
       }
     },
     components: {

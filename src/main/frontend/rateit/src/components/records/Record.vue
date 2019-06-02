@@ -20,11 +20,11 @@
                 :rating="record.rating"
                 :read-only=true>
               </star-rating>
-
+              <small>"{{ record.comment }}"</small>
               <button
                 class="btn btn-primary"
                 style="float: right"
-                @click="addAlbum(record.id, record.name, record.released, record.rating)"
+                @click="addAlbum(record.id, record.comment, record.name, record.released, record.rating, record.ratingCount)"
               >Add</button>
             </div>
           </div>
@@ -48,12 +48,14 @@ export default {
       }
     },
     methods: {
-      addAlbum(recordId, name, released, rating) {
+      addAlbum(recordId, name, released, comment,  rating, ratingCount) {
         const album = {
           recordId: recordId,
           name: name,
+          comment: comment,
           released: released,
-          rating: rating
+          rating: rating,
+          ratingCount: ratingCount
         };
         this.$store.dispatch(types.ADD_TO_OWNED, album);
         console.log(album);
