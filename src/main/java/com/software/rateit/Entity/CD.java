@@ -26,6 +26,8 @@ public class CD {
     private String comment;
     @Column(name = "ratingCount")
     private int ratingCount;
+    @Column(name = "sumOfRating")
+    private int sumOfRating;
 
     @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
@@ -47,7 +49,7 @@ public class CD {
 
     public CD(){}
 
-    public CD(String name, Date released, String comment, int ratingCount, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
+    public CD(String name, Date released, String comment, int ratingCount, int sumOfRating, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
         this.name = name;
         this.released = released;
         this.comment = comment;
@@ -56,6 +58,7 @@ public class CD {
         this.genres = genre;
         this.user = user;
         this.ratingCount = ratingCount;
+        this.sumOfRating = sumOfRating;
     }
 
     public Long getId() {
@@ -134,5 +137,13 @@ public class CD {
 
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+    }
+
+    public int getSumOfRating() {
+        return sumOfRating;
+    }
+
+    public void setSumOfRating(int sumOfRating) {
+        this.sumOfRating = sumOfRating;
     }
 }
