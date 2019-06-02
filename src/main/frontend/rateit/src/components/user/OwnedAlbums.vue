@@ -23,9 +23,10 @@
               <button
                 class="btn btn-primary"
                 style="float:right"
-                @click="albumRated(record.id, record.name, record.released)"
+                @click="albumRated(record.id, record.name, record.released, record.ratingCount, record.sumOfRating)"
                 >Save</button>
             </div>
+            <p>{{record.id}} {{record.name}} {{record.released}} {{record.ratingCount}} {{record.sumOfRating}}</p>
           </div>
         </div>
       </div>
@@ -65,7 +66,7 @@
         this.rating = rating;
         console.log(`User rate: ${rating}`);
       },
-      albumRated(id, name, released){
+      albumRated(id, name, released, ratingCount, sumOfRating){
         console.log(`Eloo ${id} ${name}, ${released}, ${this.rating}`)
         // sending to Vuex: recordId, name, released, rating
 
@@ -73,7 +74,9 @@
           recordId: id,
           name: name,
           released: released,
-          rating: this.rating
+          rating: this.rating,
+          ratingCount: ratingCount,
+          sumOfRating: sumOfRating
         };
         console.log(userRate);
         this.$store.dispatch(types.USER_RATE, userRate);

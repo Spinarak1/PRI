@@ -28,7 +28,7 @@
               <button
                 class="btn btn-primary"
                 style="float:right"
-                @click="albumRevied(record.id, record.comment, record.name, record.rating, record.ratingCount, record.released)"
+                @click="albumRevied(record.id, record.comment, record.name, record.rating, record.ratingCount, record.released, record.sumOfRating)"
               >Save</button>
               <p v-for="review in getReview">{{ review }}</p>
             </div>
@@ -70,7 +70,7 @@
       })
     },
     methods: {
-      albumRevied(id, comment, name, rating, ratingCount, released) {
+      albumRevied(id, comment, name, rating, ratingCount, released, sumOfRating) {
         //console.log(`${name}, ${this.review}, ${parseInt(released)}, ${rating}`);
         const review = {
           id: id,
@@ -79,6 +79,7 @@
           rating: rating,
           ratingCount: ratingCount,
           released: released,
+          sumOfRating: sumOfRating
         };
         console.log(review);
         this.$store.dispatch(types.USER_REVIEW, review)

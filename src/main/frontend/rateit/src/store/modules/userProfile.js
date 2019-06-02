@@ -18,23 +18,24 @@ const userProfile = {
     }
   },
   mutations: {
-    [types.ADD_RECORD]: (state, {recordId, comment, name, released, rating, ratingCount}) => {
-      const record = state.records.find(element => element.id == recordId);
+    // recordId, comment, name, ratingCount, sumOfRating, released
+    [types.ADD_RECORD]: (state, {recordId, comment, name, ratingCount, sumOfRating, released}) => {
+      const record = state.records.find(element => element.id === recordId);
       if(!record) {
         state.records.push({
           id: recordId,
           comment: comment,
           name: name,
-          released: released,
-          rating: rating,
-          ratingCount: ratingCount
+          ratingCount: ratingCount,
+          sumOfRating: sumOfRating,
+          released: released
         })
       } else {
         alert('This record is already on your list!');
       }
     },  // 04.06.2019 godzina 19:00
     // recordId, name, released, rating
-    [types.SET_RATING]: (state, {recordId, name, released, rating}) => {
+    [types.SET_RATING]: (state, {recordId, name, released, rating, sumOfRating, ratingCount}) => {
       /*state.userRate.push({
         id: recordId,
         name: name,
@@ -48,7 +49,7 @@ const userProfile = {
         state.records[recordIndex].ratingCount = state.records[recordIndex].ratingCount + 1;
         //alert(`hejo ${state.records.indexOf(rate)}`) // finding each record in array
         //console.log(`Ta płyta ma indeks ${recordIndex}`);
-        state.records[recordIndex].sumOfRating = sumOfRating + rating;
+        state.records[recordIndex].sumOfRating = parseInt(sumOfRating + rating);
         console.log(`Rating count: ${state.records[recordIndex].ratingCount}`);
         console.log(`${state.records[recordIndex]}`);
       }

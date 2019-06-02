@@ -17,11 +17,18 @@
             v-model="released">
         </div>
         <div class="input">
-          <label for="rating">Rating</label>
+          <label for="ratingCount">Rating Count</label>
           <input
             type="number"
-            id="rating"
-            v-model="rating">
+            id="ratingCount"
+            v-model="ratingCount">
+        </div>
+        <div class="input">
+          <label for="sumOfRating">Sum of Rating</label>
+          <input
+            type="text"
+            id="sumOfRating"
+            v-model="sumOfRating">
         </div>
         <div class="input">
           <label for="comment">Review</label>
@@ -45,7 +52,8 @@
       return {
         comment: '',
         name: '',
-        rating: null,
+        ratingCount: null,
+        sumOfRating: null,
         released: '',
       }
     },
@@ -54,8 +62,10 @@
         const recordData = {
           comment: this.comment,
           name: this.name,
-          rating: this.rating,
+          ratingCount: this.ratingCount,
+          sumOfRating: this.sumOfRating,
           released: this.released,
+
         };
         const artistData = {
           stagename: this.stagename
@@ -73,10 +83,11 @@
           })
           .catch(error => console.log(error)); */
         //this.$store.dispatch('signUp', {email: formData.email, password: formData.password})
-        this.name = '';
-        this.released = '';
-        this.rating = '';
         this.comment = '';
+        this.name = '';
+        this.ratingCount = null;
+        this.released = '';
+        this.sumOfRating = null;
       }
     }
   }
