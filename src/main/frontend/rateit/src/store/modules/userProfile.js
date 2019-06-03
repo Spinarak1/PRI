@@ -62,11 +62,20 @@ const userProfile = {
       commit(types.ADD_RECORD, album);
     },
     [types.USER_RATE]: ({commit}, userRate) => {
-      axios.post('/api/cds', userRate)
+      /*axios.put(`api/cds/${userRate.recordId}`, userRate)
         .then(resp => console.log(resp))
-        .catch(error => console.log(error));
+        .catch(error => console.log(error));*/
       commit(types.SET_RATING, userRate);
     },
+    /*
+          recordId: id,
+          comment: this.review,
+          name: name,
+          released: released,
+          rating: this.rating,
+          ratingCount: ratingCount,
+          sumOfRating: sumOfRating
+     */
   }
 };
 
