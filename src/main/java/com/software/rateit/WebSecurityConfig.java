@@ -38,41 +38,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
- @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors();
-
-     http.authorizeRequests()
-             .antMatchers("/login").permitAll() // without this line login point will be unaccessible for authorized access
-             .antMatchers("/*").hasAnyAuthority();
-
-     http.csrf().disable()
-             .httpBasic().and()
-             .authorizeRequests()
-             .antMatchers("/resources/**", "/registration").permitAll()
-             .and()
-             .formLogin()
-             .loginPage("/login")
-             .permitAll()
-             .and()
-             .logout();
-
- }
-
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*");
+        http.cors()
+                .and()
+                .authorizeRequests()
+                .antMatchers( "/**").permitAll()
+                .anyRequest().authenticated()
+                .and().csrf().disable()
+                .formLogin()
+                .loginPage("/signin")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.applyPermitDefaultValues();
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
-
 
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
