@@ -1,11 +1,11 @@
 package com.software.rateit.repositories;
 
 import com.software.rateit.Entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Date;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     User findByEmail(String email);
     User findByNick(String nick);
     Iterable<User> findByBadges(String badges);
