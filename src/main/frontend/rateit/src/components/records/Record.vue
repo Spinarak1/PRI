@@ -17,7 +17,7 @@
               <star-rating
                 :increment=0.5
                 :star-size="15"
-                :rating="record.rating"
+                :rating="record.sumOfRating / record.ratingCount"
                 :read-only=true>
               </star-rating>
               <small>"{{ record.comment }}"</small>
@@ -63,7 +63,7 @@ export default {
         //this.$store.dispatch("userProfile/addRecords", album);
       },
     },
-    created() {
+    mounted() {
       this.$store.dispatch(types.FETCH_ALBUMS);
 
     },

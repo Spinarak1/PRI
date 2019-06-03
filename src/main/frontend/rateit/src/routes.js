@@ -7,7 +7,6 @@ import User from './components/user/User.vue'
 import Records from './components/records/Records.vue'
 import Rates from './components/user/Rates.vue'
 import Owned from './components/user/OwnedAlbums.vue'
-import Reviews from './components/user/Reviews.vue'
 import Wishlist from './components/user/Wishlist.vue'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AddAlbum from './components/admin/AddAlbum'
@@ -19,7 +18,6 @@ export const routes = [
     { path: '/userstart', component: UserStart },
     { path: '/userProfile/rates', component: Rates },
     { path: '/userProfile/owned', component: Owned },
-    { path: '/userProfile/reviews', component: Reviews },
     { path: '/records', component: Records },
     { path: '/userProfile/wishlist', component: Wishlist },
     { path: '/', component: WelcomePage },

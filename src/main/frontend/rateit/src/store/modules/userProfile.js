@@ -34,14 +34,8 @@ const userProfile = {
         alert('This record is already on your list!');
       }
     },  // 04.06.2019 godzina 19:00
-    // recordId, name, released, rating
-    [types.SET_RATING]: (state, {recordId, name, released, rating, sumOfRating, ratingCount}) => {
-      /*state.userRate.push({
-        id: recordId,
-        name: name,
-        released: released,
-        rating: rating,
-      }) */
+    [types.SET_RATING]: (state, {recordId, comment, name, released, rating, ratingCount, sumOfRating }) => {
+
       //console.log(state.records);
       const rate = state.records.find(element => element.id === recordId);
       if(rate) {
@@ -50,6 +44,8 @@ const userProfile = {
         //alert(`hejo ${state.records.indexOf(rate)}`) // finding each record in array
         //console.log(`Ta płyta ma indeks ${recordIndex}`);
         state.records[recordIndex].sumOfRating = parseInt(sumOfRating + rating);
+        state.records[recordIndex].comment = comment;
+        state.records[recordIndex].rating = rating;
         console.log(`Rating count: ${state.records[recordIndex].ratingCount}`);
         console.log(`${state.records[recordIndex]}`);
       }
@@ -60,30 +56,16 @@ const userProfile = {
         state.records.splice(state.records.indexOf(record), 1);
       }
     },
-    [types.SET_REVIEWS]: (state, review) => {
-      /*const reviews = state.records.find(element => element.id === review.id);
-      if(reviews) {
-        const recordIndex = state.records.indexOf(reviews);
-        state.records[recordIndex].comment = review.comment;
-      }*/
-      const reviews = state.records.find(element => element.id === review.id);
-      console.log(reviews);
-      const recordIndex = state.records.indexOf(reviews);
-      state.records[recordIndex].comment = review.comment;
-    }
   },
   actions: {
     [types.ADD_TO_OWNED]: ({commit}, album) => {
       commit(types.ADD_RECORD, album);
     },
     [types.USER_RATE]: ({commit}, userRate) => {
-      commit(types.SET_RATING, userRate);
-    },
-    [types.USER_REVIEW]: ({commit}, review) => {
-      axios.post('/api/cds', review)
+      axios.post('/api/cds', userRate)
         .then(resp => console.log(resp))
         .catch(error => console.log(error));
-      commit(types.SET_REVIEWS, review);
+      commit(types.SET_RATING, userRate);
     },
   }
 };
