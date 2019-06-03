@@ -23,7 +23,7 @@ public class RegistrationController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return "/singup";
+        return "singup";
 
     }
 
@@ -35,7 +35,7 @@ public class RegistrationController {
         }
         else {
             service.registerNewUser(userForm);
-            return ("udalo sie");
+            return ("redirect:http://localhost:8081/dashboard");
         }
     }
 

@@ -16,6 +16,4 @@ public class RateitApplication extends SpringBootServletInitializer {
         SpringApplication.run(RateitApplication.class, args);
     }
 
-
-    private static Class<RateitApplication> applicationClass = RateitApplication.class;
 }
