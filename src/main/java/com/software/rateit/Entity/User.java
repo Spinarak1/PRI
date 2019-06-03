@@ -1,17 +1,17 @@
 package com.software.rateit.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.software.rateit.Role;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "Users")
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User {
     @Id
@@ -22,7 +22,7 @@ public class User {
     private String nick;
     @Column(name = "email")
     private String email;
-    @Column(name = "password")
+    @JsonIgnore
     private String password;
     @Column(name = "score")
     private int score;
@@ -30,8 +30,8 @@ public class User {
     private String badges;
     @Column(name = "registrationDate")
     private Date registrationDate = new Date();
-    @Transient
-    private String passwordConfirm;
+
+    private boolean active;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_cd",
@@ -39,12 +39,16 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"))
     private Set<CD> userscd = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<Role> roles;
 
     public User() {}
-    public User(String nick, String email, String password, int score, String badges, Set<CD> cd, Collection<Role> role) {
+    public User(String nick, String password, List<Role> roles) {
+        this.nick = nick;
+        this.password = password;
+        this.roles = roles;
+    }
+    public User(String nick, String email, String password, int score, String badges, Set<CD> cd, List<Role> role) {
         this.nick = nick;
         this.email = email;
         this.password = password;
@@ -110,14 +114,6 @@ public class User {
         this.userscd = userscd;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     public Date getRegistrationDate() {
         return registrationDate;
     }
@@ -126,11 +122,11 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public Collection<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
     @Override
