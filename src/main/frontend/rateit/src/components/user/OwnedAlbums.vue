@@ -10,24 +10,28 @@
         <div class="col-sm-12 col-md-6" v-for="record in ownedRecords">
           <div class="panel panel-default">
             <div class="panel-body">
-              {{ record.name }} <br>
-              <small>{{ parseInt(record.released)}}</small> <br>
-              <small>"{{record.comment}}"</small>
-              <small>Average:({{(record.sumOfRating / record.ratingCount).toFixed(2)}})</small>
-              <star-rating
-                :increment=0.5
-                :star-size="20"
-                :rating="record.rating"
-                @rating-selected="setRating" >
-              </star-rating>
+              <div class="img"></div>
+              <div class="recordData">
+                {{ record.name }} <br>
+                <small>{{ parseInt(record.released)}}</small> <br>
+                <small>"{{record.comment}}"</small>
+                <small>Average:({{(record.sumOfRating / record.ratingCount).toFixed(2)}})</small>
+                <star-rating
+                  :increment=0.5
+                  :star-size="20"
+                  :rating="record.rating"
+                  @rating-selected="setRating" >
+                </star-rating>
 
-              <textarea
-                id=""
-                cols="60"
-                rows="6"
-                placeholder="add a review"
-                v-model="review"
-              ></textarea>
+                <textarea
+                  id=""
+                  cols="60"
+                  rows="6"
+                  placeholder="add a review"
+                  v-model="review"
+                ></textarea>
+              </div>
+
               <button
                 class="btn btn-primary"
                 style="float:right"
@@ -98,6 +102,7 @@
         };
         console.log(userRate);
         this.$store.dispatch(types.USER_RATE, userRate);
+        this.review = '';
       },
     },
     components: {
@@ -105,3 +110,16 @@
     }
 }
 </script>
+
+<style scoped>
+  .img {
+    width: 150px;
+    height: 150px;
+    border: 1px #8d4288 solid;
+    float: left;
+    margin: 20px;
+  }
+  .recordData{
+    margin: 20px;
+  }
+</style>

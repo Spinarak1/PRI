@@ -9,18 +9,21 @@
         v-model="filterText">
     </div>
     <br>
-        <div class="col-sm-6 col-md-3" v-for="record in filterData">
+        <div class="col-sm-12 col-md-6" v-for="record in filterData">
           <div class="panel panel-default">
             <div class="panel-body">
-              {{ record.name }} <br>
-              <small>{{ parseInt(record.released)}}</small>
-              <star-rating
-                :increment=0.5
-                :star-size="15"
-                :rating="record.sumOfRating / record.ratingCount"
-                :read-only=true>
-              </star-rating>
-              <small>"{{ record.comment }}"</small>
+              <div class="img"></div>
+              <div class="recordData">
+                {{ record.name }} <br>
+                <small>{{ parseInt(record.released)}}</small>
+                <star-rating
+                  :increment=0.5
+                  :star-size="15"
+                  :rating="record.sumOfRating / record.ratingCount"
+                  :read-only=true>
+                </star-rating>
+                <small>"{{ record.comment }}"</small>
+              </div>
               <button
                 class="btn btn-primary"
                 style="float: right"
@@ -76,7 +79,8 @@ export default {
        addRecords: types.ADD_TO_OWNED
      }),
       ...mapGetters({
-        showRecords: types.SHOW_RECORDS
+        showRecords: types.SHOW_RECORDS,
+        showImages: types.SHOW_IMAGES
       }),
       ...mapState([
         "records"
@@ -100,5 +104,15 @@ export default {
     cursor: pointer;
     background-color: #8d4288;
     color: white;
+  }
+  .img {
+    width: 150px;
+    height: 150px;
+    border: 1px #8d4288 solid;
+    float: left;
+    margin: 20px;
+  }
+  .recordData{
+    margin: 20px;
   }
 </style>
