@@ -23,7 +23,7 @@ public class RegistrationController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return "singup";
+        return "signup";
 
     }
 
@@ -40,19 +40,18 @@ public class RegistrationController {
     }
 
     @GetMapping("/signin")
-    public boolean login(Model model, String error, String logout, User user) {
+    public String login(Model model, String error, String logout, User user) {
         if (error != null) {
             model.addAttribute("error", "Your username and password is invalid.");
             System.out.println("nie udalo sie");
             user.setActive(false);
-            return user.isActive();
         }
-        else {
+        if (logout != null){
             model.addAttribute("message", "You have been logged out successfully.");
             System.out.println("udalo sie");
             user.setActive(true);
-            return user.isActive();
         }
+        return "signin";
     }
 
     @PostMapping("/userProfile/changePassword")
