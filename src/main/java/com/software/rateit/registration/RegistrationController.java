@@ -51,7 +51,7 @@ public class RegistrationController {
             System.out.println("udalo sie");
             user.setActive(true);
         }
-        return "signin";
+        return "/signin";
     }
 
     @PostMapping("/userProfile/changePassword")
