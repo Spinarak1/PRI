@@ -19,7 +19,7 @@ public class CD {
     @Column(name = "name")
     private String name;
     @Column(name = "released")
-    private Date released = new Date();
+    private Date released;
     @Column(name = "rating")
     private float rating;
     @Column(name = "comment")
@@ -28,28 +28,19 @@ public class CD {
     private int ratingCount;
     @Column(name = "sumOfRating")
     private int sumOfRating;
-
-    @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "cd")
     private Set<Artist> artist = new HashSet<>();
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "cd_track",
-            joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"))
     private Set<Track> cdtracks = new HashSet<>();
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "cd_genre",
-            joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> genres = new HashSet<>();
-
-    @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "userscd")
     private Set<User> user = new HashSet<>();
+    private String imageUrl;
 
     public CD(){}
 
-    public CD(String name, Date released, String comment, int ratingCount, int sumOfRating, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
+    public CD(String name, Date released, String comment, int ratingCount, int sumOfRating, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user,String photoUrl) {
         this.name = name;
         this.released = released;
         this.comment = comment;
@@ -59,6 +50,7 @@ public class CD {
         this.user = user;
         this.ratingCount = ratingCount;
         this.sumOfRating = sumOfRating;
+        this.imageUrl = photoUrl;
     }
 
     public Long getId() {
@@ -145,5 +137,13 @@ public class CD {
 
     public void setSumOfRating(int sumOfRating) {
         this.sumOfRating = sumOfRating;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

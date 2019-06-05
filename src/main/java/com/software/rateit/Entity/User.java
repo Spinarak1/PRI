@@ -34,12 +34,7 @@ public class User {
     private String passwordConfirm;
     @Column
     private boolean isActive;
-
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_cd",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"))
     private Set<CD> userscd = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)

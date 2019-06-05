@@ -17,11 +17,9 @@ public class Genre{
     private Long id;
     @Column(name = "type")
     private String type;
-
-    @ManyToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "genres")
     private Set<CD> cd = new HashSet<>();
-
-    @ManyToMany(mappedBy = "genre", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "genre")
     private Set<Track> track;
 
     public Genre() {}

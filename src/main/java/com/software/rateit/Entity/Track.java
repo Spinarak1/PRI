@@ -19,18 +19,12 @@ public class Track {
     @Column(name = "title")
     private String title;
     @Column(name = "releaseDate")
-    private Date releaseDate = new Date();
-
-    @ManyToMany(mappedBy = "tracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Date releaseDate;
+    @ManyToMany(mappedBy = "tracks")
     private Set<Artist> artist = new HashSet<>();
-
-    @ManyToMany(mappedBy = "cdtracks", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "cdtracks")
     private Set<CD> cd = new HashSet<>();
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "track_genre",
-            joinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private Set<Genre> genre = new HashSet<>();
 
     public Track() {}

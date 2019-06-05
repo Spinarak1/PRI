@@ -15,20 +15,11 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "stageName")
     private String stageName;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "artist_cd",
-            joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "CD_id", referencedColumnName = "id"))
     private Set<CD> cd = new HashSet<>();
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "artist_track",
-            joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"))
     private Set<Track> tracks = new HashSet<>();
 
     public Artist(){}
