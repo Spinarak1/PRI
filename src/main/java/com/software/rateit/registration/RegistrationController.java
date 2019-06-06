@@ -39,20 +39,6 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping("/signin")
-    public String login(Model model, String error, String logout, User user) {
-        if (error != null) {
-            model.addAttribute("error", "Your username and password is invalid.");
-            System.out.println("nie udalo sie");
-            user.setActive(false);
-        }
-        if (logout != null){
-            model.addAttribute("message", "You have been logged out successfully.");
-            System.out.println("udalo sie");
-            user.setActive(true);
-        }
-        return "/signin";
-    }
 
     @PostMapping("/userProfile/changePassword")
     String changePassword(@RequestParam("password") String password, @RequestParam("oldpassword") String oldPassword) {

@@ -31,7 +31,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         for (Role role : user.getRoles()){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
-        user.setActive(true);
         return new org.springframework.security.core.userdetails.User(user.getNick(), user.getPassword(), grantedAuthorities);
     }
 }
