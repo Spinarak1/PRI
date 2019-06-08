@@ -20,22 +20,19 @@ public class RegistrationController {
     RegistrationValidator validator;
 
     @GetMapping("/signup")
-    public String registration(Model model) {
+    public void registration(Model model) {
         model.addAttribute("userForm", new User());
-
-        return "signup";
 
     }
 
     @PostMapping("/signup")
-    String registration(@RequestBody User userForm, BindingResult result){
+    void registration(@RequestBody User userForm, BindingResult result) throws Exception{
         validator.validate(userForm, result);
         if (result.hasErrors()){
-            return "/signup";
+            throw new Exception();
         }
         else {
             service.registerNewUser(userForm);
-            return ("/signup");
         }
     }
 
