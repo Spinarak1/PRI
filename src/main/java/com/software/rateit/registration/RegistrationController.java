@@ -35,7 +35,7 @@ public class RegistrationController {
         }
         else {
             service.registerNewUser(userForm);
-            return ("redirect:http://localhost:8081/dashboard");
+            return ("/signup");
         }
     }
 

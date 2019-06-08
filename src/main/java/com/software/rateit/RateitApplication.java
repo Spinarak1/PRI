@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
 @SpringBootApplication
 public class RateitApplication extends SpringBootServletInitializer {
 
@@ -12,8 +13,8 @@ public class RateitApplication extends SpringBootServletInitializer {
         return application.sources(RateitApplication.class);
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(RateitApplication.class, args);
-    }
+
+    public static void main(String[] args) { SpringApplication.run(RateitApplication.class, args); }
+
 
 }
