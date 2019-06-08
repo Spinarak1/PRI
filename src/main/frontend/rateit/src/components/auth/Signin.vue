@@ -5,7 +5,7 @@
         <div class="input">
           <label for="nick">Nick</label>
           <input
-            type="nick"
+            type="text"
             id="nick"
             v-model="nick">
         </div>
@@ -39,9 +39,11 @@
           nick: this.nick,
           password: this.password,
         };
-        axios.post('/signin')
+        axios.post('/api/signin', formData)
           .then(resp => {
-            console.log(resp)
+            console.log(resp);
+            this.nick = '';
+            this.password = '';
           })
           .catch(e => console.log(e));
         console.log(formData)

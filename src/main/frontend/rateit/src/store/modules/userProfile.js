@@ -10,8 +10,19 @@ const userProfile = {
       return state.records;
     },
     [types.GET_RATING]:(state, {recordId}) => {
-        return state.records.find(element => element.id === recordId)
-        // side note - don't know if it's gonna return boolean or a certain value
+      /*return state.records.find(element => {
+        if(element.id === recordId) {
+          const avg = state.records[element.id].sumOfRating / state.records[element.id].ratingCount;
+        }
+      })*/
+      return {
+        avg: state.records.find(element => {
+          if (element.id === recordId) {
+            const avg = (state.records[element.id].sumOfRating / state.records[element.id].ratingCount);
+          }
+        })
+      }
+      // side note - don't know if it's gonna return boolean or a certain value
     },
     [types.GET_REVIEWS]: (state, review) => {
       return state.records.find(element => element.id === review.id); // TODO
@@ -62,9 +73,9 @@ const userProfile = {
       commit(types.ADD_RECORD, album);
     },
     [types.USER_RATE]: ({commit}, userRate) => {
-      /*axios.put(`api/cds/${userRate.recordId}`, userRate)
+      axios.put(`api/cds/${userRate.recordId}`, userRate)
         .then(resp => console.log(resp))
-        .catch(error => console.log(error));*/
+        .catch(error => console.log(error))
       commit(types.SET_RATING, userRate);
     },
     /*

@@ -19,10 +19,9 @@
                 <star-rating
                   :increment=0.5
                   :star-size="20"
-                  :rating="record.rating"
+                  :rating="getRating.avg"
                   @rating-selected="setRating" >
                 </star-rating>
-
                 <textarea
                   id=""
                   cols="60"
@@ -62,7 +61,7 @@
     data() {
       return {
         rating: this.rating,
-        review: ''
+        review: '',
       }
     },
     created() {
@@ -93,10 +92,10 @@
 
         const userRate = {
           recordId: id,
-          comment: this.review,
           name: name,
           released: released,
           rating: this.rating,
+          comment: this.review,
           ratingCount: ratingCount,
           sumOfRating: sumOfRating
         };
