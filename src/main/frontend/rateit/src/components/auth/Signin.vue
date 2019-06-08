@@ -39,7 +39,7 @@
           nick: this.nick,
           password: this.password,
         };
-        axios.post('/api/signin?nick='+nick+'&password='+password+'', formData)
+        axios.post('/api/signin?nick='+this.nick+'&password='+this.password+'', formData)
           .then(resp => {
             console.log(resp);
             this.nick = '';
