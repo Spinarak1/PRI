@@ -147,7 +147,7 @@ public class User {
                 "id=" + id +
                 ", nick='" + nick + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + "*********" + '\'' +
+                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }

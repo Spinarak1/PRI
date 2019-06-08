@@ -32,7 +32,7 @@ public class UserController {
         else
             throw new CouldNotFindException(nick);
     }
-    @GetMapping("/signin")
+    @RequestMapping("/signin")
         public User signin(
                 @RequestParam("nick") String nick,
                 @RequestParam("password") String password){
