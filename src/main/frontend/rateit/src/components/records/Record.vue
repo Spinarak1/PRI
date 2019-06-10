@@ -7,10 +7,15 @@
         placeholder="Search"
         aria-label="Search"
         v-model="filterText">
+      <button class="btn btn-primary" @click="toggler = !toggler">Advanced</button>
+      <appSearch
+        v-if="toggler"
+        @advancedSearch="search = $event"></appSearch>
     </div>
     <br>
         <div class="col-sm-12 col-md-6" v-for="record in filterData">
           <div class="panel panel-default">
+            <p>{{search}}</p>
             <div class="panel-body">
               <div class="img"></div>
               <div class="recordData">
@@ -42,12 +47,15 @@
   import { mapState } from 'vuex'
   import { mapActions } from 'vuex'
   import * as types from '../../store/types'
+  import AdvancedSearch from './AdvancedSearch'
 
 export default {
     data() {
       return {
         filterText: '',
-        recordName: []
+        recordName: [],
+        toggler: false,
+        search: {}
       }
     },
     methods: {
@@ -65,6 +73,9 @@ export default {
         //console.log(this.recordsShow);
         //this.$store.dispatch("userProfile/addRecords", album);
       },
+      advancedSearch(){
+
+      }
     },
     mounted() {
       this.$store.dispatch(types.FETCH_ALBUMS);
@@ -86,15 +97,30 @@ export default {
         "records"
       ]),
      filterData() {
-       return this.showRecords.filter((element) => {
-          return (element.name.match(this.filterText));
-       });
+       if(this.toggler === false) {
+         return this.showRecords.filter((element) => {
+           return (element.name.match(this.filterText));
+         });
+       } else {
+         return this.showRecords.filter(element => {
+           console.log("element.released" + parseInt(element.released));
+           console.log(this.search.yearFrom);
+           console.log(this.search.yearTo);
+           if((parseInt(element.released) === this.search.yearFrom) && (parseInt(element.released) <= this.search.yearTo))
+           {
+             console.log('elo')
+           }
+           //return (element.released.match(this.search.yearFrom));
+         })
+       }
+
      }
     },
 
     components: {
-        appUser: User,
-        StarRating
+      appUser: User,
+      StarRating,
+      appSearch: AdvancedSearch
     }
 }
 </script>

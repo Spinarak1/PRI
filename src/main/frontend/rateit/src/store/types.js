@@ -22,3 +22,4 @@ export const USER_RATE = 'userProfile/USER_RATE';
 export const FETCH_USERS = 'users/FETCH_USERS';
 export const USER_REVIEW = 'userProfile/USER_REVIEW';
 export const FETCH_IMAGE = 'records/FETCH_IMAGE';
+export const UPDATE_RECORDS = 'userProfie/UPDATE_RECORDS';

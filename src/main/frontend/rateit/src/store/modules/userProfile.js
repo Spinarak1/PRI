@@ -39,24 +39,25 @@ const userProfile = {
           name: name,
           ratingCount: ratingCount,
           sumOfRating: sumOfRating,
-          released: released
+          released: released,
+          rating: null
         })
       } else {
         alert('This record is already on your list!');
       }
     },  // 04.06.2019 godzina 19:00
-    [types.SET_RATING]: (state, {recordId, comment, name, released, rating, ratingCount, sumOfRating }) => {
+    [types.SET_RATING]: (state, userRate) => {
 
       //console.log(state.records);
-      const rate = state.records.find(element => element.id === recordId);
+      const rate = state.records.find(element => element.id === userRate.recordId);
       if(rate) {
         const recordIndex = state.records.indexOf(rate);
         state.records[recordIndex].ratingCount = state.records[recordIndex].ratingCount + 1;
         //alert(`hejo ${state.records.indexOf(rate)}`) // finding each record in array
         //console.log(`Ta płyta ma indeks ${recordIndex}`);
-        state.records[recordIndex].sumOfRating = parseInt(sumOfRating + rating);
-        state.records[recordIndex].comment = comment;
-        state.records[recordIndex].rating = rating;
+        state.records[recordIndex].sumOfRating = parseInt(userRate.sumOfRating + userRate.rating);
+        state.records[recordIndex].comment = userRate.comment;
+        state.records[recordIndex].rating = userRate.rating;
         console.log(`Rating count: ${state.records[recordIndex].ratingCount}`);
         console.log(`${state.records[recordIndex]}`);
       }
@@ -72,10 +73,16 @@ const userProfile = {
     [types.ADD_TO_OWNED]: ({commit}, album) => {
       commit(types.ADD_RECORD, album);
     },
+    /*
+    rating: this.rating,
+          comment: this.review,
+          ratingCount: ratingCount,
+          sumOfRating: sumOfRating
+     */
     [types.USER_RATE]: ({commit}, userRate) => {
       axios.put(`api/cds/${userRate.recordId}`, userRate)
         .then(resp => console.log(resp))
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
       commit(types.SET_RATING, userRate);
     },
     /*
@@ -87,6 +94,8 @@ const userProfile = {
           ratingCount: ratingCount,
           sumOfRating: sumOfRating
      */
+
+    //[types.UPDATE_RECORDS]
   }
 };
 

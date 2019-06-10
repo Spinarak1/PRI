@@ -19,7 +19,7 @@
                 <star-rating
                   :increment=0.5
                   :star-size="20"
-                  :rating="getRating.avg"
+                  :rating="record.rating"
                   @rating-selected="setRating" >
                 </star-rating>
                 <textarea
@@ -44,7 +44,7 @@
                   )"
                 >Save</button>
             </div>
-            <p>ID:{{record.id}} NAME: {{record.name}} RELEASED: {{record.released}} RATINGCOUNT:{{record.ratingCount}} SUMOFRATING:{{record.sumOfRating}}</p>
+            <p>ID:{{record.id}} NAME: {{record.name}} COMMENT: {{record.comment}} RELEASED: {{record.released}} RATINGCOUNT:{{record.ratingCount}} SUMOFRATING:{{record.sumOfRating}}</p>
           </div>
         </div>
       </div>
@@ -57,6 +57,7 @@
   import { mapActions } from 'vuex'
   import * as types from '../../store/types'
   import StarRating from 'vue-star-rating'
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -84,10 +85,10 @@
     methods: {
       setRating(rating) {
         this.rating = rating;
-        console.log(`User rate: ${rating}`);
+        //console.log(`User rate: ${rating}`);
       },
       albumRated(id, comment, name, released, ratingCount, sumOfRating){
-        console.log(`Eloo ${id} ${comment} ${name}, ${released}, ${this.rating} ${ratingCount} ${sumOfRating}`);
+        //console.log(`ID: ${id} | Comment: ${comment} | Name: ${name} | Released: ${released} | Rating: ${this.rating} | RatingCount: ${ratingCount} | SumOfRating: ${sumOfRating}`);
         // sending to Vuex: recordId, name, released, rating
 
         const userRate = {
@@ -99,9 +100,12 @@
           ratingCount: ratingCount,
           sumOfRating: sumOfRating
         };
-        console.log(userRate);
+        //console.log('Heja ' + userRate.comment);
+        console.log('PA na tO ' + userRate.recordId + userRate.name + userRate.released + userRate.comment + userRate.rating + userRate.ratingCount + userRate.sumOfRating);
         this.$store.dispatch(types.USER_RATE, userRate);
         this.review = '';
+        console.log('---------');
+        console.log(this.ownedRecords);
       },
     },
     components: {
