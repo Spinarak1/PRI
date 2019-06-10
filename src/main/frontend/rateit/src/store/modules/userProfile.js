@@ -88,7 +88,9 @@ const userProfile = {
       } else {
         state.activeUser.push(response);
       }
-
+    },
+    [types.LOG_OUT]: state => {
+      state.activeUser = [];
     }
   },
 
@@ -142,7 +144,10 @@ const userProfile = {
         .catch(e => console.log(e));
       console.log(formData);
     },
-  }
+    [types.SIGN_OUT]: ({commit}) => {
+      commit(types.LOG_OUT);
+    }
+  },
 };
 
 export default userProfile;

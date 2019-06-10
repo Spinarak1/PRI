@@ -16,6 +16,7 @@ export const SET_USERS = 'users/SET_USERS';
 export const SET_REVIEWS = 'userProfile/SET_REVIEWS';
 export const SET_IMAGES = 'records/SET_IMAGES';
 export const USER_DATA = 'userProfile/USER_DATA';
+export const LOG_OUT = 'userProfile/LOG_OUT';
 
 // Actions
 export const FETCH_ALBUMS = 'records/FETCH_ALBUMS';
@@ -26,3 +27,4 @@ export const USER_REVIEW = 'userProfile/USER_REVIEW';
 export const FETCH_IMAGE = 'records/FETCH_IMAGE';
 export const UPDATE_RECORDS = 'userProfile/UPDATE_RECORDS';
 export const SIGN_IN = 'userProfile/SIGN_IN';
+export const SIGN_OUT = 'userProfile/SIGN_OUT';
