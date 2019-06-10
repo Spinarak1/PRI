@@ -36,8 +36,9 @@ public class UserController {
         public User signin(
                 @RequestParam("nick") String nick,
                 @RequestParam("password") String password){
-        if(nick != null && password != null)
+        if(nick != null || password != null) {
             return repository.findUserByNickAndPasswordNamedParams(nick, password);
+        }
         else
             throw new CouldNotFindException(nick);
     }

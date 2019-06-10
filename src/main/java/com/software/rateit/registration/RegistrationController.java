@@ -32,6 +32,7 @@ public class RegistrationController {
             throw new Exception();
         }
         else {
+
             service.registerNewUser(userForm);
         }
     }
