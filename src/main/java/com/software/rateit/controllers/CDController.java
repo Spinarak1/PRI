@@ -58,6 +58,9 @@ public class CDController {
                     cd.setReleased(newCD.getReleased());
                     cd.setRating(newCD.getRating());
                     cd.setCdtracks(newCD.getCdtracks());
+                    cd.setPhotoURL(newCD.getPhotoURL());
+                    cd.setRatingCount(newCD.getRatingCount());
+                    cd.setSumOfRating(newCD.getSumOfRating());
                     return repository.save(cd);
                 })
                 .orElseGet(() -> {

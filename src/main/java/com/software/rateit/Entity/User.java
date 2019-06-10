@@ -144,7 +144,7 @@ public class User {
     public void setActive(boolean active) {
         isActive = active;
     }
-    
+
     public String getPhotoURL() {
         return photoURL;
     }

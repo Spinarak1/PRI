@@ -67,6 +67,8 @@ public class UserController {
                     user.setNick(newUser.getNick());
                     user.setPassword(newUser.getPassword());
                     user.setScore(newUser.getScore());
+                    user.setPhotoURL(newUser.getPhotoURL());
+                    user.setActive(newUser.isActive());
                     return repository.save(user);
                 })
                 .orElseGet(() ->{
