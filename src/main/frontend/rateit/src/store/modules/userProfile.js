@@ -3,8 +3,12 @@ import axios from '../../axios-auth';
 
 const userProfile = {
   state: {
+    activeUser: [],
     records: [],
   },
+
+  // GETTERS
+
   getters: {
     [types.OWNED_RECORDS]: state => {
       return state.records;
@@ -24,10 +28,18 @@ const userProfile = {
       }
       // side note - don't know if it's gonna return boolean or a certain value
     },
+
     [types.GET_REVIEWS]: (state, review) => {
       return state.records.find(element => element.id === review.id); // TODO
+    },
+
+    [types.USER_DETAILS]: state => {
+      return state.activeUser;
     }
   },
+
+  // MUTATIONS
+
   mutations: {
     // recordId, comment, name, ratingCount, sumOfRating, released
     [types.ADD_RECORD]: (state, {recordId, comment, name, ratingCount, sumOfRating, released}) => {
@@ -68,7 +80,22 @@ const userProfile = {
         state.records.splice(state.records.indexOf(record), 1);
       }
     },
+    [types.USER_DATA]: (state, response) => {
+
+      if(state.activeUser.length > 0) {
+        state.activeUser.length = 0;
+        state.activeUser.push(response);
+      } else {
+        state.activeUser.push(response);
+      }
+    },
+    [types.LOG_OUT]: state => {
+      state.activeUser = [];
+    }
   },
+
+  // ACTIONS
+
   actions: {
     [types.ADD_TO_OWNED]: ({commit}, album) => {
       commit(types.ADD_RECORD, album);
@@ -94,9 +121,33 @@ const userProfile = {
           ratingCount: ratingCount,
           sumOfRating: sumOfRating
      */
-
     //[types.UPDATE_RECORDS]
-  }
+    [types.SIGN_IN]: ({commit}, formData) => {
+      axios.post('/api/signin?nick='+formData.nick+'&password='+formData.password+'', formData)
+        .then(resp => {
+          const response = resp.data;
+          console.log(response);
+          if(!(Object.keys(response).length === 0)) {
+            console.log('niepusty obiekt');
+            console.log(response);
+            console.log(response.roles);
+            response.active = true;
+            if(formData.roles === 'admin') {
+              response.roles = 'admin';
+            } else {
+              response.roles = 'user';
+            }
+            commit(types.USER_DATA, response);
+            alert(`zostales zalogowany AUUUU`);
+          } else alert('złe passy')
+        })
+        .catch(e => console.log(e));
+      console.log(formData);
+    },
+    [types.SIGN_OUT]: ({commit}) => {
+      commit(types.LOG_OUT);
+    }
+  },
 };
 
 export default userProfile;

@@ -1,6 +1,6 @@
 <template>
   <div id="welcome">
-    <h1>Pick the role: </h1>
+    <!--<h1>Pick the role: </h1>
     <p>(double click)</p>
     <form>
       <label for="user">
@@ -23,10 +23,10 @@
       </label>
     </form>
     <p>{{role}}</p>
-    <hr>
+    <hr> -->
     <h1>Rate your favourite music!</h1>
     <p>Share it with your friends</p>
-    <div class="cta">
+    <div class="cta" v-if="userDetails[0].active===false">
       <router-link to="/signup">Sign Up</router-link>
       <router-link to="/signin">Sign In</router-link>
     </div>
@@ -35,6 +35,8 @@
 
 <script>
   import { eventBus } from "../../main";
+  import { mapGetters } from "vuex";
+  import * as types from "../../store/types"
 
   export default {
     data() {
@@ -46,6 +48,11 @@
       roleChosen() {
         eventBus.$emit('roleWasChosen', this.role)
       }
+    },
+    computed: {
+      ...mapGetters({
+        userDetails: types.USER_DETAILS
+      })
     }
   }
 </script>

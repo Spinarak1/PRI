@@ -4,44 +4,42 @@
       <router-link to="/">Rate It!</router-link>
     </div>
     <nav>
-      <ul v-if="role==='userProfile'">
-        <li>
-          <router-link to="/userProfile">User</router-link>
-        </li>
-        <li>
-          <router-link to="/records">Records</router-link>
-        </li>
-        <li>
-          <router-link to="/userProfile/dashboard">Dashboard</router-link>
-        </li>
-        <li>
-          <router-link to="/signup">Sign Up</router-link>
-        </li>
-        <li>
-          <router-link to="/signin">Sign In</router-link>
-        </li>
-        <li>
-          <router-link to="/">Logout</router-link>
-        </li>
-      </ul>
-      <ul v-else>
-        <li>
-          <router-link to="/admin/dashboard">Admin Dashboard</router-link>
-        </li>
-        <li>
-          <router-link to="/admin/addalbum">Add album</router-link>
-        </li>
-        <li>
-          <router-link to="/admin/adduser">Add userProfile</router-link>
-        </li>
-      </ul>
+      <ul v-if="userDetails[0].roles==='user'">
+          <li>
+            <router-link to="/userProfile">{{userDetails[0].nick}}</router-link>
+          </li>
+          <li>
+            <router-link to="/records">Records</router-link>
+          </li>
+          <li>
+            <router-link to="/dashboard">Dashboard</router-link>
+          </li>
+          <li @click.native="logMeOut">
+            <router-link to="/">Logout</router-link>
+          </li>
+        </ul>
+
+        <ul v-else-if="userDetails[0].roles==='admin'">
+          <li>
+            <router-link to="/admin/dashboard">Admin Dashboard</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/addalbum">Add album</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/adduser">Add userProfile</router-link>
+          </li>
+        </ul>
     </nav>
   </header>
 </template>
 
 <script>
-  import { eventBus} from "../../main";
-
+  import { eventBus } from "../../main";
+  import { mapGetters } from "vuex";
+  import { mapMutations } from "vuex";
+  import { mapActions } from "vuex";
+  import * as types from "../../store/types";
 
   export default {
     data() {
@@ -51,11 +49,27 @@
       }
     },
     created() {
-      eventBus.$on('roleWasChosen', (role) => {
+      /*eventBus.$on('roleWasChosen', (role) => {
         this.role = role;
         console.log(`Poszlo ${role}`);
       });
-      console.log(this.role);
+      console.log(this.role); */
+    },
+    methods: {
+      logMeOut() {
+        this.$store.dispatch(types.SIGN_OUT);
+      }
+    },
+    computed: {
+      ...mapGetters({
+        userDetails: types.USER_DETAILS
+      }),
+      /*...mapMutations({
+        logout: types.LOG_OUT
+      }),*/
+      ...mapActions({
+        logOut: types.SIGN_OUT
+      })
     }
   }
 </script>

@@ -8,7 +8,7 @@
               <div class="col-sm-4">
                 <div class="panel panel-default">
                   <div class="panel-body">
-                    <div class="row"> <router-link to="/userProfile">My Account</router-link></div>
+                    <div class="row"><router-link to="/userProfile">My Account</router-link></div>
                     <hr>
                     <div class="row"><router-link to="/userProfile/owned">My Albums</router-link></div>
                     <hr>

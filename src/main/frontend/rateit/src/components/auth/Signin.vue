@@ -16,37 +16,56 @@
             id="password"
             v-model="password">
         </div>
+        <div class="input">
+          <label for="roles">Role type</label>
+          <input
+            type="text"
+            id="roles"
+            v-model="roles">
+        </div>
+        <p>{{roles}}  </p>
         <div class="submit">
           <button type="submit">Submit</button>
         </div>
       </form>
     </div>
+    <p>Active user: {{userDetails}} </p>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
+  import { mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
+  import * as types from '../../store/types';
+
   export default {
     data () {
       return {
         nick: '',
-        password: ''
+        password: '',
+        roles: '',
       }
+    },
+    computed: {
+      ...mapActions({
+        signIn: types.SIGN_IN
+      }),
+
+      ...mapGetters({
+        userDetails: types.USER_DETAILS
+      })
     },
     methods: {
       onSubmit () {
         const formData = {
           nick: this.nick,
           password: this.password,
+          roles: this.roles
         };
-        axios.post('/api/signin?nick='+this.nick+'&password='+this.password+'', formData)
-          .then(resp => {
-            console.log(resp);
-            this.nick = '';
-            this.password = '';
-          })
-          .catch(e => console.log(e));
-        console.log(formData)
+        this.$store.dispatch(types.SIGN_IN, formData);
+        this.nick = '';
+        this.password = '';
+        //this.roles = false;
       }
     }
   }

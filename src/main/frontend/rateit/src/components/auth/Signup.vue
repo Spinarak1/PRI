@@ -63,6 +63,11 @@
             console.log(resp);
           })
           .catch(error => console.log(error));
+
+        this.email = '';
+        this.nick = '';
+        this.password = '';
+        this.confirmPassword = '';
       }
     }
   }
