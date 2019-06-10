@@ -26,7 +26,7 @@
     <hr> -->
     <h1>Rate your favourite music!</h1>
     <p>Share it with your friends</p>
-    <div class="cta" v-if="userDetails[0].active===false">
+    <div class="cta">   <!-- v-if="userDetails[0].active===false" -->
       <router-link to="/signup">Sign Up</router-link>
       <router-link to="/signin">Sign In</router-link>
     </div>

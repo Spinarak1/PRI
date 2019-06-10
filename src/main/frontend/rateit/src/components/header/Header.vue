@@ -3,21 +3,23 @@
     <div class="logo">
       <router-link to="/">Rate It!</router-link>
     </div>
-    <nav>
+    <nav> <!--  v-if="userDetails[0].active === true" -->
       <ul v-if="userDetails[0].roles==='user'">
-          <li>
+          <!--<li>
             <router-link to="/userProfile">{{userDetails[0].nick}}</router-link>
-          </li>
-          <li>
-            <router-link to="/records">Records</router-link>
-          </li>
-          <li>
-            <router-link to="/dashboard">Dashboard</router-link>
-          </li>
-          <li @click.native="logMeOut">
-            <router-link to="/">Logout</router-link>
-          </li>
-        </ul>
+          </li>-->
+        <li>
+          <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+
+        <li>
+          <router-link to="/records">Records</router-link>
+        </li>
+
+        <li @click="logMeOut">
+          <router-link to="/">Logout</router-link>
+        </li>
+      </ul>
 
         <ul v-else-if="userDetails[0].roles==='admin'">
           <li>

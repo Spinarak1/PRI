@@ -17,6 +17,13 @@
             v-model="nick">
         </div>
         <div class="input">
+          <label for="photo">Photo URL</label>
+          <input
+            type="text"
+            id="photo"
+            v-model="photo">
+        </div>
+        <div class="input">
           <label for="password">Password</label>
           <input
             type="password"
@@ -45,6 +52,7 @@
       return {
         nick: '',
         email: '',
+        photo: '',
         password: '',
         confirmPassword: ''
       }
@@ -54,6 +62,7 @@
         const formData = {
           nick: this.nick,
           email: this.email,
+          photoURL: this.photo,
           password: this.password,
           passwordConfirm: this.confirmPassword
         };

@@ -17,7 +17,10 @@
           <div class="panel panel-default">
             <p>{{search}}</p>
             <div class="panel-body">
-              <div class="img"></div>
+              <div class="img">
+                <img v-bind:src="url" alt="">
+                <small>{{record.photoURL}}</small>
+              </div>
               <div class="recordData">
                 {{ record.name }} <br>
                 <small>{{ parseInt(record.released)}}</small>
@@ -55,7 +58,8 @@ export default {
         filterText: '',
         recordName: [],
         toggler: false,
-        search: {}
+        search: {},
+        url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf-ne6JF6Di0WJAhDWQb7F8gNHsfHQwYUisHAp7waPbINeNbvp'
       }
     },
     methods: {

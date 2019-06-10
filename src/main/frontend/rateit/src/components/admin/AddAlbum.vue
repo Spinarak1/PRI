@@ -37,6 +37,13 @@
             id="comment"
             v-model="comment">
         </div>
+        <div class="input">
+          <label for="url">Photo url</label>
+          <input
+            type="text"
+            id="url"
+            v-model="url">
+        </div>
         <div class="submit">
           <button type="submit">Submit</button>
         </div>
@@ -55,6 +62,7 @@
         ratingCount: null,
         sumOfRating: null,
         released: '',
+        url: '',
       }
     },
     methods: {
@@ -62,9 +70,11 @@
         const recordData = {
           comment: this.comment,
           name: this.name,
+          photoURL: this.url,
           ratingCount: this.ratingCount,
           sumOfRating: this.sumOfRating,
           released: this.released,
+
 
         };
         const artistData = {
@@ -88,6 +98,7 @@
         this.ratingCount = null;
         this.released = '';
         this.sumOfRating = null;
+        this.url = '';
       }
     }
   }

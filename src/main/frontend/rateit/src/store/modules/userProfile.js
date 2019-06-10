@@ -90,7 +90,7 @@ const userProfile = {
       }
     },
     [types.LOG_OUT]: state => {
-      state.activeUser = [];
+      state.activeUser.length = 0;
     }
   },
 
