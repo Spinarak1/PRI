@@ -4,7 +4,8 @@
       <router-link to="/">Rate It!</router-link>
     </div>
     <nav>
-      <ul v-if="role==='userProfile'">
+      <!--<ul v-if="role==='userProfile'">-->
+      <ul>
         <li>
           <router-link to="/userProfile">User</router-link>
         </li>
@@ -24,7 +25,7 @@
           <router-link to="/">Logout</router-link>
         </li>
       </ul>
-      <ul v-else>
+      <!--<ul v-else>
         <li>
           <router-link to="/admin/dashboard">Admin Dashboard</router-link>
         </li>
@@ -34,7 +35,7 @@
         <li>
           <router-link to="/admin/adduser">Add userProfile</router-link>
         </li>
-      </ul>
+      </ul>-->
     </nav>
   </header>
 </template>
