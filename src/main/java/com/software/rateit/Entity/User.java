@@ -34,6 +34,8 @@ public class User {
     private String passwordConfirm;
     @Column
     private boolean isActive;
+    @Column
+    private String photoURL;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CD> userscd = new HashSet<>();
 
@@ -42,7 +44,8 @@ public class User {
     private Collection<Role> roles;
 
     public User() {}
-    public User(String nick, String email, String password, int score, String badges, boolean isActive, Set<CD> cd, Collection<Role> role) {
+
+    public User(String nick, String email, String password, int score, String badges, boolean isActive, String photoURL, Set<CD> cd, Collection<Role> role) {
         this.nick = nick;
         this.email = email;
         this.password = password;
@@ -51,6 +54,7 @@ public class User {
         this.userscd = cd;
         this.roles = role;
         this.isActive = isActive;
+        this.photoURL = photoURL;
     }
 
     public Long getId() {
@@ -139,6 +143,14 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+    
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     @Override
