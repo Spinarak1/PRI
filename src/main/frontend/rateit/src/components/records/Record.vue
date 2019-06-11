@@ -13,14 +13,17 @@
         @advancedSearch="search = $event"></appSearch>
     </div>
     <br>
-        <div class="col-sm-12 col-md-6" v-for="record in filterData">
+        <div class="col-sm-12 col-md-12" v-for="record in filterData">
           <div class="panel panel-default">
             <p>{{search}}</p>
             <div class="panel-body">
               <div class="img">
-                <img v-bind:src="url" alt="">
-                <small>{{record.photoURL}}</small>
+                <img
+                  style="max-height: 250px; max-width: 250px"
+                  v-bind:src="url[0]"
+                  alt="">
               </div>
+              <p>{{record.id-2}}</p>
               <div class="recordData">
                 {{ record.name }} <br>
                 <small>{{ parseInt(record.released)}}</small>
@@ -40,6 +43,7 @@
             </div>
           </div>
         </div>
+    <p>ee{{showRecords}}</p>
   </div>
 </template>
 
@@ -51,6 +55,7 @@
   import { mapActions } from 'vuex'
   import * as types from '../../store/types'
   import AdvancedSearch from './AdvancedSearch'
+  import axios from 'axios'
 
 export default {
     data() {
@@ -59,8 +64,13 @@ export default {
         recordName: [],
         toggler: false,
         search: {},
-        url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf-ne6JF6Di0WJAhDWQb7F8gNHsfHQwYUisHAp7waPbINeNbvp'
+        url: [],
+        urlIndex: 1
       }
+    },
+    created() {
+      console.log(this.showRecords.photoURL);
+
     },
     methods: {
       addAlbum(recordId, comment, name, ratingCount, sumOfRating, released) {
@@ -79,11 +89,24 @@ export default {
       },
       advancedSearch(){
 
-      }
+      },
     },
     mounted() {
       this.$store.dispatch(types.FETCH_ALBUMS);
+      this.$store.dispatch(types.FETCH_IMAGE);
 
+      //this.url.push(showRecords)
+      axios.get('/api/cds')
+        .then(resp => {
+          const data = resp.data;
+          console.log(data);
+          data.forEach(curr => {
+            console.log(curr.photoURL);
+            this.url.push(curr.photoURL);
+          })
+        })
+        .catch(e => console.log(e));
+      console.log(this.photoURL);
     },
    computed: {
       /*...mapActions('userProfile',[
@@ -91,11 +114,13 @@ export default {
       ]),*/
      ...mapActions({
        fetchAlbums: types.FETCH_ALBUMS,
-       addRecords: types.ADD_TO_OWNED
+       addRecords: types.ADD_TO_OWNED,
+       fetchImage: types.FETCH_IMAGE,
      }),
       ...mapGetters({
         showRecords: types.SHOW_RECORDS,
-        showImages: types.SHOW_IMAGES
+        showImages: types.SHOW_IMAGES,
+
       }),
       ...mapState([
         "records"
@@ -136,8 +161,8 @@ export default {
     color: white;
   }
   .img {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border: 1px #8d4288 solid;
     float: left;
     margin: 20px;

@@ -19,8 +19,8 @@ const records = {
       state.records = albums;
       //console.log(`Mutationes ${state.records.length}`)
     },
-    [types.SET_IMAGES]: (state, payload) => {
-      state.images = payload;
+    [types.SET_IMAGES]: (state, data) => {
+      state.images = data;
     }
   },
   actions: {
@@ -34,12 +34,14 @@ const records = {
     }
   },
     [types.FETCH_IMAGE]: ({commit}) => {
-      axios.get('http://www.splashbase.co/api/v1/images/search?query=tree')
+      axios.get('/api/cds')
         .then(resp => {
-          console.log(resp);
-          commit(types.SET_IMAGES, resp);
+          const data = resp.data;
+          //console.log(data);
+          commit(types.SET_IMAGES, data);
         })
-        .catch(error => console.log(error));
+        .catch(e => console.log(e));
+
     }
 };
 

@@ -7,10 +7,13 @@
         <h2 style="text-align: center">Owned Albums</h2>
         <!--<p>{{ getRating }}</p>-->
         <hr>
-        <div class="col-sm-12 col-md-6" v-for="record in ownedRecords">
+        <div class="col-sm-12 col-md-12" v-for="record in ownedRecords">
           <div class="panel panel-default">
             <div class="panel-body">
-              <div class="img"></div>
+              <div class="img">
+                <img v-bind:src="record.photoURL" alt="">
+                <small>{{record.photoURL}}</small>
+              </div>
               <div class="recordData">
                 {{ record.name }} <br>
                 <small>{{ parseInt(record.released)}}</small> <br>
@@ -63,6 +66,7 @@
       return {
         rating: this.rating,
         review: '',
+        url: ''
       }
     },
     created() {
@@ -116,8 +120,8 @@
 
 <style scoped>
   .img {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border: 1px #8d4288 solid;
     float: left;
     margin: 20px;

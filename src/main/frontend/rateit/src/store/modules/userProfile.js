@@ -90,6 +90,7 @@ const userProfile = {
       }
     },
     [types.LOG_OUT]: state => {
+      state.activeUser[0].active = false;
       state.activeUser.length = 0;
     }
   },
@@ -138,8 +139,8 @@ const userProfile = {
               response.roles = 'user';
             }
             commit(types.USER_DATA, response);
-            alert(`zostales zalogowany AUUUU`);
-          } else alert('złe passy')
+            alert(`zostales zalogowany`);
+          } else alert('złe hasło lub login')
         })
         .catch(e => console.log(e));
       console.log(formData);
