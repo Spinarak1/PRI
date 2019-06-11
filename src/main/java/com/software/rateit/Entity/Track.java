@@ -19,16 +19,15 @@ public class Track {
     @Column(name = "title")
     private String title;
     @Column(name = "releaseDate")
-    private Date releaseDate;
+    private int releaseDate;
     @ManyToMany(mappedBy = "tracks")
     private Set<Artist> artist = new HashSet<>();
     @ManyToMany(mappedBy = "cdtracks")
     private Set<CD> cd = new HashSet<>();
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Genre> genre = new HashSet<>();
+    private String genre;
 
     public Track() {}
-    public Track(String title, Date releaseDate, Set<Artist> artist, Set<CD> cd, Set<Genre> genre) {
+    public Track(String title, int releaseDate, Set<Artist> artist, Set<CD> cd, String genre) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.artist = artist;
@@ -52,11 +51,11 @@ public class Track {
         this.title = title;
     }
 
-    public Date getReleaseDate() {
+    public int getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(int releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -76,11 +75,11 @@ public class Track {
         this.cd = cd;
     }
 
-    public Set<Genre> getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(Set<Genre> genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 }

@@ -54,6 +54,7 @@ public class TrackController {
                     track.setCd(newTrack.getCd());
                     track.setReleaseDate(newTrack.getReleaseDate());
                     track.setTitle(newTrack.getTitle());
+                    track.setGenre(newTrack.getGenre());
                     return repository.save(track);
                 })
                 .orElseGet(() ->{
