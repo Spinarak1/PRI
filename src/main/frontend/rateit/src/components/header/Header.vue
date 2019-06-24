@@ -3,11 +3,9 @@
     <div class="logo">
       <router-link to="/">Rate It!</router-link>
     </div>
-    <nav> <!--  v-if="userDetails[0].active === true" -->
-      <ul v-if="userDetails[0].roles==='user'">
-          <!--<li>
-            <router-link to="/userProfile">{{userDetails[0].nick}}</router-link>
-          </li>-->
+
+    <nav v-if="userDetails.length === 1">
+      <ul>
         <li>
           <router-link to="/dashboard">Dashboard</router-link>
         </li>
@@ -20,18 +18,17 @@
           <router-link to="/">Logout</router-link>
         </li>
       </ul>
+    </nav>
 
-        <ul v-else-if="userDetails[0].roles==='admin'">
-          <li>
-            <router-link to="/admin/dashboard">Admin Dashboard</router-link>
-          </li>
-          <li>
-            <router-link to="/admin/addalbum">Add album</router-link>
-          </li>
-          <li>
-            <router-link to="/admin/adduser">Add userProfile</router-link>
-          </li>
-        </ul>
+    <nav v-else>
+      <ul>
+        <li>
+          <router-link to="/signup">Sign up</router-link>
+        </li>
+        <li>
+          <router-link to="/signin">Sign in</router-link>
+        </li>
+      </ul>
     </nav>
   </header>
 </template>
@@ -46,6 +43,7 @@
   export default {
     data() {
       return {
+        isLogged: false,
         role: null,
         search: ''
       }
@@ -56,6 +54,9 @@
         console.log(`Poszlo ${role}`);
       });
       console.log(this.role); */
+      if(this.userDetails[0] !== userDetails.length < 1 || userDetails == undefined) {
+        this.isLogged = true;
+      }
     },
     methods: {
       logMeOut() {
@@ -126,3 +127,16 @@
     color: #fa923f;
   }
 </style>
+
+
+<!--<ul v-else-if="userDetails[0].roles==='admin'">
+          <li>
+            <router-link to="/admin/dashboard">Admin Dashboard</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/addalbum">Add album</router-link>
+          </li>
+          <li>
+            <router-link to="/admin/adduser">Add userProfile</router-link>
+          </li>
+        </ul>-->

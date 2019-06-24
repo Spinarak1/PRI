@@ -1,34 +1,16 @@
 <template>
   <div id="welcome">
-    <!--<h1>Pick the role: </h1>
-    <p>(double click)</p>
-    <form>
-      <label for="user">
-        <input
-          type="radio"
-          name="role"
-          id="user"
-          value="userProfile"
-          v-model="role"
-          @click="roleChosen"> User
-      </label>
-      <label for="admin">
-        <input
-          type="radio"
-          name="role"
-          id="admin"
-          value="admin"
-          v-model="role"
-          @click="roleChosen"> Admin
-      </label>
-    </form>
-    <p>{{role}}</p>
-    <hr> -->
-    <h1>Rate your favourite music!</h1>
-    <p>Share it with your friends</p>
-    <div class="cta">   <!-- v-if="userDetails[0].active===false" -->
-      <router-link to="/signup">Sign Up</router-link>
-      <router-link to="/signin">Sign In</router-link>
+    <div v-if="userDetails[0].active===false">
+      <h1>Rate your favourite music!</h1>
+      <p>Share it with your friends</p>
+      <div class="cta">   <!-- v-if="userDetails[0].active===false" -->
+        <router-link to="/signup">Sign Up</router-link>
+        <router-link to="/signin">Sign In</router-link>
+      </div>
+
+      <div v-if="userDetails[0].active===true">
+        <appDashboard></appDashboard>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +18,8 @@
 <script>
   import { eventBus } from "../../main";
   import { mapGetters } from "vuex";
-  import * as types from "../../store/types"
+  import * as types from "../../store/types";
+  import Dashboard from "../dashboard/Dashboard"
 
   export default {
     data() {
@@ -53,6 +36,9 @@
       ...mapGetters({
         userDetails: types.USER_DETAILS
       })
+    },
+    components: {
+      appDashboard: Dashboard
     }
   }
 </script>

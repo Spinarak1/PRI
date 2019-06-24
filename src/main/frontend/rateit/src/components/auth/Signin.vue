@@ -65,7 +65,7 @@
         this.$store.dispatch(types.SIGN_IN, formData);
         this.nick = '';
         this.password = '';
-        //this.roles = false;
+        this.roles = '';
       }
     }
   }

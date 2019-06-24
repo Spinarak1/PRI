@@ -2,12 +2,14 @@
   <div id="signup">
     <div class="signup-form">
       <form @submit.prevent="onSubmit">
-        <div class="input">
+        <div class="input" :class="{invalid: $v.email.$error}">
           <label for="email">Mail</label>
           <input
             type="email"
             id="email"
+            @blur="$v.email.$touch()"
             v-model="email">
+          <p v-if="!$v.email.email">Please provide a valid email address.</p>
         </div>
         <div class="input">
           <label for="nick">Nick</label>
@@ -23,18 +25,20 @@
             id="photo"
             v-model="photo">
         </div>
-        <div class="input">
+        <div class="input" :class="{invalid: $v.password.$error}">
           <label for="password">Password</label>
           <input
             type="password"
             id="password"
+            @blur="$v.password.$touch()"
             v-model="password">
         </div>
-        <div class="input">
+        <div class="input" :class="{invalid: $v.confirmPassword.$error}">
           <label for="confirm-password">Confirm Password</label>
           <input
             type="password"
             id="confirm-password"
+            @blur="$v.confirmPassword.$touch()"
             v-model="confirmPassword">
         </div>
         <div class="submit">
@@ -46,7 +50,8 @@
 </template>
 
 <script>
-  import axios from '../../axios-auth';
+  import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
+  import axios from 'axios'
   export default {
     data () {
       return {
@@ -57,6 +62,20 @@
         confirmPassword: ''
       }
     },
+    validations: {
+      email: {
+        required,
+        email
+      },
+      password: {
+        required,
+        minLen: minLength(8)
+      },
+      confirmPassword: {
+        sameAs: sameAs('password')
+      }
+    },
+
     methods: {
       onSubmit () {
         const formData = {
@@ -123,27 +142,17 @@
     background-color: #eee;
   }
 
+  .input.invalid input {
+    border: 1px solid red;
+    background-color: #ffc9aa;
+  }
+  .input.invalid label {
+    color: red;
+  }
+
   .input select {
     border: 1px solid #ccc;
     font: inherit;
-  }
-
-  .hobbies button {
-    border: 1px solid #521751;
-    background: #521751;
-    color: white;
-    padding: 6px;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .hobbies button:hover,
-  .hobbies button:active {
-    background-color: #8d4288;
-  }
-
-  .hobbies input {
-    width: 90%;
   }
 
   .submit button {

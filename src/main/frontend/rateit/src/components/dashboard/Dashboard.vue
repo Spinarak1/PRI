@@ -1,5 +1,49 @@
 <template>
-  <div id="dashboard">
+  <div class="dashboard">
+    <div class="panel panel-default" v-if="userDetails === 1">
+      <div class="panel-body">
+
+        <div class="row">
+          <div class="panel-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="col-sm-6 col-md-4">
+                  <img src="https://centrik.in/wp-content/uploads/2017/02/user-image-.png" alt="">
+                </div>
+                <div class="col-sm-6 col-md-8">
+                  <h2>{{userDetails[0].nick}}</h2>
+                  <p><strong>email: </strong>{{userDetails[0].email}}</p>
+                  <p><strong>albums rated: </strong>{{}}</p>
+                  <p><strong>score: </strong>score</p>
+                  <p><strong>bagdes: </strong>badges</p>
+                </div>
+              </div>
+              </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="panel-body">
+            <h2>Activity</h2>
+            <hr>
+            <p>{{userDetails}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div v-else>
+      <p>You are not allowed to see this page. </p> <p> Please, log in.</p>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!--<div id="dashboard">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="container" role="main">
@@ -33,7 +77,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -74,15 +118,10 @@
 </script>
 
 <style scoped>
-  h1, p {
-    text-align: center;
-  }
-
   p {
     color: red;
-  }
-
-  .row {
     text-align: center;
+    margin: 45px;
+    font-size: 25px;
   }
 </style>

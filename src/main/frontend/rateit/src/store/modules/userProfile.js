@@ -1,5 +1,6 @@
 import * as types from '../types';
 import axios from '../../axios-auth';
+import {router} from '../../main'
 
 const userProfile = {
   state: {
@@ -92,6 +93,9 @@ const userProfile = {
     [types.LOG_OUT]: state => {
       state.activeUser[0].active = false;
       state.activeUser.length = 0;
+      alert('Wylogowano');
+      router.push('Welcome')
+      console.log(state.activeUser);
     }
   },
 
@@ -123,6 +127,8 @@ const userProfile = {
           sumOfRating: sumOfRating
      */
     //[types.UPDATE_RECORDS]
+
+
     [types.SIGN_IN]: ({commit}, formData) => {
       axios.post('/api/signin?nick='+formData.nick+'&password='+formData.password+'', formData)
         .then(resp => {
@@ -140,6 +146,7 @@ const userProfile = {
             }
             commit(types.USER_DATA, response);
             alert(`zostales zalogowany`);
+            router.push('Dashboard')
           } else alert('złe hasło lub login')
         })
         .catch(e => console.log(e));
