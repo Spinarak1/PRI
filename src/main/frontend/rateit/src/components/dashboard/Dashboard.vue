@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <div class="panel panel-default" v-if="userDetails === 1">
+    <div class="panel panel-default" v-if="userDetails.length === 1">
       <div class="panel-body">
 
         <div class="row">
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div v-else>
+    <div class="info" v-else-if="userDetails.length !== 1">
       <p>You are not allowed to see this page. </p> <p> Please, log in.</p>
     </div>
   </div>
@@ -118,7 +118,7 @@
 </script>
 
 <style scoped>
-  p {
+  .info p {
     color: red;
     text-align: center;
     margin: 45px;

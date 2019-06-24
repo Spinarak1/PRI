@@ -20,7 +20,7 @@
       </ul>
     </nav>
 
-    <nav v-else>
+    <nav v-else-if="userDetails.length !== 1">
       <ul>
         <li>
           <router-link to="/signup">Sign up</router-link>
@@ -54,14 +54,6 @@
         console.log(`Poszlo ${role}`);
       });
       console.log(this.role); */
-      if(this.userDetails[0] !== userDetails.length < 1 || userDetails == undefined) {
-        this.isLogged = true;
-      }
-    },
-    methods: {
-      logMeOut() {
-        this.$store.dispatch(types.SIGN_OUT);
-      }
     },
     computed: {
       ...mapGetters({
@@ -73,7 +65,13 @@
       ...mapActions({
         logOut: types.SIGN_OUT
       })
-    }
+    },
+    methods: {
+      logMeOut() {
+        this.$store.dispatch(types.SIGN_OUT);
+        this.$forceUpdate();
+      }
+    },
   }
 </script>
 

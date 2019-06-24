@@ -94,8 +94,9 @@ const userProfile = {
       state.activeUser[0].active = false;
       state.activeUser.length = 0;
       alert('Wylogowano');
-      router.push('Welcome')
       console.log(state.activeUser);
+      router.push('/')
+
     }
   },
 

@@ -1,16 +1,15 @@
 <template>
   <div id="welcome">
-    <div v-if="userDetails[0].active===false">
+    <div v-if="userDetails.length < 1">
       <h1>Rate your favourite music!</h1>
       <p>Share it with your friends</p>
       <div class="cta">   <!-- v-if="userDetails[0].active===false" -->
         <router-link to="/signup">Sign Up</router-link>
         <router-link to="/signin">Sign In</router-link>
       </div>
-
-      <div v-if="userDetails[0].active===true">
-        <appDashboard></appDashboard>
-      </div>
+    </div>
+    <div v-else>
+      <p>no elo</p>
     </div>
   </div>
 </template>
@@ -27,11 +26,11 @@
         role: 'userProfile'
       }
     },
-    methods: {
+    /*methods: {
       roleChosen() {
         eventBus.$emit('roleWasChosen', this.role)
       }
-    },
+    },*/
     computed: {
       ...mapGetters({
         userDetails: types.USER_DETAILS
