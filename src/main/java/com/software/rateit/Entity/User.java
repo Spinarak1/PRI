@@ -57,6 +57,19 @@ public class User {
         this.photoURL = photoURL;
     }
 
+    public User(Long id, String nick, String email, String password, int score, String badges, boolean isActive, String photoURL, Set<CD> cd, Collection<Role> role) {
+        this.id = id;
+        this.nick = nick;
+        this.email = email;
+        this.password = password;
+        this.score = score;
+        this.badges = badges;
+        this.userscd = cd;
+        this.roles = role;
+        this.isActive = isActive;
+        this.photoURL = photoURL;
+    }
+
     public Long getId() {
         return id;
     }

@@ -53,7 +53,7 @@ public class CDController {
         return repository.findById(id)
                 .map(cd -> {
                     cd.setArtist(newCD.getArtist());
-                    cd.setGenres(newCD.getGenres());
+                    cd.setGenre(newCD.getGenre());
                     cd.setName(newCD.getName());
                     cd.setReleased(newCD.getReleased());
                     cd.setRating(newCD.getRating());

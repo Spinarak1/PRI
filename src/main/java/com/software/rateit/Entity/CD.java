@@ -19,7 +19,7 @@ public class CD {
     @Column(name = "name")
     private String name;
     @Column(name = "released")
-    private Date released = new Date();
+    private int released;
     @Column(name = "rating")
     private float rating;
     @Column(name = "comment")
@@ -30,34 +30,23 @@ public class CD {
     private int sumOfRating;
     @Column(name = "photoURL")
     private String photoURL;
-
     @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artist = new HashSet<>();
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "cd_track",
-            joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id"))
     private Set<Track> cdtracks = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "cd_genre",
-            joinColumns = @JoinColumn(name = "cd_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
-    private Set<Genre> genres = new HashSet<>();
-
+    private String genre;
     @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> user = new HashSet<>();
 
     public CD(){}
 
-    public CD(String name, Date released, String comment, int ratingCount, int sumOfRating, String photoURL, Set<Artist> artist, Set<Track> track, Set<Genre> genre, Set<User> user) {
+    public CD(String name, int released, String comment, int ratingCount, int sumOfRating, String photoURL, Set<Artist> artist, Set<Track> track, String genre, Set<User> user) {
         this.name = name;
         this.released = released;
         this.comment = comment;
         this.cdtracks = track;
         this.artist = artist;
-        this.genres = genre;
+        this.genre = genre;
         this.user = user;
         this.ratingCount = ratingCount;
         this.sumOfRating = sumOfRating;
@@ -80,11 +69,11 @@ public class CD {
         this.name = name;
     }
 
-    public Date getReleased() {
+    public int getReleased() {
         return released;
     }
 
-    public void setReleased(Date released) {
+    public void setReleased(int released) {
         this.released = released;
     }
     public float getRating() {
@@ -118,12 +107,12 @@ public class CD {
         this.cdtracks = cdtracks;
     }
 
-    public Set<Genre> getGenres() {
-        return genres;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public Set<User> getUser() {
