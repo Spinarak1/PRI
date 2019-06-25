@@ -9,4 +9,5 @@ public interface UserService {
     Boolean validateEmail(String email);
     void changePassword(User user, String password);
     Boolean checkIfOldPasswordMatches(User user, String oldpassword);
+    void addCdtoUser(Long userId, Long CdId);
 }

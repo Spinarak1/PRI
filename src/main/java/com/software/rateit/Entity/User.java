@@ -126,6 +126,10 @@ public class User {
         this.userscd = userscd;
     }
 
+    public void addCd(CD userscd){
+        getUserscd().add(userscd);
+    }
+
     public String getPasswordConfirm() {
         return passwordConfirm;
     }

@@ -1,6 +1,9 @@
 package com.software.rateit.services;
 
+import com.software.rateit.Entity.CD;
 import com.software.rateit.Entity.User;
+import com.software.rateit.controllers.CouldNotFindException;
+import com.software.rateit.repositories.CDRepository;
 import com.software.rateit.repositories.RoleRepository;
 import com.software.rateit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,9 @@ import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private CDRepository cdRepository;
 
     @Autowired
     private UserRepository repository;
@@ -59,5 +65,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkIfOldPasswordMatches(User user, String oldpassword) {
         return bCryptPasswordEncoder.matches(oldpassword, user.getPassword());
+    }
+
+    @Override
+    public void addCdtoUser(Long userId, Long CdId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new CouldNotFindException(userId));
+        CD cd = cdRepository.findById(CdId)
+                .orElseThrow(() -> new CouldNotFindException(CdId));
+        user.getUserscd().add(cd);
+        repository.save(user);
     }
 }

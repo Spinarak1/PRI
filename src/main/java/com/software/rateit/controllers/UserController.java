@@ -1,7 +1,9 @@
 package com.software.rateit.controllers;
 
+import com.software.rateit.Entity.CD;
 import com.software.rateit.Entity.User;
 import com.software.rateit.repositories.UserRepository;
+import com.software.rateit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private UserService service;
 
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     Iterable<User> getAllUsers() {
@@ -57,12 +62,17 @@ public class UserController {
         return repository.save(newUser);
     }
 
+    @PostMapping("/addCd/{id}/{cdid}")
+    void addCd(@PathVariable(value = "id") Long id,@PathVariable(value = "cdid") Long cdid){
+        service.addCdtoUser(id,cdid);
+    }
+
     @PutMapping("/users/{id}")
     User replaceUsers(@RequestBody User newUser, @PathVariable Long id){
         return repository.findById(id)
                 .map(user -> {
                     user.setBadges(newUser.getBadges());
-                   // userProfile.setCd(newUser.getCd());
+                    user.setUserscd(newUser.getUserscd());
                     user.setEmail(newUser.getEmail());
                     user.setNick(newUser.getNick());
                     user.setPassword(newUser.getPassword());
