@@ -9,7 +9,13 @@
       </div>
     </div>
     <div v-else>
-      <p>no elo</p>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <appRecord></appRecord>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +25,7 @@
   import { mapGetters } from "vuex";
   import * as types from "../../store/types";
   import Dashboard from "../dashboard/Dashboard"
+  import Record from "../records/Record"
 
   export default {
     data() {
@@ -37,7 +44,8 @@
       })
     },
     components: {
-      appDashboard: Dashboard
+      appDashboard: Dashboard,
+      appRecord: Record
     }
   }
 </script>

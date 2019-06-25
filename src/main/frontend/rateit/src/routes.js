@@ -12,12 +12,14 @@ import AdminDashboard from './components/admin/AdminDashboard'
 import AddAlbum from './components/admin/AddAlbum'
 import AddUser from './components/admin/AddUser'
 import ListOfUsers from './components/admin/ListOfUsers'
+import Settings from './components/user/Settings'
 
 export const routes = [
     { path: '/userProfile', component: User },
     { path: '/userstart', component: UserStart },
     { path: '/userProfile/rates', component: Rates },
     { path: '/userProfile/owned', component: Owned },
+    { path: '/settings', component: Settings },
     { path: '/records', component: Records },
     { path: '/userProfile/wishlist', component: Wishlist },
     { path: '/', component: WelcomePage },

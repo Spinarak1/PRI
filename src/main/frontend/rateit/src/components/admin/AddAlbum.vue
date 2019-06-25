@@ -38,11 +38,11 @@
             v-model="comment">
         </div>
         <div class="input">
-          <label for="url">Photo url</label>
+          <label for="photoURL">Photo url</label>
           <input
             type="text"
-            id="url"
-            v-model="url">
+            id="photoURL"
+            v-model="photoURL">
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -62,7 +62,7 @@
         ratingCount: null,
         sumOfRating: null,
         released: '',
-        url: '',
+        photoURL: '',
       }
     },
     methods: {
@@ -70,7 +70,8 @@
         const recordData = {
           comment: this.comment,
           name: this.name,
-          photoURL: this.url,
+          photoURL: this.photoURL,
+          rating: 0,
           ratingCount: this.ratingCount,
           sumOfRating: this.sumOfRating,
           released: this.released,

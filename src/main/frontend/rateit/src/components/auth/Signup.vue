@@ -52,6 +52,8 @@
 <script>
   import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
   import axios from 'axios'
+  import {router} from '../../main'
+
   export default {
     data () {
       return {
@@ -61,6 +63,8 @@
         password: '',
         confirmPassword: ''
       }
+    },
+    created() {
     },
     validations: {
       email: {
@@ -86,16 +90,31 @@
           passwordConfirm: this.confirmPassword
         };
 
-        axios.post('/signup', formData)
+        axios.get('/api/users')
           .then(resp => {
-            console.log(resp);
-          })
-          .catch(error => console.log(error));
+            const data = resp.data;
+            data.forEach(cur => {
+              if(cur.email === this.email || cur.nick === this.nick) {
+                alert('Email or nickname already in use!');
+                this.email = '';
+                this.nick = '';
+                this.photo = '';
+                this.password = '';
+                this.confirmPassword = '';
+              }
+            });
 
-        this.email = '';
-        this.nick = '';
-        this.password = '';
-        this.confirmPassword = '';
+            axios.post('/signup', formData)
+              .then(resp => {
+                console.log(resp);
+              })
+              .catch(error => {
+                console.log(error)
+              });
+            alert('registration was successful');
+            router.push('/signin');
+
+          });
       }
     }
   }

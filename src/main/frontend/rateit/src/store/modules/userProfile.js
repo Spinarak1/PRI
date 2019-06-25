@@ -95,7 +95,7 @@ const userProfile = {
       state.activeUser.length = 0;
       alert('Wylogowano');
       console.log(state.activeUser);
-      router.push('/')
+      router.push('/signin')
 
     }
   },
@@ -139,11 +139,12 @@ const userProfile = {
             console.log('niepusty obiekt');
             console.log(response);
             console.log(response.roles);
-            response.active = true;
             if(formData.roles === 'admin') {
               response.roles = 'admin';
+              response.active = true;
             } else {
               response.roles = 'user';
+              response.active = true;
             }
             commit(types.USER_DATA, response);
             alert(`zostales zalogowany`);

@@ -11,7 +11,7 @@
         </li>
 
         <li>
-          <router-link to="/records">Records</router-link>
+          <router-link to="/settings">Settings</router-link>
         </li>
 
         <li @click="logMeOut">

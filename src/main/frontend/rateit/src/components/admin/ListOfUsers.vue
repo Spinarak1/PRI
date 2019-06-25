@@ -3,11 +3,9 @@
     <h1>Welcome to the Admin Dashboard!</h1>
     <hr>
     <div class="panel-body">
-      <div class="card text-center">
-        <div class="card-header">
-          <p v-for="user in showUsers">{{ user.nick }} - {{ user.email }}</p> <br>
-        </div>
-      </div>
+      <ul v-for="user in showUsers">
+        <li class="user">{{ user.nick }} - {{ user.email }}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -18,17 +16,19 @@
   export default {
     data() {
       return {
-        msg: 'no elo ulane kurwy'
+        msg: 'l'
       }
-    },
-    created() {
-      this.$store.dispatch(types.FETCH_USERS);
     },
     computed: {
       ...mapGetters({
         showUsers: types.SHOW_USERS,
       })
-    }
+    },
+
+    created() {
+      this.$store.dispatch(types.FETCH_USERS);
+      console.log(this.showUsers)
+    },
 }
 </script>
 
@@ -36,5 +36,11 @@
   h1, p {
     text-align: center;
   }
-
+  
+  .user {
+    list-style-type: none;
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
 </style>

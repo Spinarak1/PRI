@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <div class="panel panel-default" v-if="userDetails.length === 1">
+    <div class="panel panel-default" v-if="userDetails.length === 1 && userDetails[0].roles === 'user'">
       <div class="panel-body">
 
         <div class="row">
@@ -14,8 +14,6 @@
                   <h2>{{userDetails[0].nick}}</h2>
                   <p><strong>email: </strong>{{userDetails[0].email}}</p>
                   <p><strong>albums rated: </strong>{{}}</p>
-                  <p><strong>score: </strong>score</p>
-                  <p><strong>bagdes: </strong>badges</p>
                 </div>
               </div>
               </div>
@@ -31,6 +29,10 @@
         </div>
 
       </div>
+    </div>
+
+    <div v-else-if="userDetails.length === 1 && userDetails[0].roles === 'admin'">
+        <appAdmin></appAdmin>
     </div>
 
     <div class="info" v-else-if="userDetails.length !== 1">
@@ -82,7 +84,7 @@
 
 <script>
 
-  import axios from 'axios'
+  import AdminDashboard from './../admin/AdminDashboard'
   import { mapGetters } from 'vuex';
   import * as types from '../../store/types';
 
@@ -113,6 +115,9 @@
 
         })
         .catch(e => console.log(e)); */
+    },
+    components: {
+      appAdmin: AdminDashboard
     }
   }
 </script>
