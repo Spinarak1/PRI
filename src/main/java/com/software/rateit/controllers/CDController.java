@@ -5,8 +5,6 @@ import com.software.rateit.repositories.CDRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
@@ -14,6 +12,9 @@ public class CDController {
 
     @Autowired
     private CDRepository repository;
+
+    @GetMapping("/cd/ratingList")
+    Iterable<CD> getRating(){return  repository.findTop25ByRatingLessThanOrderByRatingDesc(6);}
 
     @GetMapping("/cds")
     Iterable<CD> getAllCDs() {
@@ -36,11 +37,8 @@ public class CDController {
     @GetMapping("/CDByReleased")
     public CD findCdByReleased(
             @RequestParam("released")
-            Date released) {
-        if(released != null)
+            int released) {
             return repository.findByReleased(released);
-        else
-            throw new CouldNotFindException(released);
     }
 
     @PostMapping("/cds")

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +29,10 @@ public class CD {
     private int sumOfRating;
     @Column(name = "photoURL")
     private String photoURL;
-    @ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Artist> artist = new HashSet<>();
+    @Column(name="artist")
+    private String artist;
+    /*@ManyToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Artist> artist = new HashSet<>();*/
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Track> cdtracks = new HashSet<>();
     private String genre;
@@ -40,7 +41,7 @@ public class CD {
 
     public CD(){}
 
-    public CD(String name, int released, String comment, int ratingCount, int sumOfRating, String photoURL, Set<Artist> artist, Set<Track> track, String genre, Set<User> user) {
+    public CD(String name, int released, String comment, int ratingCount, int sumOfRating, String photoURL, String artist, Set<Track> track, String genre, Set<User> user) {
         this.name = name;
         this.released = released;
         this.comment = comment;
@@ -83,7 +84,7 @@ public class CD {
     public void setRating(float rating) {
         this.rating = rating;
     }
-    public Set<Artist> getArtist() {
+    public String getArtist() {
         return artist;
     }
 
@@ -95,7 +96,7 @@ public class CD {
         this.comment = comment;
     }
 
-    public void setArtist(Set<Artist> artist) {
+    public void setArtist(String artist) {
         this.artist = artist;
     }
 
