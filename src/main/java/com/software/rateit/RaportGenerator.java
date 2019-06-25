@@ -5,18 +5,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class RaportGenerator{
 
@@ -41,7 +32,7 @@ public class RaportGenerator{
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String rd = d.format(registrationDate);
         System.out.println(rd);
-        Query query = entityManager.createQuery("SELECT u FROM User u WHERE date(registrationDate) = '" + rd + "'");
+        /*Query query = entityManager.createQuery("SELECT u FROM User u WHERE date(registrationDate) = '" + rd + "'");
         @SuppressWarnings("unchecked")
         List<User> user = query.getResultList();
 
@@ -64,7 +55,7 @@ public class RaportGenerator{
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(new File(path));
-        transformer.transform(source, result);
+        transformer.transform(source, result);*/
     }
     public void sumUsersRegistrationOfYesterday (EntityManager entityManager, String catalog) throws Exception {
         Calendar calendar = Calendar.getInstance();
