@@ -1,5 +1,6 @@
 package com.software.rateit.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -36,6 +37,7 @@ public class CD {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Track> cdtracks = new HashSet<>();
     private String genre;
+    @JsonBackReference
     @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> user = new HashSet<>();
 

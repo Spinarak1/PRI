@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,5 +76,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new CouldNotFindException(CdId));
         user.getUserscd().add(cd);
         repository.save(user);
+    }
+
+
+    @Override
+    public Iterable<CD> getUsersCds(Long userId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new CouldNotFindException(userId));
+
+        return user.getUserscd();
+
     }
 }

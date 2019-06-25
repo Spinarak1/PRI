@@ -1,6 +1,9 @@
 package com.software.rateit.services;
 
+import com.software.rateit.Entity.CD;
 import com.software.rateit.Entity.User;
+
+import java.util.Set;
 
 public interface UserService {
     User findByEmail(String email);
@@ -10,4 +13,5 @@ public interface UserService {
     void changePassword(User user, String password);
     Boolean checkIfOldPasswordMatches(User user, String oldpassword);
     void addCdtoUser(Long userId, Long CdId);
+    Iterable<CD> getUsersCds(Long id);
 }

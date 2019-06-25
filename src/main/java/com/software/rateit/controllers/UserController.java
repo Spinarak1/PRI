@@ -6,6 +6,7 @@ import com.software.rateit.repositories.UserRepository;
 import com.software.rateit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -37,6 +38,14 @@ public class UserController {
         else
             throw new CouldNotFindException(nick);
     }
+
+    @ResponseBody
+    @GetMapping("/users/{id}/cds")
+    public Iterable<CD> getUsersCd(@PathVariable Long id){
+        return service.getUsersCds(id);
+
+    }
+
     @RequestMapping("/signin")
         public User signin(
                 @RequestParam("nick") String nick,

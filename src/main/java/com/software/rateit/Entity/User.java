@@ -1,6 +1,7 @@
 package com.software.rateit.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.software.rateit.Role;
 
@@ -36,6 +37,7 @@ public class User {
     private boolean isActive;
     @Column
     private String photoURL;
+    @JsonManagedReference
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CD> userscd = new HashSet<>();
 
