@@ -6,6 +6,8 @@ export const SHOW_USERS = 'users/SHOW_USERS';
 export const GET_REVIEWS = 'userProfile/GET_REVIEWS';
 export const SHOW_IMAGES = 'user/SHOW_IMAGES';
 export const USER_DETAILS = 'userProfile/USER_DETAILS';
+export const SHOW_RANKING = 'records/SHOW_RANKING';
+
 
 // Mutations
 export const SET_ALBUMS = 'records/SET_ALBUMS';
@@ -17,6 +19,7 @@ export const SET_REVIEWS = 'userProfile/SET_REVIEWS';
 export const SET_IMAGES = 'records/SET_IMAGES';
 export const USER_DATA = 'userProfile/USER_DATA';
 export const LOG_OUT = 'userProfile/LOG_OUT';
+export const SET_RANKING = 'records/SET_RANKING';
 
 // Actions
 export const FETCH_ALBUMS = 'records/FETCH_ALBUMS';
@@ -28,3 +31,4 @@ export const FETCH_IMAGE = 'records/FETCH_IMAGE';
 export const UPDATE_RECORDS = 'userProfile/UPDATE_RECORDS';
 export const SIGN_IN = 'userProfile/SIGN_IN';
 export const SIGN_OUT = 'userProfile/SIGN_OUT';
+export const RANKING = 'records/RANKING';

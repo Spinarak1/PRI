@@ -70,7 +70,7 @@
       }
     },
     created() {
-
+      axios.get('')
     },
     computed: {
       /*...mapGetters([

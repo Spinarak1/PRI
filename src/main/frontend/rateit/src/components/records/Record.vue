@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="active-purple-4 mb-4">
+    <!--<div class="active-purple-4 mb-4">
       <input
         class="form-control"
         type="text"
@@ -12,7 +12,7 @@
         v-if="toggler"
         @advancedSearch="search = $event"></appSearch>
     </div>
-    <br>
+    <br>-->
         <div class="col-sm-12 col-md-12" v-for="record in filterData">
           <div class="panel panel-default">
             <p>{{search}}</p>
@@ -62,7 +62,6 @@ export default {
       return {
         filterText: '',
         recordName: [],
-        toggler: false,
         search: {},
         url: [],
         urlIndex: 1
@@ -126,23 +125,11 @@ export default {
         "records"
       ]),
      filterData() {
-       if(this.toggler === false) {
+
          return this.showRecords.filter((element) => {
            return (element.name.match(this.filterText));
-         });
-       } else {
-         return this.showRecords.filter(element => {
-           console.log("element.released" + parseInt(element.released));
-           console.log(this.search.yearFrom);
-           console.log(this.search.yearTo);
-           if((parseInt(element.released) === this.search.yearFrom) && (parseInt(element.released) <= this.search.yearTo))
-           {
-             console.log('elo')
-           }
            //return (element.released.match(this.search.yearFrom));
          })
-       }
-
      }
     },
 

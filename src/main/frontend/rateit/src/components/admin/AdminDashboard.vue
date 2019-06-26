@@ -7,15 +7,15 @@
         <li class="nav-item">
           <router-link to="/admin/addalbum">Add Album</router-link>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <router-link to="/reviews">Edit Album</router-link>
-        </li>
+        </li>-->
         <li class="nav-item">
           <router-link to="/admin/adduser">Add User</router-link>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <router-link to="/rates">Edit User</router-link>
-        </li>
+        </li>-->
         <li class="nav-item">
           <router-link to="/admin/listofusers">Show Users</router-link>
         </li>

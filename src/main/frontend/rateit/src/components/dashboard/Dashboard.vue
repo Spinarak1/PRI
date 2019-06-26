@@ -86,7 +86,9 @@
 
   import AdminDashboard from './../admin/AdminDashboard'
   import { mapGetters } from 'vuex';
+  import { mapActions } from 'vuex';
   import * as types from '../../store/types';
+  import axios from 'axios'
 
   export default {
     data() {
@@ -96,8 +98,19 @@
     },
     computed: {
       ...mapGetters({
-        userDetails: types.USER_DETAILS
+        userDetails: types.USER_DETAILS,
+        showRanking: types.SHOW_RANKING
+      }),
+      ...mapActions({
+        ranking: types.RANKING
       })
+    },
+    methods: {
+
+    },
+    mounted() {
+      this.$store.dispatch(types.RANKING);
+      // ss
     },
     created() {
       /*axios.get(`/api/users`)
@@ -114,7 +127,13 @@
           this.user = users[1].nick;
 
         })
-        .catch(e => console.log(e)); */
+        .catch(e => console.log(e));
+      axios.get('/api/cd/ratingList')
+        .then(resp => {
+          console.log(resp.data);
+        })
+        .catch(er => console.log(er));*/
+      //this.$store.dispatch(types.RANKING)
     },
     components: {
       appAdmin: AdminDashboard

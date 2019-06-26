@@ -4,7 +4,8 @@ import * as types from '../types';
 const records = {
   state: {
     records: [],
-    images: []
+    images: [],
+    ranking: []
   },
   getters: {
     [types.SHOW_RECORDS]: state => {
@@ -12,6 +13,9 @@ const records = {
     },
     [types.SHOW_IMAGES]: state => {
       return state.images;
+    },
+    [types.SHOW_RANKING]: state => {
+      return state.ranking;
     }
   },
   mutations: {
@@ -21,6 +25,9 @@ const records = {
     },
     [types.SET_IMAGES]: (state, data) => {
       state.images = data;
+    },
+    [types.SET_RANKING]: (state, payload) => {
+      state.ranking = payload;
     }
   },
   actions: {
@@ -41,8 +48,15 @@ const records = {
           commit(types.SET_IMAGES, data);
         })
         .catch(e => console.log(e));
-
-    }
+    },
+  [types.RANKING]: ({commit}) => {
+    axios.get('/api/cd/ratingList')
+      .then(resp => {
+        const ranking = resp.data;
+        commit(types.SET_RANKING, ranking)
+      })
+      .catch(error => console.log(error));
+  }
 };
 
 export default records;
