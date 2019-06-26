@@ -13,14 +13,13 @@
         @advancedSearch="search = $event"></appSearch>
     </div>
     <br>-->
-        <div class="col-sm-12 col-md-12" v-for="record in filterData">
+        <div class="col-sm-12 col-md-12" v-for="record in showRecords">
           <div class="panel panel-default">
             <p>{{search}}</p>
             <div class="panel-body">
               <div class="img">
                 <img
-                  style="max-height: 250px; max-width: 250px"
-                  v-bind:src="url[0]"
+                  src="http://3.imimg.com/data3/EA/IK/GLADMIN-2746/video-cd-250x250.jpg"
                   alt="">
               </div>
               <p>{{record.id-2}}</p>
@@ -43,7 +42,6 @@
             </div>
           </div>
         </div>
-    <p>ee{{showRecords}}</p>
   </div>
 </template>
 
@@ -68,7 +66,6 @@ export default {
       }
     },
     created() {
-      console.log(this.showRecords.photoURL);
 
     },
     methods: {
@@ -81,6 +78,12 @@ export default {
           sumOfRating: sumOfRating,
           released: released
         };
+        axios.post(`/addCd/${this.userDetails[0].id}/${recordId}`)
+          .then(resp => {
+            console.log(resp);
+            //might do sth here, idk
+          })
+          .catch(error => console.log(error));
         this.$store.dispatch(types.ADD_TO_OWNED, album);
         console.log(album);
         //console.log(this.recordsShow);
@@ -99,13 +102,13 @@ export default {
         .then(resp => {
           const data = resp.data;
           console.log(data);
-          data.forEach(curr => {
-            console.log(curr.photoURL);
-            this.url.push(curr.photoURL);
-          })
+          //data.forEach(curr => {
+            //console.log(curr.photoURL);
+            //this.url.push(curr.photoURL);
+          //})
         })
         .catch(e => console.log(e));
-      console.log(this.photoURL);
+      //console.log(this.photoURL);
     },
    computed: {
       /*...mapActions('userProfile',[
@@ -119,6 +122,7 @@ export default {
       ...mapGetters({
         showRecords: types.SHOW_RECORDS,
         showImages: types.SHOW_IMAGES,
+        userDetails: types.USER_DETAILS,
 
       }),
       ...mapState([
@@ -143,10 +147,10 @@ export default {
 
 <style scoped>
   .panel-body:hover {
-    cursor: pointer;
-    background-color: #8d4288;
-    color: white;
-  }
+     cursor: pointer;
+     background-color: #8d4288;
+     color: white;
+   }
   .img {
     width: 250px;
     height: 250px;

@@ -24,7 +24,7 @@
           <div class="panel-body">
             <h2>Activity</h2>
             <hr>
-            <p>{{userDetails}}</p>
+            <appOwned></appOwned>
           </div>
         </div>
 
@@ -89,6 +89,7 @@
   import { mapActions } from 'vuex';
   import * as types from '../../store/types';
   import axios from 'axios'
+  import OwnedAlbums from "../user/OwnedAlbums";
 
   export default {
     data() {
@@ -99,7 +100,8 @@
     computed: {
       ...mapGetters({
         userDetails: types.USER_DETAILS,
-        showRanking: types.SHOW_RANKING
+        showRanking: types.SHOW_RANKING,
+        ownedRecords: types.OWNED_RECORDS
       }),
       ...mapActions({
         ranking: types.RANKING
@@ -136,7 +138,8 @@
       //this.$store.dispatch(types.RANKING)
     },
     components: {
-      appAdmin: AdminDashboard
+      appAdmin: AdminDashboard,
+      appOwned: OwnedAlbums
     }
   }
 </script>

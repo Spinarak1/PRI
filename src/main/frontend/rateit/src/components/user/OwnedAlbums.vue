@@ -9,9 +9,9 @@
         <hr>
         <div class="col-sm-12 col-md-12" v-for="record in ownedRecords">
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body sec">
               <div class="img">
-                <img v-bind:src="record.photoURL" alt="">
+                <img src="http://3.imimg.com/data3/EA/IK/GLADMIN-2746/video-cd-250x250.jpg" alt="">
                 <small>{{record.photoURL}}</small>
               </div>
               <div class="recordData">
@@ -119,9 +119,14 @@
 </script>
 
 <style scoped>
+  .sec:hover {
+    cursor: pointer;
+    background-color: #8d4288;
+
+  }
   .img {
-    width: 250px;
-    height: 250px;
+    width: 255px;
+    height: 255px;
     border: 1px #8d4288 solid;
     float: left;
     margin: 20px;
