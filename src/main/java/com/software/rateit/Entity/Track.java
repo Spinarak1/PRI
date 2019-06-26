@@ -1,6 +1,7 @@
 package com.software.rateit.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -13,15 +14,20 @@ import java.util.Set;
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Track {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   /* @SequenceGenerator(name = "mySeqGen", sequenceName = "myDbSeq",
+            initialValue = 131000, allocationSize = 1)
+    @GeneratedValue(generator = "mySeqGen")*/
+   @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     @Column(name = "title")
     private String title;
     @Column(name = "releaseDate")
     private int releaseDate;
+    @JsonIgnore
     @ManyToMany(mappedBy = "tracks")
     private Set<Artist> artist = new HashSet<>();
+    @JsonIgnore
     @ManyToMany(mappedBy = "cdtracks")
     private Set<CD> cd = new HashSet<>();
     private String genre;

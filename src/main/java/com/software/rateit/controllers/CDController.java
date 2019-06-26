@@ -26,14 +26,16 @@ public class CDController {
         return repository.findById(id)
                 .orElseThrow(() -> new CouldNotFindException(id));
     }
-    @GetMapping("/CDByName")
+
+    @GetMapping("/cds/byName")
     public CD findCdByName(
-            @RequestParam("name") String name) {
+            @RequestParam( value = "name") String name) {
         if(name != null)
             return repository.findByName(name);
         else
             throw new CouldNotFindException(name);
     }
+
     @GetMapping("/CDByReleased")
     public CD findCdByReleased(
             @RequestParam("released")

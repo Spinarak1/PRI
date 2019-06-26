@@ -3,6 +3,7 @@ package com.software.rateit.Entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,6 +14,9 @@ import java.util.Set;
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class CD {
     @Id
+    /*@SequenceGenerator(name = "mySeqGen", sequenceName = "myDbSeq",
+            initialValue = 10000, allocationSize = 1)
+    @GeneratedValue(generator = "mySeqGen")*/
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
@@ -37,7 +41,7 @@ public class CD {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Track> cdtracks = new HashSet<>();
     private String genre;
-    @JsonBackReference
+    //@JsonBackReference
     @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> user = new HashSet<>();
 

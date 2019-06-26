@@ -37,7 +37,7 @@ public class User {
     private boolean isActive;
     @Column
     private String photoURL;
-    @JsonManagedReference
+    //@JsonManagedReference
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CD> userscd = new HashSet<>();
 
