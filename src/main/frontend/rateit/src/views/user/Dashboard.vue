@@ -23,10 +23,7 @@
                         <span>Popular</span>
                         <v-icon></v-icon>
                     </v-btn>
-                    <v-btn text color="#FFA255" class="mr-12">
-                        <span>Favourites</span>
-                        <v-icon></v-icon>
-                    </v-btn>
+
                     <v-btn text color="#FFA255">
                         <span>Log Out</span>
                         <v-icon>mdi-export-variant</v-icon>
@@ -139,7 +136,7 @@
                 links: [
                     { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
                     { icon: 'person', text: 'My Account', route: '/user' },
-                    { icon: 'settings', text: 'Settings', route: '/settings' },
+
                 ],
 
                  records: [

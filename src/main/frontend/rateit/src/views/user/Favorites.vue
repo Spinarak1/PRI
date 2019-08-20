@@ -2,7 +2,7 @@
     <div>
         <v-container fluid>
             <v-row class="my-5 mx-5">
-                <v-col xs="12" sm="12" md="3" v-for="record in records" :key="record.album">
+                <v-col xs="12" sm="12" md="3" v-for="record in favs" :key="record.album">
                     <v-card
                             color="transarent"
                             flat
@@ -40,21 +40,14 @@
 
 <script>
     export default {
-        name: "Rated",
+        name: "Favorites",
         data() {
             return {
-                records: [
-                    { band: 'Metallica', album: 'Ride The Lightning', year: '1984', rate: 4.5 },
-                    { band: 'Slayer', album: 'Show No Mercy', year: '1983', rate: 4.5 },
-                    { band: 'Megadeth', album: 'Rust in Peace', year: '1990', rate: 4.5 },
-                    { band: 'Anthrax', album: 'State of Euphoria', year: '1986', rate: 4 },
-                    { band: 'Venom', album: 'Storm The Gates', year: '2019', rate: 3 },
-                    { band: 'Sodom', album: 'Agent Orange', year: '1989', rate: 4 },
-                    { band: 'Bathory', album: 'Nordland', year: '2001', rate: 2.5 },
-                    { band: 'Sabaton', album: 'Polsza walcz', year: '2008', rate: 1.5 },
+                favs: [
+                    { band: 'Testament', album: 'New Order', year: 1986 , rate: 5 }
                 ]
             }
-        },
+        }
     }
 </script>
 
