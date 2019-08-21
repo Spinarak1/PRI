@@ -1,5 +1,6 @@
 package com.software.rateit.DTO.CD;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.User.UserDTO;
@@ -18,8 +19,10 @@ public class CdDTO {
     @JsonView(View.Summary.class)
     private float rating;
     private String comment;
+    @JsonIgnore
     private int ratingCount;
-    private int sumOfRating;
+    @JsonIgnore
+    private float sumOfRating;
     @JsonView(View.Summary.class)
     private String photoURL;
     private String artist;
@@ -75,11 +78,11 @@ public class CdDTO {
         this.ratingCount = ratingCount;
     }
 
-    public int getSumOfRating() {
+    public float getSumOfRating() {
         return sumOfRating;
     }
 
-    public void setSumOfRating(int sumOfRating) {
+    public void setSumOfRating(float sumOfRating) {
         this.sumOfRating = sumOfRating;
     }
 

@@ -20,34 +20,40 @@ public class CDController {
     private CdService cdService;
 
     @GetMapping("/cds")
-    ResponseEntity<CDWrapper> getAllCDs(@PageableDefault(value = 10, page = 0) Pageable pageable,
+    public ResponseEntity<CDWrapper> getAllCDs(@PageableDefault(value = 10, page = 0) Pageable pageable,
                                         @QuerydslPredicate(root = CD.class) Predicate predicate){
         return cdService.findAllAlbums(pageable, predicate);
     }
 
     @GetMapping("/cds/ranking")
-    ResponseEntity<Iterable<CdDTO>> getRanking(){
+    public ResponseEntity<Iterable<CdDTO>> getRanking(){
         return cdService.getRatingList();
     }
 
     @GetMapping("/cds/{id}")
-    ResponseEntity<CdDTO> getCdById(@PathVariable long id){
+    public ResponseEntity<CdDTO> getCdById(@PathVariable long id){
         return cdService.findOneAlbum(id);
     }
 
     @PostMapping("/cds")
-    ResponseEntity<CdDTO> addNewCD(@RequestBody CdDTO cdDTO){
+    public ResponseEntity<CdDTO> addNewCD(@RequestBody CdDTO cdDTO){
         return cdService.addNewAlbum(cdDTO);
     }
 
+    @PostMapping("/cds/{id}/rate")
+    public ResponseEntity<CdDTO> rateCD(@PathVariable long id,
+                                        @RequestParam float note){
+        return cdService.rateCD(id, note);
+    }
+
     @PutMapping("/cds/{id}")
-    ResponseEntity<CdDTO> updateCD(@PathVariable long id,
+    public ResponseEntity<CdDTO> updateCD(@PathVariable long id,
                                    @RequestBody CdDTO cdDTO){
         return cdService.updateAlbum(id, cdDTO);
     }
 
     @DeleteMapping("/cds/{id}")
-    ResponseEntity<Void> deleteCD(@PathVariable long id){
+    public ResponseEntity<Void> deleteCD(@PathVariable long id){
         return cdService.deleteAlbum(id);
     }
 }

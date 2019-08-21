@@ -106,19 +106,33 @@ public class CdServiceImpl implements CdService {
         return new ResponseEntity<>(mapper.mapToCdDTOIterable(cdRepository.findTop25ByRatingLessThanOrderByRatingDesc(6)), HttpStatus.OK);
     }
 
-        private String query(Predicate predicate) {
-            StringBuilder builder = new StringBuilder();
-            Pattern p = Pattern.compile("[a-zA-Z]+,[a-zA-Z]+");
-            try{
-                Matcher m = p.matcher(predicate.toString());
-                while (m.find()) {
-                    String[] parts = m.group().split(",");
-                    builder.append(parts[0]).append("=").append(parts[1]).append("&");
-                }
-            } catch (Exception e) {
-                LOG.info("No query");
-            }
-
-            return builder.toString();
+    @Override
+    public ResponseEntity<CdDTO> rateCD(long id, float note) {
+        CD cd = cdRepository.findOneById(id);
+        if(cd == null) {
+            throw new NotFoundException("CD not found");
         }
+        cd.setRatingCount(cd.getRatingCount() + 1);
+        cd.setSumOfRating(cd.getSumOfRating() + note);
+        cd.setRating(cd.getSumOfRating()/cd.getRatingCount());
+
+        CD response = cdRepository.save(cd);
+        return new ResponseEntity<>(mapper.mapToCdDTO(response), HttpStatus.OK);
+    }
+
+    private String query(Predicate predicate) {
+        StringBuilder builder = new StringBuilder();
+        Pattern p = Pattern.compile("[a-zA-Z]+,[a-zA-Z]+");
+        try{
+            Matcher m = p.matcher(predicate.toString());
+            while (m.find()) {
+                String[] parts = m.group().split(",");
+                builder.append(parts[0]).append("=").append(parts[1]).append("&");
+            }
+        } catch (Exception e) {
+            LOG.info("No query");
+        }
+
+        return builder.toString();
+    }
 }

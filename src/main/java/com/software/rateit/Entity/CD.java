@@ -13,10 +13,10 @@ public class CD {
     private Long id;
     private String name;
     private int released;
-    private float rating;
+    private float rating = 0;
     private String comment;
-    private int ratingCount;
-    private int sumOfRating;
+    private int ratingCount = 0;
+    private float sumOfRating = 0;
     private String photoURL;
     private String artist;
     @JsonManagedReference
@@ -120,11 +120,11 @@ public class CD {
         this.ratingCount = ratingCount;
     }
 
-    public int getSumOfRating() {
+    public float getSumOfRating() {
         return sumOfRating;
     }
 
-    public void setSumOfRating(int sumOfRating) {
+    public void setSumOfRating(float sumOfRating) {
         this.sumOfRating = sumOfRating;
     }
 

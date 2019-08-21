@@ -6,6 +6,8 @@ import com.software.rateit.DTO.CD.CdDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import javax.xml.ws.Response;
+
 
 public interface CdService {
     ResponseEntity<CDWrapper> findAllAlbums(Pageable pageable, Predicate predicate);
@@ -14,4 +16,5 @@ public interface CdService {
     ResponseEntity<CdDTO> updateAlbum(long id, CdDTO cdDTO);
     ResponseEntity<Void> deleteAlbum(long id);
     ResponseEntity<CdDTO> addNewAlbum(CdDTO cd);
+    ResponseEntity<CdDTO> rateCD(long id, float note);
 }
