@@ -1,34 +1,27 @@
 package com.software.rateit.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "Artist")
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Artist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "stageName")
     private String stageName;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<CD> cd = new HashSet<>();
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Track> tracks = new HashSet<>();
+
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<CD> cd;
+
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Track> tracks;
 
     public Artist(){}
-    public Artist(Long id, String stageName, Set<CD> cd, Set<Track> track){
-        this.id = id;
-        this.stageName = stageName;
-        this.tracks = track;
-        this.cd = cd;
-    }
 
     public Long getId() {
         return id;
@@ -46,19 +39,19 @@ public class Artist {
         this.stageName = stageName;
     }
 
-    public Set<CD> getCd() {
+    public List<CD> getCd() {
         return cd;
     }
 
-    public void setCd(Set<CD> cd) {
+    public void setCd(List<CD> cd) {
         this.cd = cd;
     }
 
-    public Set<Track> getTrack() {
+    public List<Track> getTrack() {
         return tracks;
     }
 
-    public void setTrack(Set<Track> track) {
+    public void setTrack(List<Track> track) {
         this.tracks = track;
     }
 }

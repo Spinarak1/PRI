@@ -1,39 +1,29 @@
 package com.software.rateit.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "Track")
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Track {
+
     @Id
-   /* @SequenceGenerator(name = "mySeqGen", sequenceName = "myDbSeq",
-            initialValue = 131000, allocationSize = 1)
-    @GeneratedValue(generator = "mySeqGen")*/
-   @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "title")
     private String title;
-    @Column(name = "releaseDate")
-    private int releaseDate;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "tracks")
-    private Set<Artist> artist = new HashSet<>();
-    @JsonIgnore
-    @ManyToMany(mappedBy = "cdtracks")
-    private Set<CD> cd = new HashSet<>();
+    private Integer releaseDate;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "tracks",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Artist> artist;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "cdtracks",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CD> cd;
     private String genre;
 
     public Track() {}
-    public Track(String title, int releaseDate, Set<Artist> artist, Set<CD> cd, String genre) {
+    public Track(String title, int releaseDate, List<Artist> artist, List<CD> cd, String genre) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.artist = artist;
@@ -57,27 +47,27 @@ public class Track {
         this.title = title;
     }
 
-    public int getReleaseDate() {
+    public Integer getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(int releaseDate) {
+    public void setReleaseDate(Integer releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public Set<Artist> getArtist() {
+    public List<Artist> getArtist() {
         return artist;
     }
 
-    public void setArtist(Set<Artist> artist) {
+    public void setArtist(List<Artist> artist) {
         this.artist = artist;
     }
 
-    public Set<CD> getCd() {
+    public List<CD> getCd() {
         return cd;
     }
 
-    public void setCd(Set<CD> cd) {
+    public void setCd(List<CD> cd) {
         this.cd = cd;
     }
 

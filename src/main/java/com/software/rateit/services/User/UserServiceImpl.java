@@ -1,0 +1,204 @@
+package com.software.rateit.services.User;
+
+import com.software.rateit.DTO.CD.CDMapper;
+import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.PaginationContext;
+import com.software.rateit.DTO.User.*;
+import com.software.rateit.Entity.CD;
+import com.software.rateit.Entity.User;
+import com.software.rateit.exceptions.AuthenticationException;
+import com.software.rateit.exceptions.NotFoundException;
+import com.software.rateit.repositories.CDRepository;
+import com.software.rateit.repositories.UserRepository;
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Value("${server-address}")
+    private String serverAddress;
+
+    @Autowired
+    private CDRepository cdRepository;
+
+    @Autowired
+    private UserRepository repository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private UserMapper mapper = Mappers.getMapper(UserMapper.class);
+
+    private CDMapper cdMapper = Mappers.getMapper(CDMapper.class);
+
+    @Override
+    public ResponseEntity<UserResponseWrapper> listOfUsers(Pageable pageable) {
+
+        Page<User> userEntities = repository.findAll(pageable);
+        Iterable<UserDTO> users = mapper.mapToUserDTOIterable(userEntities);
+
+        PaginationContext info;
+
+        if(userEntities.getTotalPages() <= pageable.getPageNumber()+1) {
+            info = new PaginationContext(pageable.getPageNumber(), userEntities.getTotalPages(), pageable.getPageSize(),
+                    userEntities.getTotalElements(), null);
+        } else {
+            info = new PaginationContext(pageable.getPageNumber(), userEntities.getTotalPages(), pageable.getPageSize(),
+                    userEntities.getTotalElements(), serverAddress + "/users?" + "page="
+                    + (pageable.getPageNumber()+1) + "&size=" + pageable.getPageSize());
+        }
+
+        return new ResponseEntity<>(new UserResponseWrapper(users, info), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> getOneById(long id) {
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(user), HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> registerNewUser(RegistrationDTO registration) {
+
+        if(registration.getPassword() == null || registration.getConfirmPassword() == null ||
+                registration.getEmail() == null || registration.getUsername() == null) {
+            throw new AuthenticationException("Can not be empty");
+        }
+        if(!registration.getPassword().equals(registration.getConfirmPassword())){
+            throw new AuthenticationException("Password doesn't match");
+        }
+        if(!validateEmail(registration.getEmail())){
+            throw new AuthenticationException("Email not correct");
+        }
+        if(repository.findOneByNick(registration.getUsername()) != null) {
+            throw new AuthenticationException("Username already taken");
+        }
+        if(repository.findOneByEmail(registration.getEmail()) != null) {
+            throw new AuthenticationException("Email already taken");
+        }
+
+        User newUser = new User();
+        newUser.setPassword(bCryptPasswordEncoder.encode(registration.getPassword()));
+        newUser.setNick(registration.getUsername());
+        newUser.setEmail(registration.getEmail());
+        newUser.setRole("USER");
+        User response = repository.save(newUser);
+
+        return new ResponseEntity<>(mapper.mapToUserDTO(response), HttpStatus.CREATED);
+
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> changePassword(long id, PasswordChangeDTO password) {
+
+        if(!password.getNewPassword().equals(password.getConfirmPassword()) && password.getNewPassword() != null) {
+            throw new AuthenticationException("Password does not match");
+        }
+
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        if(!bCryptPasswordEncoder.matches(password.getOldPassword(), user.getPassword())) {
+            throw new AuthenticationException("Old password incorrect");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(password.getNewPassword()));
+        User response = repository.save(user);
+        return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(response), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> addCdToUser(long userId, long cdId) {
+        User user = repository.findOneById(userId);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        CD cd = cdRepository.findOneById(cdId);
+        if(cd == null) {
+            throw new NotFoundException("Album not found");
+        }
+        user.addCd(cd);
+        User response = repository.save(user);
+        return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(response), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Iterable<CdDTO>> getUsersCds(long id) {
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        return new ResponseEntity<>(cdMapper.mapToCdDTOIterable(user.getUserscd()), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> login(LoginDTO loginDTO) {
+        User user = repository.findOneByNick(loginDTO.getUsername());
+        if(user == null){
+            throw new AuthenticationException("Username not correct");
+        }
+        if(!bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new AuthenticationException("Invalid password");
+        }
+        return new ResponseEntity<>(mapper.mapToUserDTO(user), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> findByEmail(String email) {
+
+        User user =  repository.findOneByEmail(email);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        return new ResponseEntity<>(mapper.mapToUserDTO(user), HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> findByNick(String nick) {
+
+        User user =  repository.findOneByNick(nick);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        return new ResponseEntity<>(mapper.mapToUserDTO(user), HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteUser(long id) {
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("user not found");
+        }
+        repository.delete(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private Boolean validateEmail(String email) {
+        Pattern pattern;
+        Matcher matcher;
+        String emailPattern = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(emailPattern);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
+}

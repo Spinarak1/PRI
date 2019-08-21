@@ -1,76 +1,53 @@
 package com.software.rateit.controllers;
 
+import com.querydsl.core.types.Predicate;
+import com.software.rateit.DTO.CD.CDWrapper;
+import com.software.rateit.DTO.CD.CdDTO;
 import com.software.rateit.Entity.CD;
-import com.software.rateit.repositories.CDRepository;
+import com.software.rateit.services.CD.CdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
 public class CDController {
 
     @Autowired
-    private CDRepository repository;
-
-    @GetMapping("/cd/ratingList")
-    Iterable<CD> getRating(){return  repository.findTop25ByRatingLessThanOrderByRatingDesc(6);}
+    private CdService cdService;
 
     @GetMapping("/cds")
-    Iterable<CD> getAllCDs() {
-        return repository.findAll();
+    ResponseEntity<CDWrapper> getAllCDs(@PageableDefault(value = 10, page = 0) Pageable pageable,
+                                        @QuerydslPredicate(root = CD.class) Predicate predicate){
+        return cdService.findAllAlbums(pageable, predicate);
+    }
+
+    @GetMapping("/cds/ranking")
+    ResponseEntity<Iterable<CdDTO>> getRanking(){
+        return cdService.getRatingList();
     }
 
     @GetMapping("/cds/{id}")
-    CD getCDById(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new CouldNotFindException(id));
-    }
-
-    @GetMapping("/cds/byName")
-    public CD findCdByName(
-            @RequestParam( value = "name") String name) {
-        if(name != null)
-            return repository.findByName(name);
-        else
-            throw new CouldNotFindException(name);
-    }
-
-    @GetMapping("/CDByReleased")
-    public CD findCdByReleased(
-            @RequestParam("released")
-            int released) {
-            return repository.findByReleased(released);
+    ResponseEntity<CdDTO> getCdById(@PathVariable long id){
+        return cdService.findOneAlbum(id);
     }
 
     @PostMapping("/cds")
-    CD newCD(@RequestBody CD newCD) {
-        return repository.save(newCD);
+    ResponseEntity<CdDTO> addNewCD(@RequestBody CdDTO cdDTO){
+        return cdService.addNewAlbum(cdDTO);
     }
 
     @PutMapping("/cds/{id}")
-    CD replaceCD(@RequestBody CD newCD, @PathVariable Long id) {
-        return repository.findById(id)
-                .map(cd -> {
-                    cd.setArtist(newCD.getArtist());
-                    cd.setGenre(newCD.getGenre());
-                    cd.setName(newCD.getName());
-                    cd.setReleased(newCD.getReleased());
-                    cd.setRating(newCD.getRating());
-                    cd.setCdtracks(newCD.getCdtracks());
-                    cd.setPhotoURL(newCD.getPhotoURL());
-                    cd.setRatingCount(newCD.getRatingCount());
-                    cd.setSumOfRating(newCD.getSumOfRating());
-                    return repository.save(cd);
-                })
-                .orElseGet(() -> {
-                    newCD.setId(id);
-                    return repository.save(newCD);
-                });
+    ResponseEntity<CdDTO> updateCD(@PathVariable long id,
+                                   @RequestBody CdDTO cdDTO){
+        return cdService.updateAlbum(id, cdDTO);
     }
 
     @DeleteMapping("/cds/{id}")
-    void deleteCD(@PathVariable Long id) {
-        repository.deleteById(id);
+    ResponseEntity<Void> deleteCD(@PathVariable long id){
+        return cdService.deleteAlbum(id);
     }
 }

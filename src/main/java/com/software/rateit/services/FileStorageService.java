@@ -1,7 +1,7 @@
 package com.software.rateit.services;
 
 import com.software.rateit.Entity.File;
-import com.software.rateit.FileStorageException;
+import com.software.rateit.exceptions.FileStorageException;
 import com.software.rateit.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

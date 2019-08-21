@@ -1,68 +1,54 @@
 package com.software.rateit.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.querydsl.core.types.Predicate;
+import com.software.rateit.DTO.Artist.ArtistDTO;
+import com.software.rateit.DTO.Artist.ArtistWrapper;
+import com.software.rateit.DTO.View;
 import com.software.rateit.Entity.Artist;
-import com.software.rateit.repositories.ArtistRepository;
+import com.software.rateit.services.Artist.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
 public class ArtistController {
 
     @Autowired
-    private ArtistRepository repository;
+    private ArtistService artistService;
 
+    @JsonView(View.Summary.class)
     @GetMapping("/artists")
-    Iterable<Artist> getArtists() {
-        return repository.findAll();
+    public ResponseEntity<ArtistWrapper> getAllArtist(@PageableDefault(value = 10, page = 0) Pageable pageable,
+                                                      @QuerydslPredicate(root = Artist.class) Predicate predicate
+    ) {
+        return artistService.getAllArtists(predicate, pageable);
+
     }
 
     @GetMapping("/artists/{id}")
-    Artist getOneArtistById(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new CouldNotFindException(id));
+    public ResponseEntity<ArtistDTO> getOneArtist(@PathVariable long id){
+        return artistService.getOneArtist(id);
     }
-    @GetMapping("/artistsByName")
-    public Artist findArtistByName(
-            @RequestParam("stageName") String stageName) {
-        if(stageName != null)
-            return repository.findByStageName(stageName);
-        else
-            throw new CouldNotFindException(stageName);
-    }
-    /*@GetMapping("/artistsByCdName")
-    public Artist findArtistByCdName(
-            @RequestParam("cdName") String name) {
-        if(name != null)
-            return repository.findByCdName(name);
-        else
-            throw new CouldNotFindException(stageName);
-    }*/
 
     @PostMapping("/artists")
-    Artist newArtist(@RequestBody Artist newArtist){
-        return repository.save(newArtist);
+    ResponseEntity<ArtistDTO> addArtist(@RequestBody ArtistDTO artistDTO) {
+        return artistService.addNewArtist(artistDTO);
     }
 
     @PutMapping("/artists/{id}")
-    Artist replaceArtist(@RequestBody Artist newArtist, @PathVariable Long id){
-        return repository.findById(id)
-                .map(artist -> {
-                    artist.setStageName(newArtist.getStageName());
-                    artist.setCd(newArtist.getCd());
-                    artist.setTrack(newArtist.getTrack());
-                    return repository.save(artist);
-                })
-                .orElseGet(() ->{
-                    newArtist.setId(id);
-                    return repository.save(newArtist);
-                });
+    ResponseEntity<ArtistDTO> updateArtist(@PathVariable long id,
+                                           @RequestBody ArtistDTO artistDTO) {
+        return artistService.updateArtist(artistDTO, id);
     }
 
     @DeleteMapping("/artists/{id}")
-    void deleteArtist(@PathVariable Long id){
-        repository.deleteById(id);
+    ResponseEntity<Void> removeArtist(@PathVariable long id) {
+        return artistService.deleteArtist(id);
     }
 
 }

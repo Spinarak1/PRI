@@ -1,4 +1,4 @@
-package com.software.rateit;
+package com.software.rateit.exceptions;
 
 public class FileStorageException extends RuntimeException {
     public FileStorageException(String message) {

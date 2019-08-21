@@ -1,70 +1,51 @@
 package com.software.rateit.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.querydsl.core.types.Predicate;
+import com.software.rateit.DTO.Track.TrackDTO;
+import com.software.rateit.DTO.Track.TrackWrapper;
+import com.software.rateit.DTO.View;
 import com.software.rateit.Entity.Track;
-import com.software.rateit.repositories.TrackRepository;
+import com.software.rateit.services.Track.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
 public class TrackController {
 
     @Autowired
-    private TrackRepository repository;
+    private TrackService trackService;
 
+    @JsonView(View.Summary.class)
     @GetMapping("/tracks")
-    Iterable<Track> getAllTracks() {
-        return repository.findAll();
+    ResponseEntity<TrackWrapper> getAllTracks(@PageableDefault(value = 10, page = 0) Pageable pageable,
+                                              @QuerydslPredicate(root = Track.class) Predicate predicate){
+        return trackService.getAllTracks(predicate, pageable);
     }
+
     @GetMapping("/tracks/{id}")
-    Track getTrackById(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new CouldNotFindException(id));
-    }
-    @GetMapping("/TrackByTitle")
-    public Track findByTitle(
-            @RequestParam("title") String title) {
-        if(title != null)
-            return repository.findByTitle(title);
-        else
-            throw new CouldNotFindException(title);
-    }
-    @GetMapping("/TrackByReleaseDate")
-    public Track findTrackByReleaseDate(
-            @RequestParam("releaseDate") Date releaseDate) {
-        if(releaseDate != null)
-            return repository.findByReleaseDate(releaseDate);
-        else
-            throw new CouldNotFindException(releaseDate);
+    ResponseEntity<TrackDTO> getOneTrack(@PathVariable long id){
+        return trackService.getOneTrack(id);
     }
 
     @PostMapping("/tracks")
-    Track newTrack(@RequestBody Track newTrack){
-        return repository.save(newTrack);
+    ResponseEntity<TrackDTO> addNewTrack(@RequestBody TrackDTO trackDTO) {
+        return trackService.addTrack(trackDTO);
     }
 
     @PutMapping("/tracks/{id}")
-    Track replaceTrack(@RequestBody Track newTrack, @PathVariable Long id){
-        return repository.findById(id)
-                .map(track -> {
-                    track.setArtist(newTrack.getArtist());
-                    track.setCd(newTrack.getCd());
-                    track.setReleaseDate(newTrack.getReleaseDate());
-                    track.setTitle(newTrack.getTitle());
-                    track.setGenre(newTrack.getGenre());
-                    return repository.save(track);
-                })
-                .orElseGet(() ->{
-                    newTrack.setId(id);
-                    return repository.save(newTrack);
-                });
+    ResponseEntity<TrackDTO> editTrack(@PathVariable long id,
+                                       @RequestBody TrackDTO trackDTO) {
+        return trackService.editTrack(id, trackDTO);
     }
 
     @DeleteMapping("/tracks/{id}")
-    void deleteTrack(@PathVariable Long id){
-        repository.deleteById(id);
+    ResponseEntity<Void> deleteTrack(@PathVariable long id) {
+        return trackService.deleteTrack(id);
     }
 }
