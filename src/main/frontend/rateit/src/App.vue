@@ -1,27 +1,33 @@
 <template>
-    <div class="container">
-        <app-header></app-header>
-        <div class="row">
-            <div class="col-sm-12">
-                <router-view></router-view>
-            </div>
-        </div>
-    </div>
+  <div class="grey darken-2">
+    <v-app dark>
+      <v-content fluid>
+
+        <router-view>
+
+        </router-view>
+
+      </v-content>
+    </v-app>
+  </div>
 </template>
 
 <script>
-
-import Header from './components/header/Header.vue'
-    export default {
-        components: {
-            appHeader: Header
-        }
-    }
+  import Navbar from "./components/shared/Navbar";
+  import Footer from "./components/shared/Footer";
+export default {
+  name: 'App',
+  components: {
+    Navbar,
+    Footer
+  },
+  data: () => ({
+    //
+  }),
+};
 </script>
 
-<style>
-  body, html {
-    margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
+<style >
+
+
 </style>
