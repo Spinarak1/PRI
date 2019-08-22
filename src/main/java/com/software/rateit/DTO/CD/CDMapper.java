@@ -12,12 +12,16 @@ public interface CDMapper {
     @Named("WithoutCollections")
     @Mapping(ignore = true, target = "cdtracks")
     @Mapping(ignore = true, target = "user")
+    @Mapping(ignore = true, target = "comments")
     CdDTO mapToCdDTO(CD cd);
 
     @IterableMapping(qualifiedByName = "WithoutCollections")
     Iterable<CdDTO> mapToCdDTOIterable(Iterable<CD> cds);
 
+    @Named("pls")
+    @Mapping(ignore = true, target = "comments")
     CdDTO mapToCdDTOWithCollections(CD cd);
 
+    @IterableMapping(qualifiedByName = "pls")
     CD mapToCd(CdDTO cdDTO);
 }

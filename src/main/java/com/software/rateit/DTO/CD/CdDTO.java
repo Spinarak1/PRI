@@ -1,18 +1,21 @@
 package com.software.rateit.DTO.CD;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.User.UserDTO;
 import com.software.rateit.DTO.View;
 
 import java.util.List;
 
+@JsonView(View.Comment.class)
 public class CdDTO {
 
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private long id;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private String name;
     @JsonView(View.Summary.class)
     private int released;
@@ -29,6 +32,8 @@ public class CdDTO {
     private List<TrackDTO> cdtracks;
     private String genre;
     private List<UserDTO> user;
+    @JsonBackReference
+    private List<CommentsDTO> comments;
 
     public long getId() {
         return id;
@@ -124,5 +129,13 @@ public class CdDTO {
 
     public void setUser(List<UserDTO> user) {
         this.user = user;
+    }
+
+    public List<CommentsDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsDTO> comments) {
+        this.comments = comments;
     }
 }

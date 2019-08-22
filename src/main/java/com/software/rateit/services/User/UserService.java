@@ -1,6 +1,8 @@
 package com.software.rateit.services.User;
 
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Comments.CommentAlbumDTO;
+import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.User.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +20,6 @@ public interface UserService {
     ResponseEntity<Iterable<CdDTO>> getUsersCds(long id);
     ResponseEntity<UserDTO> login(LoginDTO loginDTO);
     ResponseEntity<Void> deleteUser(long id);
+    ResponseEntity<CommentsDTO> commentAlbum(CommentAlbumDTO comment, long id);
+    ResponseEntity<UserDTO> setAsAdmin(long id);
 }

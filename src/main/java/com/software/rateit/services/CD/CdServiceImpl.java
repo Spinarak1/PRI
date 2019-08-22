@@ -2,12 +2,20 @@ package com.software.rateit.services.CD;
 
 import com.querydsl.core.types.Predicate;
 import com.software.rateit.DTO.CD.CDMapper;
+import com.software.rateit.DTO.CD.CDWithCommentsDTO;
 import com.software.rateit.DTO.CD.CDWrapper;
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Comments.CommentsDTO;
+import com.software.rateit.DTO.Comments.CommentsMapper;
 import com.software.rateit.DTO.PaginationContext;
+import com.software.rateit.DTO.Track.TrackDTO;
+import com.software.rateit.DTO.Track.TrackMapper;
+import com.software.rateit.DTO.User.UserMapper;
 import com.software.rateit.Entity.CD;
+import com.software.rateit.Entity.Track;
 import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
+import com.software.rateit.repositories.TrackRepository;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +27,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +40,15 @@ public class CdServiceImpl implements CdService {
     private String serverAddress;
 
     private CDMapper mapper = Mappers.getMapper(CDMapper.class);
+    private TrackMapper trackMapper = Mappers.getMapper(TrackMapper.class);
+    private CommentsMapper commentsMapper = Mappers.getMapper(CommentsMapper.class);
+    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @Autowired
     private CDRepository cdRepository;
+
+    @Autowired
+    private TrackRepository trackRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(CdServiceImpl.class);
 
@@ -56,9 +72,21 @@ public class CdServiceImpl implements CdService {
     }
 
     @Override
-    public ResponseEntity<CdDTO> findOneAlbum(long id) {
-        CdDTO cd = mapper.mapToCdDTO(cdRepository.findOneById(id));
-        return new ResponseEntity<>(cd, HttpStatus.OK);
+    public ResponseEntity<CDWithCommentsDTO> findOneAlbum(long id) {
+        CD cd = cdRepository.findOneById(id);
+        List<CommentsDTO> list = new ArrayList<>();
+        cd.getComments().forEach(comments -> {
+            CommentsDTO comment = new CommentsDTO();
+            comment.setUser(userMapper.mapToUserDTO(comments.getUser()));
+            comment.setContent(comments.getContent());
+            comment.setId(comments.getId());
+            list.add(comment);
+        });
+
+        CDWithCommentsDTO response = new CDWithCommentsDTO();
+        response.setCd(mapper.mapToCdDTO(cd));
+        response.setComments(list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
@@ -118,6 +146,30 @@ public class CdServiceImpl implements CdService {
 
         CD response = cdRepository.save(cd);
         return new ResponseEntity<>(mapper.mapToCdDTO(response), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CdDTO> addTrackToAlbum(long cdId, long trackId) {
+        CD cd = cdRepository.findOneById(cdId);
+        Track track = trackRepository.findOneById(trackId);
+        if(cd == null) {
+            throw new NotFoundException("Album not found");
+        }
+        if(track == null) {
+            throw new NotFoundException("Track not found");
+        }
+        cd.addTrack(track);
+        CD response = cdRepository.save(cd);
+        return new ResponseEntity<>(mapper.mapToCdDTO(response), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Iterable<TrackDTO>> getCdTracks(long id) {
+        CD cd = cdRepository.findOneById(id);
+        if(cd == null) {
+            throw new NotFoundException("Album not found");
+        }
+        return new ResponseEntity<>(trackMapper.mapToTrackDTOIterable(cd.getCdtracks()), HttpStatus.OK);
     }
 
     private String query(Predicate predicate) {

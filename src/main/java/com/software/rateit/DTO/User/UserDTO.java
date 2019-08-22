@@ -1,23 +1,34 @@
 package com.software.rateit.DTO.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Comments.CommentsDTO;
+import com.software.rateit.DTO.View;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class UserDTO {
+    @JsonView({View.Summary.class, View.Comment.class})
     private Long id;
+    @JsonView({View.Summary.class, View.Comment.class})
     private String nick;
+    @JsonView(View.Summary.class)
     private String email;
+    @JsonIgnore
     private String password;
     private int score;
     private String badges;
     private Date registrationDate;
-    private String passwordConfirm;
     private boolean isActive;
+    @JsonView(View.Summary.class)
     private String photoURL;
     private Set<CdDTO> userscd;
     private String role;
+    @JsonIgnore
+    private List<CommentsDTO> comments;
 
 
     public Long getId() {
@@ -76,14 +87,6 @@ public class UserDTO {
         this.registrationDate = registrationDate;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -114,5 +117,13 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<CommentsDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsDTO> comments) {
+        this.comments = comments;
     }
 }

@@ -1,10 +1,17 @@
 package com.software.rateit.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.querydsl.core.types.Predicate;
+import com.software.rateit.DTO.CD.CDWithCommentsDTO;
 import com.software.rateit.DTO.CD.CDWrapper;
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Comments.CommentAlbumDTO;
+import com.software.rateit.DTO.Comments.CommentsDTO;
+import com.software.rateit.DTO.Track.TrackDTO;
+import com.software.rateit.DTO.View;
 import com.software.rateit.Entity.CD;
 import com.software.rateit.services.CD.CdService;
+import com.software.rateit.services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -19,6 +26,10 @@ public class CDController {
     @Autowired
     private CdService cdService;
 
+    @Autowired
+    private UserService userService;
+
+    @JsonView(View.Summary.class)
     @GetMapping("/cds")
     public ResponseEntity<CDWrapper> getAllCDs(@PageableDefault(value = 10, page = 0) Pageable pageable,
                                         @QuerydslPredicate(root = CD.class) Predicate predicate){
@@ -30,9 +41,15 @@ public class CDController {
         return cdService.getRatingList();
     }
 
+    @JsonView(View.Comment.class)
     @GetMapping("/cds/{id}")
-    public ResponseEntity<CdDTO> getCdById(@PathVariable long id){
+    public ResponseEntity<CDWithCommentsDTO> getCdById(@PathVariable long id){
         return cdService.findOneAlbum(id);
+    }
+
+    @GetMapping("/cds/{id}/tracks")
+    public ResponseEntity<Iterable<TrackDTO>> getCDTracks(@PathVariable long id){
+        return cdService.getCdTracks(id);
     }
 
     @PostMapping("/cds")
@@ -44,6 +61,19 @@ public class CDController {
     public ResponseEntity<CdDTO> rateCD(@PathVariable long id,
                                         @RequestParam float note){
         return cdService.rateCD(id, note);
+    }
+
+    @JsonView(View.Comment.class)
+    @PostMapping("/cds/{id}/add-comment")
+    public ResponseEntity<CommentsDTO> addCommentToAlbum(@PathVariable long id,
+                                                         @RequestBody CommentAlbumDTO commentAlbumDTO){
+        return userService.commentAlbum(commentAlbumDTO, id);
+    }
+
+    @PostMapping("/cds/{id}/add-track")
+    public ResponseEntity<CdDTO> addTrackToAlbum(@PathVariable long id,
+                                                    @RequestParam long track){
+        return cdService.addTrackToAlbum(id, track);
     }
 
     @PutMapping("/cds/{id}")

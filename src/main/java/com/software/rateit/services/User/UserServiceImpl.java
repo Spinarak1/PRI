@@ -2,13 +2,18 @@ package com.software.rateit.services.User;
 
 import com.software.rateit.DTO.CD.CDMapper;
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Comments.CommentAlbumDTO;
+import com.software.rateit.DTO.Comments.CommentsDTO;
+import com.software.rateit.DTO.Comments.CommentsMapper;
 import com.software.rateit.DTO.PaginationContext;
 import com.software.rateit.DTO.User.*;
 import com.software.rateit.Entity.CD;
+import com.software.rateit.Entity.Comments;
 import com.software.rateit.Entity.User;
 import com.software.rateit.exceptions.AuthenticationException;
 import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
+import com.software.rateit.repositories.CommentsRepository;
 import com.software.rateit.repositories.UserRepository;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +41,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Autowired
+    private CommentsRepository commentsRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private UserMapper mapper = Mappers.getMapper(UserMapper.class);
 
     private CDMapper cdMapper = Mappers.getMapper(CDMapper.class);
+
+    private CommentsMapper commentsMapper = Mappers.getMapper(CommentsMapper.class);
 
     @Override
     public ResponseEntity<UserResponseWrapper> listOfUsers(Pageable pageable) {
@@ -190,6 +200,47 @@ public class UserServiceImpl implements UserService {
         repository.delete(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Override
+    public ResponseEntity<CommentsDTO> commentAlbum(CommentAlbumDTO comment, long id) {
+        User user = repository.findOneById(comment.getUserId());
+        CD cd = cdRepository.findOneById(id);
+        if(user == null){
+            throw new NotFoundException("User not found");
+        }
+        if(cd == null) {
+            throw new NotFoundException("Album not found");
+        }
+        if(comment.getContent() == null){
+            throw new NotFoundException("Content cannot be null");
+        }
+        Comments comments = new Comments();
+        comments.setCd(cd);
+        comments.setUser(user);
+        comments.setContent(comment.getContent());
+        Comments response = commentsRepository.save(comments);
+
+        CommentsDTO commentsDTO= new CommentsDTO();
+        commentsDTO.setContent(response.getContent());
+        commentsDTO.setUser(mapper.mapToUserDTO(response.getUser()));
+        commentsDTO.setCd(cdMapper.mapToCdDTO(response.getCd()));
+
+        return new ResponseEntity<>(commentsDTO, HttpStatus.CREATED);
+
+    }
+
+    @Override
+    public ResponseEntity<UserDTO> setAsAdmin(long id) {
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+        user.setRole("ADMIN");
+        User response = repository.save(user);
+        return new ResponseEntity<>(mapper.mapToUserDTO(response), HttpStatus.OK);
+    }
+
+
 
     private Boolean validateEmail(String email) {
         Pattern pattern;

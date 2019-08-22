@@ -66,6 +66,11 @@ public class UserController {
         return service.addCdToUser(id, cd);
     }
 
+    @PostMapping("/users/{id}/set-as-admin")
+    public ResponseEntity<UserDTO> setAsAdmin(@PathVariable long id){
+        return service.setAsAdmin(id);
+    }
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         return service.deleteUser(id);

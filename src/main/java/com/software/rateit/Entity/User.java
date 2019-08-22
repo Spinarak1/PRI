@@ -1,10 +1,12 @@
 package com.software.rateit.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,14 +23,16 @@ public class User {
     private int score;
     private String badges;
     private Date registrationDate = new Date();
-    @JsonIgnore
-    private String passwordConfirm;
     private boolean isActive;
     private String photoURL;
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<CD> userscd;
-    private String role;
+    private String role = "USER";
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comments> comments;
 
 
     public User() {}
@@ -117,15 +121,6 @@ public class User {
     public void addCd(CD userscd){
         getUserscd().add(userscd);
     }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     public Date getRegistrationDate() {
         return registrationDate;
     }
@@ -156,6 +151,14 @@ public class User {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 
     @Override

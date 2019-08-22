@@ -27,6 +27,10 @@ public class CD {
     @ManyToMany(mappedBy = "userscd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> user;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comments> comments;
+
     public CD(){}
 
     public CD(String name, int released, String comment, int ratingCount, int sumOfRating, String photoURL, String artist, List<Track> track, String genre, List<User> user) {
@@ -132,4 +136,15 @@ public class CD {
 
     public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
 
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
+
+    public void addTrack(Track track) {
+        this.getCdtracks().add(track);
+    }
 }
