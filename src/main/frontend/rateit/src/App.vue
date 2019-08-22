@@ -15,19 +15,17 @@
 <script>
   import Navbar from "./components/shared/Navbar";
   import Footer from "./components/shared/Footer";
-export default {
-  name: 'App',
-  components: {
-    Navbar,
-    Footer
-  },
-  data: () => ({
-    //
-  }),
-};
+  export default {
+    name: 'App',
+    components: {
+      Navbar,
+      Footer
+    },
+    data: () => ({
+      //
+    }),
+  };
 </script>
 
 <style >
-
-
 </style>

@@ -17,10 +17,10 @@
                             <v-card-title>Login to RateIt</v-card-title>
                             <v-card-text>
                                 <v-form class="px-2">
-                                    <v-text-field class="pt-5" label="Username" prepend-icon="person"></v-text-field>
-                                    <v-text-field class="pt-5" label="Password" prepend-icon="https"></v-text-field>
+                                    <v-text-field v-model="username" class="pt-5" label="Username" prepend-icon="person"></v-text-field>
+                                    <v-text-field v-model="password" :type="'password'" class="pt-5" label="Password" prepend-icon="https"></v-text-field>
                                 </v-form>
-                                <v-btn class="px-4" text>Log in</v-btn>
+                                <v-btn @click="login" class="px-4" text>Log in</v-btn>
                                 <h4 class="subheading px-4 py-4">Don't have an account yet?</h4>
                                 <span class="subheading px-4">Create an account now!</span>
                             </v-card-text>
@@ -35,7 +35,36 @@
 
 <script>
     import Navbar from "../../components/shared/Navbar";
+    import axios from "axios"
+
     export default {
+
+        data() {
+            return {
+                show: false,
+                username: '',
+                password: ''
+            }
+        },
+
+        methods: {
+          login() {
+              const userObj = {
+                  username: this.username,
+                  password: this.password
+              };
+                console.log(userObj)
+              axios.post('/api/signin', userObj)
+                  .then(resp => {
+                      console.log(resp);
+                      alert('Logged successfully!')
+                      this.$router.push('dashboard')
+                  })
+                  .catch(e => console.log(e));
+
+          }
+        },
+
         components: {
             Navbar
         }

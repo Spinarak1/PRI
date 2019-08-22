@@ -1,4 +1,4 @@
-package com.software.rateit.configuration;
+package com.software.rateit.Configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
