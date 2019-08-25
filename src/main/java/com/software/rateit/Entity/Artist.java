@@ -54,4 +54,8 @@ public class Artist {
     public void setTrack(List<Track> track) {
         this.tracks = track;
     }
+
+    public void addCD(CD cd){
+        this.getCd().add(cd);
+    }
 }

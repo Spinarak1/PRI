@@ -61,6 +61,11 @@ public class UserController {
         return service.login(loginDTO);
     }
 
+    @PostMapping("/users/{is}/logout")
+    public ResponseEntity<Void> logout(@PathVariable long id){
+        return service.logout(id);
+    }
+
     @PostMapping("/users/{id}/add-cd/{cd-id}")
     public ResponseEntity<UserDTO> addCdToUser(@PathVariable long id, @PathVariable("cd-id") long cd){
         return service.addCdToUser(id, cd);

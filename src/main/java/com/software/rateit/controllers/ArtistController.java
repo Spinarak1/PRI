@@ -40,6 +40,12 @@ public class ArtistController {
         return artistService.addNewArtist(artistDTO);
     }
 
+    @PostMapping("/artists/{id}/add-cd/{cd-id}")
+    public ResponseEntity<ArtistDTO> addCDToArtist(@PathVariable long id,
+                                                   @PathVariable("cd-id") long cdId){
+        return artistService.addCDToArtist(id, cdId);
+    }
+
     @PutMapping("/artists/{id}")
     ResponseEntity<ArtistDTO> updateArtist(@PathVariable long id,
                                            @RequestBody ArtistDTO artistDTO) {

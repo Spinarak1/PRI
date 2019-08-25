@@ -22,4 +22,5 @@ public interface UserService {
     ResponseEntity<Void> deleteUser(long id);
     ResponseEntity<CommentsDTO> commentAlbum(CommentAlbumDTO comment, long id);
     ResponseEntity<UserDTO> setAsAdmin(long id);
+    ResponseEntity<Void> logout(long id);
 }

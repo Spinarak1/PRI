@@ -166,7 +166,9 @@ public class UserServiceImpl implements UserService {
         if(!bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Invalid password");
         }
-        return new ResponseEntity<>(mapper.mapToUserDTO(user), HttpStatus.OK);
+        user.setActive(true);
+        User response = repository.save(user);
+        return new ResponseEntity<>(mapper.mapToUserDTO(response), HttpStatus.OK);
     }
 
     @Override
@@ -240,7 +242,19 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(mapper.mapToUserDTO(response), HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<Void> logout(long id) {
+        User user = repository.findOneById(id);
+        if(user == null){
+            throw new NotFoundException("User not found0");
+        }
+        if(!user.isActive()){
+            throw new AuthenticationException("User already logged out");
+        }
+        user.setActive(false);
+        repository.save(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     private Boolean validateEmail(String email) {
         Pattern pattern;

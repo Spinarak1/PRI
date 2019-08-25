@@ -26,6 +26,7 @@ public class UserDTO {
     @JsonView(View.Summary.class)
     private String photoURL;
     private Set<CdDTO> userscd;
+    @JsonView(View.Summary.class)
     private String role;
     @JsonIgnore
     private List<CommentsDTO> comments;

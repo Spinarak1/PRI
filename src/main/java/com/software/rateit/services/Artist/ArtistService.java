@@ -13,5 +13,6 @@ public interface ArtistService {
     ResponseEntity<ArtistDTO> updateArtist(ArtistDTO artist, long id);
     ResponseEntity<ArtistDTO> getOneArtist(long id);
     ResponseEntity<Void> deleteArtist(long id);
+    ResponseEntity<ArtistDTO> addCDToArtist(long id, long cdId);
 
 }

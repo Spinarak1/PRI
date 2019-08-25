@@ -6,8 +6,11 @@ import com.software.rateit.DTO.Artist.ArtistMapper;
 import com.software.rateit.DTO.Artist.ArtistWrapper;
 import com.software.rateit.DTO.PaginationContext;
 import com.software.rateit.Entity.Artist;
+import com.software.rateit.Entity.CD;
 import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.ArtistRepository;
+import com.software.rateit.repositories.CDRepository;
+import org.aspectj.weaver.ast.Not;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,9 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     private ArtistRepository artistRepository;
+
+    @Autowired
+    private CDRepository cdRepository;
 
     @Override
     public ResponseEntity<ArtistWrapper> getAllArtists(Predicate predicate, Pageable pageable) {
@@ -94,6 +100,25 @@ public class ArtistServiceImpl implements ArtistService {
             throw new NotFoundException("Artist with id " + id + "doesn't exist");
         artistRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<ArtistDTO> addCDToArtist(long id, long cdId) {
+        Artist artist = artistRepository.findOneById(id);
+        CD cd = cdRepository.findOneById(cdId);
+        if(artist == null){
+            throw new NotFoundException("Artist not found");
+        }
+        if(cd == null){
+            throw new NotFoundException("CD not found");
+        }
+
+        artist.addCD(cd);
+
+        artistRepository.save(artist);
+
+        return new ResponseEntity<>(mapper.mapToArtistDTOWithCollections(artist), HttpStatus.OK);
+
     }
 
     private String query(Predicate predicate) {
