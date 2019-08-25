@@ -6,7 +6,7 @@
             </v-card-title>
             <v-data-table
                     :headers="headers"
-                    :items="dummy"
+                    :items="users"
                     :items-per-page="5"
                     class="elevation-1"
             ></v-data-table>
@@ -15,10 +15,11 @@
 </template>
 
 <script>
-
+import axios from 'axios'
     export default {
         data() {
             return {
+                users: [],
                 drawer: true,
                 items: [
                     { title: 'Dashboard', icon: 'dashboard' },
@@ -33,22 +34,26 @@
                         sortable: false,
                         value: 'id',
                     },
-                    { text: 'Username', value: 'username'},
+                    { text: 'Username', value: 'nick'},
                     { text: 'Email', value: 'email'},
                     { text: 'Role', value: 'role'},
-                    { text: 'Status', value: 'status'},
-                    { text: 'Registration date', value: 'registration_date'},
                 ],
-
-                dummy: [
-                    { id:1, username: 'Krzyś', email: 'duppa@gmail.com', role: 'admin', status: 'active', registration_date: '01-01-1970' },
-                    { id:2, username: 'Hubson', email: 'duppa@gmail.com', role: 'user', status: 'banned', registration_date: '01-01-1970' },
-                    { id:3, username: 'Tomek', email: 'duppa@gmail.com',role: 'user', status: 'active', registration_date: '01-01-1970' },
-                    { id:4, username: 'Maciek', email: 'duppa@gmail.com',role: 'user', status: 'active', registration_date: '01-01-1970' },
-                    { id:5, username: 'Kandul cwel', email: 'duppa@gmail.com',role: 'user', status: 'banned', registration_date: '01-01-1970' },
-                    { id:6, username: 'Łuki', email: 'duppa@gmail.com',role: 'admin', status: 'active', registration_date: '01-01-1970' },
-                ]
             }
+        },
+
+        created() {
+          axios.get('/api/users')
+              .then(resp => {
+                  console.log(resp.data.users);
+                  const user = resp.data.users;
+
+                  user.forEach(cur => {
+                      //console.log(`this is cur el ${cur}`)
+                      this.users.push(cur);
+                      //console.log(this.users)
+                  })
+              })
+              .catch(e => console.log(e));
         }
     }
 </script>

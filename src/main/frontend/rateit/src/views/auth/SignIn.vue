@@ -56,12 +56,15 @@
                 console.log(userObj)
               axios.post('/api/signin', userObj)
                   .then(resp => {
-                      console.log(resp);
+
+                      //console.log(resp);
                       alert('Logged successfully!')
                       this.$router.push('dashboard')
                   })
                   .catch(e => console.log(e));
-
+            axios.get('/api/users/2')
+                .then(resp => console.log(resp))
+                .catch(e => console.log(e));
           }
         },
 

@@ -69,8 +69,6 @@
             NewUser,
             Users,
             NewAlbum
-
-
         },
 
         methods: {
