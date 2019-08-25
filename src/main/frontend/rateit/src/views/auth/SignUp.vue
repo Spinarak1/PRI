@@ -39,7 +39,7 @@
 <script>
     import Navbar from "../../components/shared/Navbar";
     import axios from 'axios'
-    import PopupSuccess from './../../components/popups/RegistrationSuccess'
+
 
     export default {
         data() {
@@ -76,7 +76,6 @@
 
         components: {
             Navbar,
-            PopupSuccess
         }
     }
 </script>
