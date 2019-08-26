@@ -14,8 +14,8 @@
                         <span>Dashboard</span>
                         <v-icon></v-icon>
                     </v-btn>
-                    <v-btn text color="#FFA255">
-                        <span>Log Out</span>
+                    <v-btn @click="logout" text color="#FFA255">
+                        <span >Log Out</span>
                         <v-icon>mdi-export-variant</v-icon>
                     </v-btn>
                 </v-toolbar-items>
@@ -32,7 +32,8 @@
                     size="164">
                 <v-img src="https://olamundo.pl/wp-content/uploads/2014/09/pan-kleks-1160x774.jpg"></v-img>
             </v-avatar>
-            <h3 style="text-align: center" class="white--text mb-5">Username</h3>
+            <h3 style="text-align: center" class="white--text mb-5">{{getUser.nick}}</h3>
+            <h3 style="text-align: center" class="white--text mb-5">{{getUserID}}</h3>
 
             <v-divider></v-divider>
             <v-list dark class="mt-5" >
@@ -68,10 +69,13 @@
     import Rated from "./Rated";
     import Favorites from "./Favorites";
     import Settings from "./Settings";
+    import { mapGetters } from 'vuex';
+    import axios from 'axios';
 
     export default {
         data() {
             return {
+                userID: null,
                 currentComponent: null,
                 componentsArray: ['NewUser'],
                 drawer: true,
@@ -92,11 +96,31 @@
             }
         },
 
+        computed: {
+            ...mapGetters([
+                'getUser',
+                'getUserID'
+            ])
+        },
+
         methods: {
             swapComponent(component) {
                 this.currentComponent = component;
                 console.log(this.currentComponent);
             },
+
+            logout() {
+                alert("You have been logged out");
+                const userID = this.getUserID;
+                console.log('userID = ' + userID);
+                axios.post(`/api/users/${userID}/logout`)
+                    .then(resp => {
+                        console.log(resp);
+                        this.$router.push('signin')
+                    })
+                    .catch(e => console.log(e));
+
+            }
         },
 
         components: {

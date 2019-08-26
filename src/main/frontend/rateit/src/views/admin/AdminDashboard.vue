@@ -29,7 +29,7 @@
                 </v-list-item>
             </v-list>
             <div class="pa-2">
-                <v-btn block>Logout</v-btn>
+                <v-btn block @click="logout">Logout</v-btn>
             </div>
         </v-navigation-drawer>
 
@@ -49,6 +49,8 @@
     import NewUser from "./NewUser";
     import Users from "./Users";
     import NewAlbum from "./NewAlbum";
+    import axios from 'axios';
+    import { mapGetters } from 'vuex';
 
     export default {
         data() {
@@ -71,13 +73,29 @@
             NewAlbum
         },
 
+        computed: {
+            ...mapGetters([
+                'getUser',
+                'getUserID'
+            ])
+        },
+
         methods: {
             swapComponent(component) {
                 this.currentComponent = component;
                 console.log(this.currentComponent);
             },
-            show() {
-                alert('elo')
+
+            logout() {
+                alert('You have been logged out');
+                const userID = this.getUserID;
+                console.log('userID = ' + userID);
+                axios.post(`/api/users/${userID}/logout`)
+                    .then(resp => {
+                        console.log(resp);
+                        this.$router.push('signin')
+                    })
+                    .catch(e => console.log(e));
             }
         }
     }

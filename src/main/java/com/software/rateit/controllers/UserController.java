@@ -61,7 +61,7 @@ public class UserController {
         return service.login(loginDTO);
     }
 
-    @PostMapping("/users/{is}/logout")
+    @PostMapping("/users/{id}/logout")
     public ResponseEntity<Void> logout(@PathVariable long id){
         return service.logout(id);
     }

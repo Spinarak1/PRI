@@ -20,7 +20,7 @@
                                     <v-text-field v-model="username" class="pt-5" label="Username" prepend-icon="person"></v-text-field>
                                     <v-text-field v-model="password" :type="'password'" class="pt-5" label="Password" prepend-icon="https"></v-text-field>
                                 </v-form>
-                                <v-btn @click="login" class="px-4" text>Log in</v-btn>
+                                <v-btn @click="login({username: username, password: password})" class="px-4" text>Log in</v-btn>
                                 <h4 class="subheading px-4 py-4">Don't have an account yet?</h4>
                                 <span class="subheading px-4">Create an account now!</span>
                             </v-card-text>
@@ -36,6 +36,9 @@
 <script>
     import Navbar from "../../components/shared/Navbar";
     import axios from "axios"
+    import { mapGetters } from 'vuex'
+    import { mapMutations } from 'vuex'
+    import { mapActions } from 'vuex'
 
     export default {
 
@@ -47,24 +50,46 @@
             }
         },
 
+        computed: {
+          ...mapGetters([
+              'getUser',
+          ])
+        },
+
         methods: {
+            ...mapMutations([
+                'activeUser'
+            ]),
+
+            ...mapActions([
+               'login'
+            ]),
+
+
+
           login() {
               const userObj = {
                   username: this.username,
                   password: this.password
               };
-                console.log(userObj)
+                //console.log(userObj)
               axios.post('/api/signin', userObj)
                   .then(resp => {
 
-                      //console.log(resp);
+                      console.log(resp);
                       alert('Logged successfully!')
-                      this.$router.push('dashboard')
+                      if(resp.data.role === "USER") {
+                          this.$router.push('dashboard')
+                      } else {
+                          this.$router.push('admindashboard')
+                      }
+
+                      this.$store.dispatch('signIn', resp.data)
                   })
-                  .catch(e => console.log(e));
-            axios.get('/api/users/2')
-                .then(resp => console.log(resp))
-                .catch(e => console.log(e));
+                  .catch(e => {
+                      console.log(e);
+                      alert('Something went wrong, try again')
+                  });
           }
         },
 
