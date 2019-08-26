@@ -23,7 +23,7 @@ public class User {
     private int score;
     private String badges;
     private Date registrationDate = new Date();
-    private boolean isActive = true;
+    private boolean isActive = false;
     private String photoURL;
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
