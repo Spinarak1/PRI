@@ -9,7 +9,7 @@
                             hide-details
                             prepend-icon="search"
                             single-line
-                    >Search</v-text-field>
+                    >Search </v-text-field>
                 </v-toolbar-title>
 
                 <v-spacer></v-spacer>
