@@ -28,6 +28,7 @@ public class CdDTO {
     private float sumOfRating;
     @JsonView(View.Summary.class)
     private String photoURL;
+    @JsonView(View.Summary.class)
     private String artist;
     private List<TrackDTO> cdtracks;
     private String genre;

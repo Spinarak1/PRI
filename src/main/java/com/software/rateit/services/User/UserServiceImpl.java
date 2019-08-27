@@ -15,6 +15,7 @@ import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
 import com.software.rateit.repositories.CommentsRepository;
 import com.software.rateit.repositories.UserRepository;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -256,6 +264,88 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Override
+    public ResponseEntity<UserDTO> uploadAvatar(MultipartFile file, long id){
+        StringBuilder stb;
+        try{
+            URL url;
+            url = new URL("https://api.imgur.com/3/image");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            BufferedImage image = null;
+            image = ImageIO.read(file.getInputStream());
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", byteArray);
+            byte[] byteImage = byteArray.toByteArray();
+            String dataImage = Base64.encode(byteImage);
+            String data = URLEncoder.encode("image", "UTF-8") + "="
+                    + URLEncoder.encode(dataImage, "UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Client-ID " + "8e65f97cadbba0f");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+
+            conn.connect();
+            stb = new StringBuilder();
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            BufferedReader rd = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                stb.append(line).append("\n");
+            }
+            wr.close();
+            rd.close();
+
+        } catch (IOException e){
+            throw new NotFoundException("File not found");
+        }
+        User user = repository.findOneById(id);
+        user.setPhotoURL(getImageUrl(stb.toString()));
+        repository.save(user);
+
+        return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(user), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CommentsDTO> editComment(CommentAlbumDTO comment, long id) {
+        Comments comments = commentsRepository.findOneById(id);
+        if(comments == null){
+            throw new NotFoundException("Comment not found");
+        }
+        if(comment.getUserId() != comments.getId()){
+            throw new AuthenticationException("You can not edit");
+        }
+        comments.setContent(comment.getContent());
+        Comments response = commentsRepository.save(comments);
+
+        CommentsDTO commentsDTO= new CommentsDTO();
+        commentsDTO.setContent(response.getContent());
+        commentsDTO.setUser(mapper.mapToUserDTO(response.getUser()));
+        commentsDTO.setCd(cdMapper.mapToCdDTO(response.getCd()));
+
+        return new ResponseEntity<>(commentsDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteComment(long commentId, long userId) {
+        Comments comments = commentsRepository.findOneById(commentId);
+        if(comments == null){
+            throw new NotFoundException("Comment not found");
+        }
+        if(userId != comments.getId() || !repository.findOneById(userId).getRole().equals("ADMIN")){
+            throw new AuthenticationException("You can not edit");
+        }
+        commentsRepository.deleteById(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     private Boolean validateEmail(String email) {
         Pattern pattern;
         Matcher matcher;
@@ -263,6 +353,16 @@ public class UserServiceImpl implements UserService {
         pattern = Pattern.compile(emailPattern);
         matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private String getImageUrl(String response){
+        String stringPattern = "https:\\\\/\\\\/i.imgur.com\\\\/[A-Za-z0-9]+.[a-zA-Z]+";
+        Pattern pattern = Pattern.compile(stringPattern);
+        Matcher matcher = pattern.matcher(response);
+        if(matcher.find())
+            return matcher.group().replaceAll("\\\\", "");
+        else
+            return null;
     }
 
 
