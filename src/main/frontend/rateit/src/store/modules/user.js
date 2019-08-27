@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const state = {
-    user: ''
+    user: '',
+    albums: []
 };
 
 const getters = {
@@ -18,12 +19,20 @@ const mutations = {
     activeUser: (state, payload) => {
         state.user = payload
     },
+
+    albumInfo: (state, payload) => {
+        state.albums.push(payload);
+    },
+
+    logOut: (state) => {
+        state.user = '';
+    }
 };
 
 const actions = {
     signIn: ({commit}, payload) => {
         commit('activeUser', payload);
-    }
+    },
 };
 
 export default  {

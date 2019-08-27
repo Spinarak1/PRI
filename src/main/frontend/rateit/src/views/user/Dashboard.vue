@@ -15,16 +15,12 @@
                 <v-spacer></v-spacer>
 
                 <v-toolbar-items>
-                    <v-btn text color="#FFA255" class="btn mx-2">
-                        <span>New release</span>
-                        <v-icon></v-icon>
-                    </v-btn>
-                    <v-btn text color="#FFA255" class="mx-2">
-                        <span>Popular</span>
+                    <v-btn text color="#FFA255" class="btn mx-2" @click="ranking">
+                        <span>Ranking</span>
                         <v-icon></v-icon>
                     </v-btn>
 
-                    <v-btn text color="#FFA255">
+                    <v-btn text color="#FFA255" @click="logout">
                         <span>Log Out</span>
                         <v-icon>mdi-export-variant</v-icon>
                     </v-btn>
@@ -70,8 +66,8 @@
                     max-width="100"
                     max-height="100">
             </v-img>
-            <h4 class="white--text">Metallica</h4>
-            <h5 style="color: #FFA255">Ride The Lightning(1984)</h5>
+            <h4 class="white--text">{{albumsDrawer.name}}</h4>
+            <h5 style="color: #FFA255">{{albumsDrawer.name}})</h5>
             <h5 class="white--text">Tracklist:</h5>
             <h5 class="white--text">1.	"Fight Fire with Fire" <br>
                 2.	"Ride the Lightning"<br>
@@ -81,37 +77,43 @@
                 6.	"Escape"<br>
                 7.	"Creeping Death"<br>
                 8.	"The Call of Ktulu" (instrumental)<br></h5>
-            <h5 class="white--text">Rating: 4.5</h5>
+            <h5 class="white--text">Rating: {{albumsDrawer.rating}}</h5>
 
         </v-navigation-drawer>
 
 
         <v-container fluid>
 
-            <v-row class="my-5 mx-5">
-                <v-col xs="12" sm="12" md="3" v-for="record in records" :key="record.album">
+            <v-row class="my-3 ml-3">
+                <v-col
+                        xs="12"
+                        sm="12"
+                        md="3"
+                        v-for="record in albums"
+                        :key="record.id">
                     <v-card
+
                             color="transarent"
                             flat
                             dark
                             hover
                             width="250"
-                            height="360"
-                            @click="rightDrawer = !rightDrawer">
+                            height="350"
+                            @click="handler(record.id, record.name, record.rating, record.released)"
+                    >
                         <v-img
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
-                                max-width="250"
-                                max-height="250"
+                                max-width="200"
+                                max-height="200"
                         ></v-img>
-                        <v-card-title> {{ record.band }} </v-card-title>
+                        <v-card-title>  <h5>{{ record.name }}</h5>  </v-card-title>
                         <v-card-text style="color: #FFA255">
-                            <span> {{ record.album }} </span>
-                            <span> ({{ record.year }}) </span><br>
+                            <span class="subheading"> {{ record.name }} </span>
+                            <span> ({{ record.released }}) </span><br>
                             <v-rating
-                                    v-model="record.rate"
-                                    size="medium"
+                                    size="30"
                                     color="yellow darken-3"
                                     background-color="grey darken-1"
                                     empty-icon="$vuetify.icons.ratingFull"
@@ -128,41 +130,99 @@
 
 <script>
     import Navbar from "../../components/shared/Navbar";
+    import Ranking from './Ranking'
+    import axios from 'axios'
+    import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
+
     export default {
         data() {
             return {
+                albums: '',
+                albumsDrawer: '',
                 drawer: true,
                 rightDrawer: false,
                 links: [
                     { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
                     { icon: 'person', text: 'My Account', route: '/user' },
-
                 ],
-
-                 records: [
-                     { band: 'Metallica', album: 'Ride The Lightning', year: '1984', rate: 4.5 },
-                     { band: 'Slayer', album: 'Show No Mercy', year: '1983', rate: 4.5 },
-                     { band: 'Megadeth', album: 'Rust in Peace', year: '1990', rate: 4.5 },
-                     { band: 'Anthrax', album: 'State of Euphoria', year: '1986', rate: 4 },
-                     { band: 'Venom', album: 'Storm The Gates', year: '2019', rate: 3 },
-                     { band: 'Sodom', album: 'Agent Orange', year: '1989', rate: 4 },
-                     { band: 'Bathory', album: 'Nordland', year: '2001', rate: 2.5 },
-                     { band: 'Sabaton', album: 'Polsza walcz', year: '2008', rate: 1.5 },
-                 ],
-
             }
         },
+
+        methods: {
+
+            ...mapMutations([
+                'albumInfo',
+                'logOut'
+            ]),
+
+            albumData(id, name, rating, released){
+                //console.log(id, name, rating, released);
+                const albumObj = {
+                    id: id,
+                    name: name,
+                    rating: rating,
+                    released: released,
+                };
+
+                this.albumsDrawer = albumObj;
+
+                this.albumInfo(albumObj);   // vuex
+
+                //console.log(albumObj);
+            },
+
+            drawerSwitch() {
+                this.rightDrawer = !this.rightDrawer
+            },
+
+            handler(id, name, rating, released){
+                this.drawerSwitch();
+                this.albumData(id, name, rating, released);
+            },
+
+            ranking(){
+                this.$router.push('ranking');
+            },
+
+            logout() {
+                const userID = this.getUserID;
+                console.log(userID);
+
+                axios.post(`/api/users/${userID}/logout`)
+                    .then(resp => {
+                        console.log(resp);
+                        alert('You have been logged out');
+                        this.$router.push('signin')
+                    })
+                    .catch(e => console.log(e));
+            }
+        },
+
+        computed: {
+            ...mapGetters([
+                'getUser',
+                'getUserID'
+            ])
+        },
+
+        created() {
+            axios.get('/api/cds')
+                .then(resp => {
+                    const albumsData = resp.data.cds;
+                    this.albums = albumsData;
+                    console.log(albumsData);
+                })
+                .catch(e => console.log(e));
+        },
+
         components: {
-            Navbar
+            Navbar,
+            Ranking
         }
     }
 </script>
 
 <style scoped>
-    .ttile:hover {
-        background-color: green;
-}
-    .ttile:active {
-        background-color: yellow;
-    }
+
 </style>

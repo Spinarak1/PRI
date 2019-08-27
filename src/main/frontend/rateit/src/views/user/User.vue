@@ -67,7 +67,7 @@
 
 <script>
     import Rated from "./Rated";
-    import Favorites from "./Favorites";
+    import Owned from "./Owned";
     import Settings from "./Settings";
     import { mapGetters } from 'vuex';
     import axios from 'axios';
@@ -81,7 +81,7 @@
                 drawer: true,
                 sideBar: [
                     { title: 'Rated albums', icon: 'note', component: 'Rated' },
-                    { title: 'Favorites', icon: 'favorite', component: 'Favorites' },
+                    { title: 'Owned', icon: 'favorite', component: 'Owned' },
                     { title: 'Settings', icon: 'settings', component: 'Settings' },
                 ],
                 records: [
@@ -125,7 +125,7 @@
 
         components: {
             Rated,
-            Favorites,
+            Owned,
             Settings
         }
     }
