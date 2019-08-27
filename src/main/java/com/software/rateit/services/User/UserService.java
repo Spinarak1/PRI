@@ -6,7 +6,7 @@ import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.User.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface UserService {
@@ -23,4 +23,5 @@ public interface UserService {
     ResponseEntity<CommentsDTO> commentAlbum(CommentAlbumDTO comment, long id);
     ResponseEntity<UserDTO> setAsAdmin(long id);
     ResponseEntity<Void> logout(long id);
+    ResponseEntity<UserDTO> uploadAvatar(MultipartFile multipartFile, long id);
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -81,6 +82,10 @@ public class UserController {
         return service.deleteUser(id);
     }
 
+    @PostMapping("/users/{id}/set-avatar")
+    public ResponseEntity<UserDTO> test(@RequestParam("file") MultipartFile file, @PathVariable long id){
+        return service.uploadAvatar(file, id);
+    }
 
 
 }
