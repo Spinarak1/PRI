@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/set-avatar")
-    public ResponseEntity<UserDTO> test(@RequestParam("file") MultipartFile file, @PathVariable long id){
+    public ResponseEntity<UserDTO> addAvatar(@RequestParam("file") MultipartFile file, @PathVariable long id){
         return service.uploadAvatar(file, id);
     }
 

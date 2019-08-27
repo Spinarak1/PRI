@@ -24,4 +24,6 @@ public interface UserService {
     ResponseEntity<UserDTO> setAsAdmin(long id);
     ResponseEntity<Void> logout(long id);
     ResponseEntity<UserDTO> uploadAvatar(MultipartFile multipartFile, long id);
+    ResponseEntity<CommentsDTO> editComment(CommentAlbumDTO comment, long id);
+    ResponseEntity<Void> deleteComment(long commentId, long userId);
 }

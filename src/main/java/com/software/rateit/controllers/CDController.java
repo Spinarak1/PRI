@@ -10,6 +10,7 @@ import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.View;
 import com.software.rateit.Entity.CD;
+import com.software.rateit.Entity.Comments;
 import com.software.rateit.services.CD.CdService;
 import com.software.rateit.services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,15 @@ public class CDController {
     @DeleteMapping("/cds/{id}")
     public ResponseEntity<Void> deleteCD(@PathVariable long id){
         return cdService.deleteAlbum(id);
+    }
+
+    @PutMapping("/comments/{id}")
+    public ResponseEntity<CommentsDTO> editComment(@PathVariable long id, @RequestBody CommentAlbumDTO commentAlbumDTO){
+        return userService.editComment(commentAlbumDTO, id);
+    }
+
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable long id, @RequestParam long userID){
+        return userService.deleteComment(id, userID);
     }
 }

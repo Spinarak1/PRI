@@ -313,6 +313,39 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(user), HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<CommentsDTO> editComment(CommentAlbumDTO comment, long id) {
+        Comments comments = commentsRepository.findOneById(id);
+        if(comments == null){
+            throw new NotFoundException("Comment not found");
+        }
+        if(comment.getUserId() != comments.getId()){
+            throw new AuthenticationException("You can not edit");
+        }
+        comments.setContent(comment.getContent());
+        Comments response = commentsRepository.save(comments);
+
+        CommentsDTO commentsDTO= new CommentsDTO();
+        commentsDTO.setContent(response.getContent());
+        commentsDTO.setUser(mapper.mapToUserDTO(response.getUser()));
+        commentsDTO.setCd(cdMapper.mapToCdDTO(response.getCd()));
+
+        return new ResponseEntity<>(commentsDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteComment(long commentId, long userId) {
+        Comments comments = commentsRepository.findOneById(commentId);
+        if(comments == null){
+            throw new NotFoundException("Comment not found");
+        }
+        if(userId != comments.getId() || !repository.findOneById(userId).getRole().equals("ADMIN")){
+            throw new AuthenticationException("You can not edit");
+        }
+        commentsRepository.deleteById(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     private Boolean validateEmail(String email) {
         Pattern pattern;
         Matcher matcher;
