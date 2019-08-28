@@ -7,6 +7,7 @@ import SignUp from './views/auth/SignUp'
 
 import Dashboard from './views/user/Dashboard'
 import User from './views/user/User'
+import Ranking from './views/user/Ranking'
 
 import AdminDashboard from './views/admin/AdminDashboard'
 
@@ -44,6 +45,12 @@ export default new Router({
             path: '/user',
             name: 'user',
             component: User
+        },
+
+        {
+          path: '/ranking',
+          name: 'ranking',
+          component: Ranking
         },
 
         {
