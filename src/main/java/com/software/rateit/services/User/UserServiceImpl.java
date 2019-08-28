@@ -15,13 +15,18 @@ import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
 import com.software.rateit.repositories.CommentsRepository;
 import com.software.rateit.repositories.UserRepository;
+import com.software.rateit.services.Raport;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +38,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -344,6 +351,24 @@ public class UserServiceImpl implements UserService {
         }
         commentsRepository.deleteById(commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<InputStreamResource> generateRaport(int days) {
+        long day = 86400000;
+        Iterable<UserDTO> iterable = mapper.mapToUserDTOIterable(repository.findByRegistrationDateGreaterThanOrderByRegistrationDateDesc(System.currentTimeMillis() - days*day));
+        List<UserDTO> list = new ArrayList<>();
+        iterable.forEach(list::add);
+
+        ByteArrayInputStream inputStream = Raport.pdfDocument(list);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=RateIt_raport.pdf");
+        headers.setContentType(MediaType.APPLICATION_PDF);
+
+        return new ResponseEntity<>(new InputStreamResource(inputStream), headers, HttpStatus.OK);
+
+
     }
 
     private Boolean validateEmail(String email) {

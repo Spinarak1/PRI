@@ -4,6 +4,7 @@ import com.software.rateit.DTO.CD.CdDTO;
 import com.software.rateit.DTO.Comments.CommentAlbumDTO;
 import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.User.*;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,4 +27,5 @@ public interface UserService {
     ResponseEntity<UserDTO> uploadAvatar(MultipartFile multipartFile, long id);
     ResponseEntity<CommentsDTO> editComment(CommentAlbumDTO comment, long id);
     ResponseEntity<Void> deleteComment(long commentId, long userId);
+    ResponseEntity<InputStreamResource> generateRaport(int days);
 }

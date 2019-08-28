@@ -22,7 +22,7 @@ public class User {
     private String password;
     private int score;
     private String badges;
-    private Date registrationDate = new Date();
+    private Long registrationDate = System.currentTimeMillis();
     private boolean isActive = false;
     private String photoURL;
     @JsonManagedReference
@@ -121,11 +121,11 @@ public class User {
     public void addCd(CD userscd){
         getUserscd().add(userscd);
     }
-    public Date getRegistrationDate() {
+    public Long getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public void setRegistrationDate(Long registrationDate) {
         this.registrationDate = registrationDate;
     }
 

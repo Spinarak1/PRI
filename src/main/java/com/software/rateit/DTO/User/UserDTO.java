@@ -6,7 +6,6 @@ import com.software.rateit.DTO.CD.CdDTO;
 import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.View;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class UserDTO {
     private String password;
     private int score;
     private String badges;
-    private Date registrationDate;
+    private Long registrationDate;
     private boolean isActive;
     @JsonView(View.Summary.class)
     private String photoURL;
@@ -80,11 +79,11 @@ public class UserDTO {
         this.badges = badges;
     }
 
-    public Date getRegistrationDate() {
+    public Long getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public void setRegistrationDate(Long registrationDate) {
         this.registrationDate = registrationDate;
     }
 
