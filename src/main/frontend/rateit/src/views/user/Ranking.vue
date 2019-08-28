@@ -89,7 +89,8 @@
                             <span> ( {{ record.released }} ) </span><br>
                             <v-rating
 
-                                    size="medium"
+                                    size="30"
+                                    v-model="record.rating"
                                     color="yellow darken-3"
                                     background-color="grey darken-1"
                                     empty-icon="$vuetify.icons.ratingFull"
@@ -113,6 +114,7 @@
             return {
                 drawer: true,
                 ranking: '',
+                rating: 4,
                 links: [
                     { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
                     { icon: 'person', text: 'My Account', route: '/user' },
@@ -124,8 +126,8 @@
             console.log('dziala');
             axios.get('/api/cds/ranking')
                 .then(resp => {
-                    console.log(resp.data);
-                    this.ranking = resp.data;
+                    console.log(resp.data.slice(0,10));
+                    this.ranking = resp.data.slice(0,10);
                 })
                 .catch(e => console.log(e));
         }

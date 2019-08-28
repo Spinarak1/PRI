@@ -33,7 +33,7 @@
                 <v-img src="https://olamundo.pl/wp-content/uploads/2014/09/pan-kleks-1160x774.jpg"></v-img>
             </v-avatar>
             <h3 style="text-align: center" class="white--text mb-5">{{getUser.nick}}</h3>
-            <h3 style="text-align: center" class="white--text mb-5">{{getUserID}}</h3>
+            <h3 style="text-align: center" class="white--text mb-5"></h3>
 
             <v-divider></v-divider>
             <v-list dark class="mt-5" >
@@ -70,6 +70,7 @@
     import Owned from "./Owned";
     import Settings from "./Settings";
     import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
     import axios from 'axios';
 
     export default {
@@ -109,6 +110,10 @@
                 console.log(this.currentComponent);
             },
 
+            ...mapMutations([
+                'logOut'
+            ]),
+
             logout() {
                 alert("You have been logged out");
                 const userID = this.getUserID;
@@ -116,6 +121,7 @@
                 axios.post(`/api/users/${userID}/logout`)
                     .then(resp => {
                         console.log(resp);
+                        this.logout();
                         this.$router.push('signin')
                     })
                     .catch(e => console.log(e));

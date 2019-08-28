@@ -2,7 +2,7 @@
     <div>
         <v-container fluid>
             <v-row class="my-5 mx-5">
-                <v-col xs="12" sm="12" md="3" v-for="record in favs" :key="record.album">
+                <v-col xs="12" sm="12" md="3" v-for="record in albums" :key="record.id" >
                     <v-card
                             color="transarent"
                             flat
@@ -17,13 +17,15 @@
                                 max-width="250"
                                 max-height="250"
                         ></v-img>
-                        <v-card-title> {{ record.band }} </v-card-title>
+                        <v-card-title> {{ record.artist }} </v-card-title>
                         <v-card-text style="color: #FFA255">
-                            <span> {{ record.album }} </span>
-                            <span> ({{ record.year }}) </span><br>
+                            <span> {{ record.name }} </span>
+                            <span> ({{ record.released }}) </span><br>
                             <v-rating
-                                    v-model="record.rate"
-                                    size="medium"
+
+                                    @click=""
+                                    v-model="record.rating"
+                                    size="30"
                                     color="yellow darken-3"
                                     background-color="grey darken-1"
                                     empty-icon="$vuetify.icons.ratingFull"
@@ -39,15 +41,27 @@
 </template>
 
 <script>
-
+    import { mapGetters } from 'vuex'
     export default {
-        name: "Favorites",
         data() {
             return {
-                favs: [
-                    { band: 'Testament', album: 'New Order', year: 1986 , rate: 5 }
-                ]
+                albums: '',
+
             }
+        },
+
+        methods: {
+            ...mapGetters([
+                'getAlbums'
+            ]),
+
+
+        },
+
+        created() {
+
+            const al = this.getAlbums(); // vuex
+            this.albums = al;
         }
     }
 </script>

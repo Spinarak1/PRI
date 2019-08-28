@@ -46,11 +46,12 @@
 </template>
 
 <script>
-    import NewUser from "./NewUser";
     import Users from "./Users";
     import NewAlbum from "./NewAlbum";
+    import Records from './Records'
     import axios from 'axios';
     import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
 
     export default {
         data() {
@@ -61,16 +62,16 @@
                 items: [
                     { title: 'Dashboard', icon: 'dashboard', },
                     { title: 'Users', icon: 'account_box', component: 'Users' },
-                    { title: 'Add new user', icon: 'person', component: 'NewUser' },
                     { title: 'Add new album', icon: 'music_note', component: 'NewAlbum' },
+                    { title: 'Records', icon: 'library_music', component: 'Records' },
                 ],
             }
         },
 
         components: {
-            NewUser,
             Users,
-            NewAlbum
+            NewAlbum,
+            Records
         },
 
         computed: {
@@ -81,6 +82,9 @@
         },
 
         methods: {
+            ...mapMutations([
+               'logOut'
+            ]),
             swapComponent(component) {
                 this.currentComponent = component;
                 console.log(this.currentComponent);
@@ -93,6 +97,7 @@
                 axios.post(`/api/users/${userID}/logout`)
                     .then(resp => {
                         console.log(resp);
+                        this.logout();
                         this.$router.push('signin')
                     })
                     .catch(e => console.log(e));
