@@ -4,6 +4,7 @@
             <v-row class="my-5 mx-5">
                 <v-col xs="12" sm="12" md="3" v-for="record in albums" :key="record.id" >
                     <v-card
+
                             color="transarent"
                             flat
                             dark

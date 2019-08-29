@@ -37,11 +37,6 @@
                                     solo
                                     label="Write a comment"
                             ></v-textarea>
-                            <v-card>
-                                <v-card-text>
-                                    elo
-                                </v-card-text>
-                            </v-card>
                             <v-btn text @click="addComment(rate.id)">Add</v-btn>
                         </v-card-text>
 

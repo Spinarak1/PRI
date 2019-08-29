@@ -85,15 +85,6 @@
                     { title: 'Owned', icon: 'favorite', component: 'Owned' },
                     { title: 'Settings', icon: 'settings', component: 'Settings' },
                 ],
-                records: [
-                    { band: 'Metallica', album: 'Ride The Lightning', year: '1984', rate: '4.5' },
-                    { band: 'Slayer', album: 'Show No Mercy', year: '1983', rate: '4.5' },
-                    { band: 'Megadeth', album: 'Rust in Peace', year: '1990', rate: '4.5' },
-                    { band: 'Anthrax', album: 'State of Euphoria', year: '1986', rate: '4' },
-                    { band: 'Venom', album: 'Storm The Gates', year: '2019', rate: '3' },
-                    { band: 'Sodom', album: 'Agent Orange', year: '1989', rate: '4' },
-                    { band: 'Bathory', album: 'Nordland', year: '2001', rate: '2.5' },
-                ],
             }
         },
 
