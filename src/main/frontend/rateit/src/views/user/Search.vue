@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <nav>
             <v-toolbar style="background-color: #515151" height=82 flat>
@@ -13,8 +13,83 @@
                                      hide-details
                                      prepend-icon="search"
                                      single-line
-                             >Search </v-text-field>
+                             >Search
+                            </v-text-field>
                         </v-col>
+
+                        <v-col class="mb-2" >
+                            <v-dialog
+                                    v-model="dialog"
+                                    width="500">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon  v-on="on">settings_applications</v-icon>
+                                </template>
+
+                                <v-card>
+                                    <v-card-title
+                                            class="headline grey darken-4"
+                                            style="color: #FFA255"
+                                            primary-title>
+                                        Filter search
+                                    </v-card-title>
+
+                                    <v-card-text>
+                                        <v-form>
+                                            <v-container>
+                                                <v-row  justify="start"
+                                                        align="center">
+                                                    <v-col
+                                                    sm="12"
+                                                    md="6">
+                                                        <h4>Search by date</h4>
+                                                        <v-text-field
+                                                                v-model="dateFrom"
+                                                                label="From">
+
+                                                        </v-text-field>
+                                                    </v-col>
+
+                                                    <v-col
+                                                    sm="12"
+                                                    md="6">
+                                                        <h4>Search by genre</h4>
+                                                        <v-text-field
+                                                                v-model="genre"
+                                                                label="Genre">
+
+                                                        </v-text-field>
+                                                    </v-col>
+                                                </v-row>
+
+                                                <v-row justify="start"
+                                                       align="center">
+                                                    <v-col
+                                                    sm="12"
+                                                    md="6">
+                                                        <v-text-field
+                                                                v-model="dateTo"
+                                                                label="From">
+                                                        </v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                        </v-form>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                        <div class="flex-grow-1"></div>
+                                        <v-btn
+                                                color="orange"
+                                                text
+                                                @click="advancedSearch"
+                                        >
+                                            Apply
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-col>
+
                         <v-col>
                            <v-select
                                     height="20"
@@ -119,10 +194,100 @@
                 totalPages: null,
 
                 inputValue: '',
+                dialog: false,
+
+                dateFrom: null,
+                dateTo: null,
+                genre: '',
             }
         },
 
         methods: {
+
+            advancedSearch() {
+              console.log(this.dateFrom, this.dateTo, this.genre);
+
+              if( (this.dateFrom && this.dateTo) !== null && (this.dateFrom > this.dateTo)) alert("Incorrect date input. Input 'Date to' should be grater than 'Date from' ")
+                else {
+                    if((this.dateFrom && this.dateTo) === null && this.genre === '') {
+                        console.log('Proszę podać wartość')
+                    } else if((this.dateFrom && this.dateTo) !== null && this.genre !== '') {
+                        console.log('Wyszukaj z tego przedzialu po gatunku');
+                        axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
+                            })
+                            .catch(e => console.log(e));
+
+                    } else if((this.dateFrom && this.dateTo) !== null && this.genre === '') {
+                        console.log('Wyszukaj z tego przedzialu, nie bierz pod uwage gatunek');
+                        axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&page=${this.page-1}&size=8`)
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                            .catch(e => console.log(e));
+                    } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '') {
+                        console.log('Wyszukaj wszystkie od dateFrom do 2019 po gatunku')
+                        axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&page=${this.page-1}&size=8`)
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                            .catch(e => console.log(e));
+                    } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '') {
+                        console.log('Wyszukaj wszystkie od dateFrom bez uwzglednienia gatunku');
+                        axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&page=${this.page-1}&size=8`)
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                            .catch(e => console.log(e));
+                    } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '') {
+                        console.log('Wyszukaj wszystkie z dateTo po gatunku');
+                        axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)     //TODO
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                            .catch(e => console.log(e));
+                    } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '') {
+                        console.log('Wyszukaj wszystkie z date to bez uwzglednienia gatunku');
+                        axios.get(`/api/cds?released=${this.dateTo}&page=${this.page-1}&size=8`)     //TODO
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                    } else if((this.dateFrom && this.dateTo) === null && this.genre !== '') {
+                        console.log('Wyszukaj po gatunku bez uwzgledniania roku');
+                        axios.get(`/api/cds?genre=${this.genre}&page=${this.page-1}&size=8`)
+                            .then(resp => {
+                                this.filteredAlbums = resp.data.cds;
+                                const totalPages = resp.data.context.totalPages;
+                                this.totalPages = totalPages;
+                                console.log(resp);
+                            })
+                    }
+              }
+
+            },
 
             inputSearch(value) {
                 this.inputValue = value;
@@ -135,9 +300,7 @@
               axios.get(`/api/cds?${this.curSelect}&size=8&page=${this.page-1}`)
                   .then(resp => {
                       this.filteredAlbums = resp.data.cds;
-                   // console.log(resp.data.context.totalPages);
                       const totalPages = resp.data.context.totalPages;
-                      //console.log(totalPages);
                       this.totalPages = totalPages;
                   })
                   .catch(e => console.log(e));
@@ -146,25 +309,16 @@
             pagin() {
               console.log("pagin" + this.inputValue);
 
-              /*
-                axios.get('/api/cds?size=8&page=0')
-                .then(resp => {
-                    const albumsData = resp.data.cds;
-                    this.albums = albumsData;
-                    //console.log(albumsData);
-                    const totalPages = resp.data.context.totalPages;
-                    //console.log(totalPages);
-                    this.totalPages = totalPages;
-                })
-                .catch(e => console.log(e));
-
-            console.log(this.albums);*/
             },
 
             selectSearch(select){
                 console.log(select.toLowerCase());
                 const searchSelect = select.toLowerCase()
                 this.curSelect = searchSelect;
+            },
+
+            show() {
+                console.log(this.dateFrom, this.dateTo, this.genre);
             },
 
             ranking(){
