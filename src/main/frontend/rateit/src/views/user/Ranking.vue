@@ -21,7 +21,7 @@
                         <v-icon></v-icon>
                     </v-btn>
 
-                    <v-btn text color="#FFA255">
+                    <v-btn text color="#FFA255" @click="logout">
                         <span>Log Out</span>
                         <v-icon>mdi-export-variant</v-icon>
                     </v-btn>
@@ -120,6 +120,22 @@
                     { icon: 'person', text: 'My Account', route: '/user' },
                 ],
             }
+        },
+
+        methods: {
+            logout() {
+                const userID = this.getUserID;
+                console.log(userID);
+
+                axios.post(`/api/users/${userID}/logout`)
+                    .then(resp => {
+                        console.log(resp);
+                        alert('You have been logged out');
+                        this.logout() //vuex
+                        this.$router.push('signin')
+                    })
+                    .catch(e => console.log(e));
+            },
         },
 
         created() {

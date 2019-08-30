@@ -44,8 +44,12 @@
                 axios.post('/api/cds', albumObj)
                     .then(resp => {
                         console.log(resp);
+                        alert("You've added a new album")
                     })
-                    .catch(e => console.log(e));
+                    .catch(e => {
+                        console.log(e);
+                        alert("Something went wrong. Please, try again")
+                    });
             }
         }
     }

@@ -1,35 +1,5 @@
 <template>
     <div style="background: #414141; height: 100%" >
-        <nav>
-            <v-toolbar style="background-color: #515151" height=82 flat>
-                <v-toolbar-title class="display-2" my-3 >
-                    <v-text-field
-                            label="serach"
-                            style="background-color: #646464"
-                            hide-details
-                            prepend-icon="search"
-                            single-line
-                    >Search </v-text-field>
-                </v-toolbar-title>
-
-                <v-spacer></v-spacer>
-
-                <v-toolbar-items>
-                    <v-btn text color="#FFA255" class="btn mx-2" @click="ranking">
-                        <span>Ranking</span>
-                        <v-icon></v-icon>
-                    </v-btn>
-
-                    <v-btn text color="#FFA255" @click="logout">
-                        <span>Log Out</span>
-                        <v-icon>mdi-export-variant</v-icon>
-                    </v-btn>
-                </v-toolbar-items>
-
-            </v-toolbar>
-            <v-divider dark></v-divider>
-        </nav>
-
 
         <v-navigation-drawer app  v-model="drawer" color="#515151" class="py-12 ">
             <v-spacer class="py-1"></v-spacer>
@@ -94,9 +64,9 @@
 
         </v-navigation-drawer>
 
-
-        <v-container fluid>
-
+        <component :is="component"></component>
+    <div v-if="false">
+        <v-container fluid >
             <v-row class="my-3 ml-3">
                 <v-col
                         xs="12"
@@ -133,6 +103,7 @@
                                     empty-icon="$vuetify.icons.ratingFull"
                                     half-increments
                                     hover
+                                    readonly
                             ></v-rating>
                         </v-card-text>
                     </v-card>
@@ -150,24 +121,29 @@
         ></v-pagination>
         </div>
     </div>
+    </div>
 </template>
 
 <script>
-    import Navbar from "../../components/shared/Navbar";
+
+    import Search from './Search'
     import Ranking from './Ranking'
     import axios from 'axios'
     import { mapGetters } from 'vuex';
     import { mapMutations } from 'vuex';
 
+
     export default {
         data() {
             return {
+                component: 'Search',
                 albums: '',
                 albumsDrawer: '',
                 drawer: true,
                 rightDrawer: false,
                 page: 1,
                 totalPages: null,
+
                 links: [
                     { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
                     { icon: 'person', text: 'My Account', route: '/user' },
@@ -255,24 +231,6 @@
 
                 console.log(rateObj);
             },
-
-            ranking(){
-                this.$router.push('ranking');
-            },
-
-            logout() {
-                const userID = this.getUserID;
-                console.log(userID);
-
-                axios.post(`/api/users/${userID}/logout`)
-                    .then(resp => {
-                        console.log(resp);
-                        alert('You have been logged out');
-                        this.logout() //vuex
-                        this.$router.push('signin')
-                    })
-                    .catch(e => console.log(e));
-            }
         },
 
         computed: {
@@ -293,10 +251,12 @@
                     this.totalPages = totalPages;
                 })
                 .catch(e => console.log(e));
+
+            console.log(this.albums);
         },
 
         components: {
-            Navbar,
+            Search,
             Ranking
         }
     }
