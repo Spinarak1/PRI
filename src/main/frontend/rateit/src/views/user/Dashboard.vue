@@ -186,7 +186,7 @@
             pagin() {
               console.log(this.page);
 
-                axios.get(`/api/cds?size=8&page=${this.page}`)
+                axios.get(`/api/cds?size=8&page=${this.page-1}`)
                     .then(resp => {
                         const albumsData = resp.data.cds;
                         //console.log(resp.data.context);
