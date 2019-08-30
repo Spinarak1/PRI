@@ -5,14 +5,15 @@
                 <v-toolbar-title class="display-2" my-3 style="width: 800px;">
                     <v-row justify="center" align="center">
                         <v-col>
-                            <!--<v-text-field
-                                     @input="search"
+                            <v-text-field
+                                    @keypress.13="search"
+                                     @input="inputSearch"
                                      label="serach"
                                      style="background-color: #646464"
                                      hide-details
                                      prepend-icon="search"
                                      single-line
-                             >Search </v-text-field> -->
+                             >Search </v-text-field>
                         </v-col>
                         <v-col>
                            <v-select
@@ -93,7 +94,7 @@
             </v-row>
         </v-container>
 
-        <div @click="pagin">
+        <div @click="search">
             <v-pagination
                     v-model="page"
                     :length="totalPages"
@@ -111,80 +112,63 @@
     export default {
         data() {
             return {
-                searchSelect: ['Artist', 'Record'],
+                searchSelect: ['Artist', 'Name'],
                 curSelect: '',
                 filteredAlbums: '',
                 page: 1,
                 totalPages: null,
-                searchVal: '',
-                pageObj: '',
+
+                inputValue: '',
             }
         },
 
         methods: {
-            search(value) {
-                this.searchVal = value;
-                const val = value;
-                if(this.curSelect === 'Artist') {
 
-                    axios.get(`/api/cds?artist=${val}&size=8&page=${this.page-1}`)         // /api/cds?size=8&page=${this.page-1}
-                        .then(resp => {
-                           const artistObj = resp;
-                           this.pageObj = artistObj;
-
-                            console.log(resp);
-                            if(val===''){
-                                this.filteredAlbums = '';
-                            } else {
-                                //this.filteredAlbums = resp.data.cds;
-                            }
-                           this.pagin();
-                        })
-                        .catch(e => {
-                            console.log(e);
-                        })
-
-                } else if(this.curSelect === 'Record') {
-                    axios.get(`/api/cds?name=${val}&size=8&page=${this.page-1}`)
-                        .then(resp => {
-                            const artistObj = resp;
-                            this.pageObj = artistObj;
-
-                            console.log(resp);
-                            if(val===''){
-                                this.filteredAlbums = '';
-                            } else {
-                                //this.filteredAlbums = resp.data.cds;
-                            }
-                            this.pagin();
-                        })
-                        .catch(e => {
-                            console.log(e);
-                        })
-                }
+            inputSearch(value) {
+                this.inputValue = value;
+                console.log(value);
             },
+
+            search() {
+              console.log('elo z sercza');
+
+              axios.get(`/api/cds?${this.curSelect}&size=8&page=${this.page-1}`)
+                  .then(resp => {
+                      this.filteredAlbums = resp.data.cds;
+                   // console.log(resp.data.context.totalPages);
+                      const totalPages = resp.data.context.totalPages;
+                      //console.log(totalPages);
+                      this.totalPages = totalPages;
+                  })
+                  .catch(e => console.log(e));
+              },
+
+            pagin() {
+              console.log("pagin" + this.inputValue);
+
+              /*
+                axios.get('/api/cds?size=8&page=0')
+                .then(resp => {
+                    const albumsData = resp.data.cds;
+                    this.albums = albumsData;
+                    //console.log(albumsData);
+                    const totalPages = resp.data.context.totalPages;
+                    //console.log(totalPages);
+                    this.totalPages = totalPages;
+                })
+                .catch(e => console.log(e));
+
+            console.log(this.albums);*/
+            },
+
             selectSearch(select){
-                console.log(select);
-                this.curSelect = select;
+                console.log(select.toLowerCase());
+                const searchSelect = select.toLowerCase()
+                this.curSelect = searchSelect;
             },
 
             ranking(){
                 this.$router.push('ranking');
-            },
-
-            pagin() {
-
-                console.log(this.pageObj)
-                const totalPages = this.pageObj.data.context.totalPages;
-                //console.log(totalPages);
-                this.totalPages = totalPages;
-
-                const albums = this.pageObj.data.cds;
-                //console.log(resp.data.context);
-                this.filteredAlbums = albums;
-
-               this.search(this.searchVal);
-
             },
 
             logout() {
