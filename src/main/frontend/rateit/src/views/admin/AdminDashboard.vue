@@ -34,6 +34,7 @@
         </v-navigation-drawer>
 
         <v-container>
+            <p>elo</p>
             <v-row>
                 <v-col justify="center" align="center">
                     <component :is="currentComponent"></component>

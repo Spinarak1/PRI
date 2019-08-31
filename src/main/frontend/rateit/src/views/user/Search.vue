@@ -1,7 +1,10 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <nav>
-            <v-toolbar style="background-color: #515151" height=82 flat>
+            <v-toolbar
+                    style="background-color: #515151"
+                    height=82
+                    flat>
                 <v-toolbar-title class="display-2" my-3 style="width: 800px;">
                     <v-row justify="center" align="center">
                         <v-col>
@@ -68,7 +71,7 @@
                                                     md="6">
                                                         <v-text-field
                                                                 v-model="dateTo"
-                                                                label="From">
+                                                                label="To">
                                                         </v-text-field>
                                                     </v-col>
                                                 </v-row>
@@ -141,7 +144,7 @@
                             dark
                             hover
                             width="200"
-                            height="270"
+                            height="280"
                     >
                         <v-img
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
@@ -152,8 +155,8 @@
                         ></v-img>
                         <v-card-title>  <h5>{{ record.artist }}</h5>  </v-card-title>
                         <v-card-text style="color: #FFA255">
-                            <span class="subheading"> {{ record.name }}</span>
-                            <span> ({{ record.released }}) </span><br>
+                            <span class="subheading"> {{ record.name }}</span><br>
+                            <span style="text-transform: capitalize;"> ({{ record.released }}) {{ record.genre }} </span><br>
                             <v-rating
                                     size="30"
                                     color="yellow darken-3"
@@ -204,12 +207,17 @@
 
         methods: {
 
+            toggleSearh() {
+              this.compVisible = !this.compVisible;
+              //this.$emit('compChange', this.compVisible);
+            },
+
             advancedSearch() {
               console.log(this.dateFrom, this.dateTo, this.genre);
 
               if( (this.dateFrom && this.dateTo) !== null && (this.dateFrom > this.dateTo)) alert("Incorrect date input. Input 'Date to' should be grater than 'Date from' ")
                 else {
-                    if((this.dateFrom && this.dateTo) === null && this.genre === '') {
+                    if(this.dateFrom === null && this.dateTo === null && this.genre === '') {
                         console.log('Proszę podać wartość')
                     } else if((this.dateFrom && this.dateTo) !== null && this.genre !== '') {
                         console.log('Wyszukaj z tego przedzialu po gatunku');
@@ -234,6 +242,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                             .catch(e => console.log(e));
                     } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '') {
@@ -244,6 +256,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                             .catch(e => console.log(e));
                     } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '') {
@@ -254,6 +270,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                             .catch(e => console.log(e));
                     } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '') {
@@ -264,6 +284,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                             .catch(e => console.log(e));
                     } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '') {
@@ -274,6 +298,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                     } else if((this.dateFrom && this.dateTo) === null && this.genre !== '') {
                         console.log('Wyszukaj po gatunku bez uwzgledniania roku');
@@ -283,6 +311,10 @@
                                 const totalPages = resp.data.context.totalPages;
                                 this.totalPages = totalPages;
                                 console.log(resp);
+
+                                this.dateFrom = null;
+                                this.dateTo = null;
+                                this.genre = '';
                             })
                     }
               }
@@ -297,8 +329,9 @@
             search() {
               console.log('elo z sercza');
 
-              axios.get(`/api/cds?${this.curSelect}&size=8&page=${this.page-1}`)
+              axios.get(`/api/cds?${this.curSelect}=${this.inputValue}&size=8&page=${this.page-1}`)
                   .then(resp => {
+                      console.log(resp);
                       this.filteredAlbums = resp.data.cds;
                       const totalPages = resp.data.context.totalPages;
                       this.totalPages = totalPages;

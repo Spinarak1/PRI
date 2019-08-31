@@ -65,6 +65,8 @@
         </v-navigation-drawer>
 
         <component :is="component"></component>
+
+        <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
     <div v-if="false">
         <v-container fluid >
             <v-row class="my-3 ml-3">
@@ -136,6 +138,7 @@
     export default {
         data() {
             return {
+                compVisible: false,
                 component: 'Search',
                 albums: '',
                 albumsDrawer: '',

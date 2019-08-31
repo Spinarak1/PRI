@@ -10,7 +10,6 @@
         <v-card
                 v-if="passwordChange"
                 color="#515151"
-                class="cardlogin"
                 width="50vh"
                 height="45vh">
             <v-card-title>Change password</v-card-title>
@@ -35,7 +34,6 @@
         <v-card
                 v-if="emailChange"
                 color="#515151"
-                class="cardlogin"
                 width="50vh"
                 height="45vh">
             <v-card-title>Change password</v-card-title>
@@ -44,21 +42,35 @@
                     <v-text-field class="pt-5" label="Current email" prepend-icon="mail"></v-text-field>
                     <v-text-field class="pt-5" label="New email" prepend-icon="mail"></v-text-field>
                 </v-form>
-                <v-btn class="px-4" text @click="changeEmail()">Change</v-btn>
+                <v-btn class="px-4" text @click="changeEmail">Change</v-btn>
             </v-card-text>
         </v-card>
 
         <v-btn
+                @click="pictureChange = !pictureChange"
                class="my-6 white--text"
                height="60"
                style="background: #FFA255"
                block>Change picture</v-btn>
+
+        <v-card
+                v-if="pictureChange"
+                color="#515151"
+                width="50vh"
+                height="45vh">
+            <v-card-title>Change profile picture</v-card-title>
+            <v-card-text>
+                <input type="file" @change="onFileSelected">
+                <v-btn class="px-4" text @click="changePicture">Change</v-btn>
+            </v-card-text>
+        </v-card>
     </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
     import axios from 'axios';
+
     export default {
         name: "Settings",
         data() {
@@ -69,6 +81,8 @@
 
                 passwordChange: false,
                 emailChange: false,
+                pictureChange: false,
+                selectedFile: null,
             }
         },
 
@@ -98,8 +112,28 @@
             },
 
             changeEmail() {
-                alert('Email has been changed');
-                this.emailChange = false;
+              alert('change email')
+            },
+
+            changePicture() {
+                const userID = this.getUserID;
+                console.log(this.selectedFile)
+
+                const fd = new FormData();
+                fd.append('image', this.selectedFile)
+
+                console.log(fd);
+                axios.post(`/api/users/46/set-avatar`, fd)
+                    .then(resp => {
+                        console.log(resp);
+                    })
+                    .catch(e => console.log(e));
+            },
+
+            onFileSelected(event) {
+                this.selectedFile = event.target.files[0];
+                console.log(this.selectedFile);
+
             }
         }
     }
