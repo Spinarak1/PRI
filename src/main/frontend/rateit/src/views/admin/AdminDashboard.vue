@@ -37,7 +37,6 @@
             <v-row>
                 <v-col justify="center" align="center">
                     <component :is="currentComponent"></component>
-
                 </v-col>
             </v-row>
 
