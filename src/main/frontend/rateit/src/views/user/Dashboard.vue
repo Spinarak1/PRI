@@ -114,7 +114,7 @@
         </v-container>
         <div @click="pagin">
         <v-pagination
-
+                v-if="false"
                 v-model="page"
                 :length="totalPages"
                 :total-visible="7"

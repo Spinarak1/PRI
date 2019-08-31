@@ -74,6 +74,16 @@
                                                                 label="To">
                                                         </v-text-field>
                                                     </v-col>
+
+                                                    <v-col
+                                                    sm="12"
+                                                    md="6">
+                                                        <v-text-field
+                                                            v-model="advancedArtist"
+                                                            label="Artist">
+
+                                                        </v-text-field>
+                                                    </v-col>
                                                 </v-row>
                                             </v-container>
                                         </v-form>
@@ -150,8 +160,8 @@
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
-                                max-width="150"
-                                max-height="150"
+                                max-width="100"
+                                max-height="100"
                         ></v-img>
                         <v-card-title>  <h5>{{ record.artist }}</h5>  </v-card-title>
                         <v-card-text style="color: #FFA255">
@@ -160,6 +170,7 @@
                             <v-rating
                                     size="30"
                                     color="yellow darken-3"
+                                    v-model="record.rating"
                                     background-color="grey darken-1"
                                     empty-icon="$vuetify.icons.ratingFull"
                                     half-increments
@@ -172,7 +183,7 @@
             </v-row>
         </v-container>
 
-        <div @click="search">
+        <div v-if="curSearch==='search'" @click="search">
             <v-pagination
                     v-model="page"
                     :length="totalPages"
@@ -181,6 +192,17 @@
                     next-icon="menu-right"
             ></v-pagination>
         </div>
+
+            <div v-if="curSearch==='advancedSearching'" @click="advancedSearch">
+                <v-pagination
+                     v-model="page"
+                    :length="totalPages"
+                    :total-visible="7"
+                     prev-icon="menu-left"
+                     next-icon="menu-right">
+
+                </v-pagination>
+            </div>
     </div>
     </div>
 </template>
@@ -190,6 +212,7 @@
     export default {
         data() {
             return {
+                curSearch: '',
                 searchSelect: ['Artist', 'Name'],
                 curSelect: '',
                 filteredAlbums: '',
@@ -202,6 +225,7 @@
                 dateFrom: null,
                 dateTo: null,
                 genre: '',
+                advancedArtist: '',
             }
         },
 
@@ -213,166 +237,202 @@
             },
 
             advancedSearch() {
-              console.log(this.dateFrom, this.dateTo, this.genre);
+                this.curSearch = 'advancedSearching';
+              //console.log(this.dateFrom, this.dateTo, this.genre, this.advancedArtist);
 
-              if( (this.dateFrom && this.dateTo) !== null && (this.dateFrom > this.dateTo)) alert("Incorrect date input. Input 'Date to' should be grater than 'Date from' ")
-                else {
-                    if(this.dateFrom === null && this.dateTo === null && this.genre === '') {
-                        console.log('Proszę podać wartość')
-                    } else if((this.dateFrom && this.dateTo) !== null && this.genre !== '') {
-                        console.log('Wyszukaj z tego przedzialu po gatunku');
-                        axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+                if((this.dateFrom && this.dateTo) !== null && (this.genre && this.advancedArtist) !== '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            // #1
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if((this.dateFrom && this.dateTo) !== null && this.genre !== '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            // #2
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if((this.dateFrom && this.dateTo) !== null && this.genre === '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            // #3
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if((this.dateFrom && this.dateTo) !== null && this.genre === '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            // #4
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            // #5
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#6
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#7
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateFrom}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#8
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#9
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#10
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?released=${this.dateTo}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#11
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?released=${this.dateTo}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#12
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo === null && this.genre !== '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#13
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom == null && this.dateTo === null && this.genre !== '' && this.advancedArtist === '') {
+                    axios.get(`/api/cds?genre=${this.genre}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            //#14
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo === null && this.genre === '' && this.advancedArtist !== '') {
+                    axios.get(`/api/cds?artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                        .then(resp => {
+                            this.filteredAlbums = resp.data.cds;
+                            const totalPages = resp.data.context.totalPages;
+                            this.totalPages = totalPages;
+                            console.log(resp);
+                        })
+                } else if(this.dateFrom === null && this.dateTo === null && this.genre === '' && this.advancedArtist === '') {
+                   alert('Please fill in the input.')
+                }
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                            .catch(e => console.log(e));
+             },
 
-                    } else if((this.dateFrom && this.dateTo) !== null && this.genre === '') {
-                        console.log('Wyszukaj z tego przedzialu, nie bierz pod uwage gatunek');
-                        axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&page=${this.page-1}&size=8`)
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+  inputSearch(value) {
+      this.inputValue = value;
+      console.log(value);
+  },
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                            .catch(e => console.log(e));
-                    } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '') {
-                        console.log('Wyszukaj wszystkie od dateFrom do 2019 po gatunku')
-                        axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&page=${this.page-1}&size=8`)
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+  search() {
+      this.curSearch = 'search';
+    console.log('elo z sercza');
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                            .catch(e => console.log(e));
-                    } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '') {
-                        console.log('Wyszukaj wszystkie od dateFrom bez uwzglednienia gatunku');
-                        axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&page=${this.page-1}&size=8`)
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+    axios.get(`/api/cds?${this.curSelect}=${this.inputValue}&size=8&page=${this.page-1}`)
+        .then(resp => {
+            console.log(resp);
+            this.filteredAlbums = resp.data.cds;
+            const totalPages = resp.data.context.totalPages;
+            this.totalPages = totalPages;
+        })
+        .catch(e => console.log(e));
+    },
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                            .catch(e => console.log(e));
-                    } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '') {
-                        console.log('Wyszukaj wszystkie z dateTo po gatunku');
-                        axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)     //TODO
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+  pagin() {
+    console.log("pagin" + this.inputValue);
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                            .catch(e => console.log(e));
-                    } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '') {
-                        console.log('Wyszukaj wszystkie z date to bez uwzglednienia gatunku');
-                        axios.get(`/api/cds?released=${this.dateTo}&page=${this.page-1}&size=8`)     //TODO
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+  },
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                    } else if((this.dateFrom && this.dateTo) === null && this.genre !== '') {
-                        console.log('Wyszukaj po gatunku bez uwzgledniania roku');
-                        axios.get(`/api/cds?genre=${this.genre}&page=${this.page-1}&size=8`)
-                            .then(resp => {
-                                this.filteredAlbums = resp.data.cds;
-                                const totalPages = resp.data.context.totalPages;
-                                this.totalPages = totalPages;
-                                console.log(resp);
+  selectSearch(select){
+      console.log(select.toLowerCase());
+      const searchSelect = select.toLowerCase()
+      this.curSelect = searchSelect;
+  },
 
-                                this.dateFrom = null;
-                                this.dateTo = null;
-                                this.genre = '';
-                            })
-                    }
-              }
+  show() {
+      console.log(this.dateFrom, this.dateTo, this.genre);
+  },
 
-            },
+  ranking(){
+      this.$router.push('ranking');
+  },
 
-            inputSearch(value) {
-                this.inputValue = value;
-                console.log(value);
-            },
+  logout() {
+      const userID = this.getUserID;
+      console.log(userID);
 
-            search() {
-              console.log('elo z sercza');
-
-              axios.get(`/api/cds?${this.curSelect}=${this.inputValue}&size=8&page=${this.page-1}`)
-                  .then(resp => {
-                      console.log(resp);
-                      this.filteredAlbums = resp.data.cds;
-                      const totalPages = resp.data.context.totalPages;
-                      this.totalPages = totalPages;
-                  })
-                  .catch(e => console.log(e));
-              },
-
-            pagin() {
-              console.log("pagin" + this.inputValue);
-
-            },
-
-            selectSearch(select){
-                console.log(select.toLowerCase());
-                const searchSelect = select.toLowerCase()
-                this.curSelect = searchSelect;
-            },
-
-            show() {
-                console.log(this.dateFrom, this.dateTo, this.genre);
-            },
-
-            ranking(){
-                this.$router.push('ranking');
-            },
-
-            logout() {
-                const userID = this.getUserID;
-                console.log(userID);
-
-                axios.post(`/api/users/${userID}/logout`)
-                    .then(resp => {
-                        console.log(resp);
-                        alert('You have been logged out');
-                        this.logout() //vuex
-                        this.$router.push('signin')
-                    })
-                    .catch(e => console.log(e));
-            },
-        },
-    }
+      axios.post(`/api/users/${userID}/logout`)
+          .then(resp => {
+              console.log(resp);
+              alert('You have been logged out');
+              this.logout() //vuex
+              this.$router.push('signin')
+          })
+          .catch(e => console.log(e));
+  },
+},
+}
 </script>
 
 <style scoped>
