@@ -7,8 +7,15 @@
                     flat>
                 <v-toolbar-title class="display-2" my-3 style="width: 800px;">
                     <v-row justify="center" align="center">
-                        <v-col>
+                        <v-col sm="1" md="1" >
+                            <v-icon
+                                    style="cursor: pointer"
+                                    @click="backHome">home</v-icon>
+                        </v-col>
+
+                        <v-col class="mx-0 px-0">
                             <v-text-field
+
                                     @keypress.13="search"
                                      @input="inputSearch"
                                      label="serach"
@@ -25,7 +32,7 @@
                                     v-model="dialog"
                                     width="500">
                                 <template v-slot:activator="{ on }">
-                                    <v-icon  v-on="on">settings_applications</v-icon>
+                                    <v-icon @click="resetModal" v-on="on">settings_applications</v-icon>
                                 </template>
 
                                 <v-card>
@@ -138,8 +145,47 @@
             <v-divider dark></v-divider>
         </nav>
 
+        <v-navigation-drawer app right color="#515151" v-model="rightDrawer" class="py-12 ">
+            <v-spacer class="py-1"></v-spacer>
+            <v-img
+                    src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
+                    aspect-ratio="1"
+                    class="grey lighten-2 mt-7"
+                    max-width="100"
+                    max-height="100">
+            </v-img>
+            <h4 class="white--text">{{albumsDrawer.artist}}</h4>
+            <h5 style="color: #FFA255">{{albumsDrawer.name}}</h5>
+            <h5 style="color: #FFA255">{{albumsDrawer.genre}}</h5>
+            <h5 class="white--text">Tracklist:</h5>
+            <h5 class="white--text">1.	"Fight Fire with Fire" <br>
+                2.	"Ride the Lightning"<br>
+                3.	"For Whom the Bell Tolls"<br>
+                4.	"Fade to Black"<br>
+                5.	"Trapped Under Ice"<br>
+                6.	"Escape"<br>
+                7.	"Creeping Death"<br>
+                8.	"The Call of Ktulu" (instrumental)<br></h5>
+            <h5 class="white--text">Rating: {{albumsDrawer.rating}}</h5>
+
+            <v-btn
+                    @click="addAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name,albumsDrawer.genre,  albumsDrawer.rating, albumsDrawer.released)"
+                    style="font-size: 10px; color: #FFA255"
+                    text
+                    small
+            >Add to owned</v-btn>
+
+            <v-btn
+                    @click="rateAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.genre, albumsDrawer.rating, albumsDrawer.released)"
+                    style="font-size: 10px; color: #FFA255"
+                    text
+                    small
+            >Rate this album</v-btn>
+        </v-navigation-drawer>
+
+
 <!-- ###################################################### -->
-        <div v-if="true">
+        <div v-if="visCom">
         <v-container fluid>
             <v-row class="my-3 ml-3">
                 <v-col
@@ -155,6 +201,7 @@
                             hover
                             width="200"
                             height="280"
+                            @click="albumData(record.id, record.artist, record.name, record.genre, record.rating, record.released)"
                     >
                         <v-img
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
@@ -209,6 +256,7 @@
 
 <script>
     import axios from 'axios'
+    import { mapMutations } from 'vuex'
     export default {
         data() {
             return {
@@ -226,8 +274,15 @@
                 dateTo: null,
                 genre: '',
                 advancedArtist: '',
+
+                visCom: false,
+                rightDrawer: false,
+                albumsDrawer: '',
+
             }
         },
+
+        props: ['compAct'],
 
         methods: {
 
@@ -237,6 +292,9 @@
             },
 
             advancedSearch() {
+                this.visCom = true;
+                this.$emit('switchComp', this.visCom);
+
                 this.curSearch = 'advancedSearching';
               //console.log(this.dateFrom, this.dateTo, this.genre, this.advancedArtist);
 
@@ -268,7 +326,7 @@
                             console.log(resp);
                         })
                 } else if((this.dateFrom && this.dateTo) !== null && this.genre === '' && this.advancedArtist === '') {
-                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=${this.dateTo}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             // #4
                             this.filteredAlbums = resp.data.cds;
@@ -277,7 +335,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '' && this.advancedArtist !== '') {
-                    axios.get(`/api/cds?released=${this.dateFrom}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             // #5
                             this.filteredAlbums = resp.data.cds;
@@ -286,7 +344,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom !== null && this.dateTo === null && this.genre !== '' && this.advancedArtist === '') {
-                    axios.get(`/api/cds?released=${this.dateFrom}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=2019&genre=${this.genre}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#6
                             this.filteredAlbums = resp.data.cds;
@@ -295,7 +353,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '' && this.advancedArtist !== '') {
-                    axios.get(`/api/cds?released=${this.dateFrom}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=2019&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#7
                             this.filteredAlbums = resp.data.cds;
@@ -304,7 +362,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom !== null && this.dateTo === null && this.genre === '' && this.advancedArtist === '') {
-                    axios.get(`/api/cds?released=${this.dateFrom}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=${this.dateFrom}&released=2019&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#8
                             this.filteredAlbums = resp.data.cds;
@@ -313,7 +371,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '' && this.advancedArtist !== '') {
-                    axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=1950&released=${this.dateTo}&genre=${this.genre}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#9
                             this.filteredAlbums = resp.data.cds;
@@ -322,7 +380,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom === null && this.dateTo !== null && this.genre !== '' && this.advancedArtist === '') {
-                    axios.get(`/api/cds?released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=1950&released=${this.dateTo}&genre=${this.genre}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#10
                             this.filteredAlbums = resp.data.cds;
@@ -331,7 +389,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '' && this.advancedArtist !== '') {
-                    axios.get(`/api/cds?released=${this.dateTo}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=1950&released=${this.dateTo}&artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#11
                             this.filteredAlbums = resp.data.cds;
@@ -340,7 +398,7 @@
                             console.log(resp);
                         })
                 } else if(this.dateFrom === null && this.dateTo !== null && this.genre === '' && this.advancedArtist === '') {
-                    axios.get(`/api/cds?released=${this.dateTo}&page=${this.page-1}&size=8`)
+                    axios.get(`/api/cds?released=1950&released=${this.dateTo}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#12
                             this.filteredAlbums = resp.data.cds;
@@ -357,7 +415,7 @@
                             this.totalPages = totalPages;
                             console.log(resp);
                         })
-                } else if(this.dateFrom == null && this.dateTo === null && this.genre !== '' && this.advancedArtist === '') {
+                } else if(this.dateFrom === null && this.dateTo === null && this.genre !== '' && this.advancedArtist === '') {
                     axios.get(`/api/cds?genre=${this.genre}&page=${this.page-1}&size=8`)
                         .then(resp => {
                             //#14
@@ -369,6 +427,7 @@
                 } else if(this.dateFrom === null && this.dateTo === null && this.genre === '' && this.advancedArtist !== '') {
                     axios.get(`/api/cds?artist=${this.advancedArtist}&page=${this.page-1}&size=8`)
                         .then(resp => {
+                            //#15
                             this.filteredAlbums = resp.data.cds;
                             const totalPages = resp.data.context.totalPages;
                             this.totalPages = totalPages;
@@ -386,6 +445,8 @@
   },
 
   search() {
+      this.visCom = true;
+      this.$emit('switchComp', this.visCom);
       this.curSearch = 'search';
     console.log('elo z sercza');
 
@@ -410,10 +471,68 @@
       this.curSelect = searchSelect;
   },
 
-  show() {
-      console.log(this.dateFrom, this.dateTo, this.genre);
+  albumData(id, artist, name, genre, rating, released) {
+      this.rightDrawer = !this.rightDrawer;
+
+     const albumObj = {
+          id: id,
+          artist: artist,
+          name: name,
+          genre: genre,
+          rating: rating,
+          released: released,
+      };
+
+      this.albumsDrawer = albumObj;
   },
 
+            ...mapMutations([
+                'albumInfo',
+                'logOut',
+                'ratedAlbum'
+            ]),
+
+            addAlbum(id, artist, name, genre, rating, released){
+                //console.log(id, artist, name, rating, released);
+                const albumObj = {
+                    id: id,
+                    artist: artist,
+                    name: name,
+                    genre: genre,
+                    rating: rating,
+                    released: released,
+                };
+
+                this.albumInfo(albumObj);   // vuex
+            },
+
+            rateAlbum(id, artist, name, genre,  rating, released){
+                const rateObj = {
+                    id: id,
+                    artist: artist,
+                    name: name,
+                    genre: genre,
+                    rating: rating,
+                    released: released
+                };
+
+                this.ratedAlbum(rateObj); //vuex
+
+                console.log(rateObj);
+            },
+
+  resetModal(){
+      this.dateFrom= null;
+      this.dateTo= null;
+      this.genre= '';
+      this. advancedArtist= '';
+
+  },
+   backHome() {
+     console.log('erlo')
+       this.visCom = false;
+       this.$emit('reviveComp', this.visCom);
+   },
   ranking(){
       this.$router.push('ranking');
   },
