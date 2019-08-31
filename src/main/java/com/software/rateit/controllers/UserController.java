@@ -2,6 +2,7 @@ package com.software.rateit.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.software.rateit.DTO.CD.CdDTO;
+import com.software.rateit.DTO.Rate.RateDTO;
 import com.software.rateit.DTO.User.*;
 import com.software.rateit.DTO.View;
 import com.software.rateit.services.User.UserService;
@@ -11,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -44,6 +46,11 @@ public class UserController {
     @GetMapping("/users/{id}/cds")
     public ResponseEntity<Iterable<CdDTO>> getUsersCd(@PathVariable long id){
         return service.getUsersCds(id);
+    }
+
+    @GetMapping("/users/{id}/rated")
+    public ResponseEntity<List<RateDTO>> getRatedAlbums(@PathVariable long id){
+        return service.getRatedAlbums(id);
     }
 
     @PostMapping("/signup")
@@ -82,7 +89,7 @@ public class UserController {
         return service.deleteUser(id);
     }
 
-    @PostMapping("/users/{id}/set-avatar")
+    @PostMapping(value = "/users/{id}/set-avatar", headers = "content-type=multipart/*")
     public ResponseEntity<UserDTO> addAvatar(@RequestParam("file") MultipartFile file, @PathVariable long id){
         return service.uploadAvatar(file, id);
     }

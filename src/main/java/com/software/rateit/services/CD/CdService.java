@@ -16,7 +16,7 @@ public interface CdService {
     ResponseEntity<CdDTO> updateAlbum(long id, CdDTO cdDTO);
     ResponseEntity<Void> deleteAlbum(long id);
     ResponseEntity<CdDTO> addNewAlbum(CdDTO cd);
-    ResponseEntity<CdDTO> rateCD(long id, float note);
+    ResponseEntity<CdDTO> rateCD(long id, long userId, float note);
     ResponseEntity<CdDTO> addTrackToAlbum(long cdId, long trackId);
     ResponseEntity<Iterable<TrackDTO>> getCdTracks(long id);
 }

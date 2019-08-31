@@ -12,10 +12,14 @@ import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.Track.TrackMapper;
 import com.software.rateit.DTO.User.UserMapper;
 import com.software.rateit.Entity.CD;
+import com.software.rateit.Entity.Rate;
 import com.software.rateit.Entity.Track;
+import com.software.rateit.Entity.User;
 import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
+import com.software.rateit.repositories.RateRepository;
 import com.software.rateit.repositories.TrackRepository;
+import com.software.rateit.repositories.UserRepository;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +52,13 @@ public class CdServiceImpl implements CdService {
     private CDRepository cdRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private TrackRepository trackRepository;
+
+    @Autowired
+    private RateRepository rateRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(CdServiceImpl.class);
 
@@ -135,11 +145,19 @@ public class CdServiceImpl implements CdService {
     }
 
     @Override
-    public ResponseEntity<CdDTO> rateCD(long id, float note) {
+    public ResponseEntity<CdDTO> rateCD(long id, long userId, float note) {
         CD cd = cdRepository.findOneById(id);
+        Rate rate = rateRepository.findOneByCdIdAndUserId(id, userId);
         if(cd == null) {
             throw new NotFoundException("CD not found");
         }
+        if(rate == null) {
+            rateRepository.save(new Rate(note, id, userId));
+        } else {
+            rate.setRating(note);
+            rateRepository.save(rate);
+        }
+
         cd.setRatingCount(cd.getRatingCount() + 1);
         cd.setSumOfRating(cd.getSumOfRating() + note);
         cd.setRating(cd.getSumOfRating()/cd.getRatingCount());

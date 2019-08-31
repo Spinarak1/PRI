@@ -10,7 +10,7 @@ import org.mapstruct.Named;
 public interface TrackMapper {
 
     @Named("WithoutCollections")
-    @Mapping(ignore = true, target = "artist")
+    //@Mapping(ignore = true, target = "artist")
     @Mapping(ignore = true, target = "cd")
     TrackDTO mapToTrackDTO(Track track);
 

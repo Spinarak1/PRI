@@ -6,19 +6,24 @@ import com.software.rateit.DTO.Comments.CommentAlbumDTO;
 import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.Comments.CommentsMapper;
 import com.software.rateit.DTO.PaginationContext;
+import com.software.rateit.DTO.Rate.RateDTO;
 import com.software.rateit.DTO.User.*;
 import com.software.rateit.Entity.CD;
 import com.software.rateit.Entity.Comments;
+import com.software.rateit.Entity.Rate;
 import com.software.rateit.Entity.User;
 import com.software.rateit.exceptions.AuthenticationException;
 import com.software.rateit.exceptions.NotFoundException;
 import com.software.rateit.repositories.CDRepository;
 import com.software.rateit.repositories.CommentsRepository;
+import com.software.rateit.repositories.RateRepository;
 import com.software.rateit.repositories.UserRepository;
 import com.software.rateit.services.Raport;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.factory.Mappers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -28,6 +33,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,14 +54,24 @@ import java.util.regex.Pattern;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl .class);
+
+
     @Value("${server-address}")
     private String serverAddress;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
 
     @Autowired
     private CDRepository cdRepository;
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private RateRepository rateRepository;
 
     @Autowired
     private CommentsRepository commentsRepository;
@@ -123,6 +141,8 @@ public class UserServiceImpl implements UserService {
         newUser.setEmail(registration.getEmail());
         newUser.setRole("USER");
         User response = repository.save(newUser);
+//        simpleEmail(response.getEmail(), "RateIt: new account", "Hello " + response.getNick()+ "!\n" +
+//                "You have successfully registered your account!\n\nBest regards,\nRateIt team!");
 
         return new ResponseEntity<>(mapper.mapToUserDTO(response), HttpStatus.CREATED);
 
@@ -145,6 +165,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(bCryptPasswordEncoder.encode(password.getNewPassword()));
         User response = repository.save(user);
+//        simpleEmail(response.getEmail(), "RateIt: password change", "Hello " + response.getNick()+ "!\n" +
+//                "You have successfully changed your password!\n\nBest regards,\nRateIt team!");
         return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(response), HttpStatus.OK);
     }
 
@@ -371,6 +393,19 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public ResponseEntity<List<RateDTO>> getRatedAlbums(long userId) {
+        Iterable<Rate> rates = rateRepository.findAllByUserId(userId);
+        List<RateDTO> rated = new ArrayList<>();
+        rates.forEach(rate -> {
+            RateDTO rateDTO = new RateDTO();
+            rateDTO.setAlbum(cdRepository.findOneById(rate.getCd()));
+            rateDTO.setNote(rate.getRating());
+            rated.add(rateDTO);
+        });
+        return new ResponseEntity<>(rated, HttpStatus.OK);
+    }
+
     private Boolean validateEmail(String email) {
         Pattern pattern;
         Matcher matcher;
@@ -390,5 +425,19 @@ public class UserServiceImpl implements UserService {
             return null;
     }
 
+    private void simpleEmail(String to, String subject, String content) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(to);
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(content);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (MailException e) {
+            LOG.error("Error while sending out email..{}", e.getMessage());
+            return;
+        }
+        LOG.info("Email to {} sent successfully", to);
 
+
+    }
 }
