@@ -31,6 +31,7 @@ public class CdDTO {
     @JsonView(View.Summary.class)
     private String artist;
     private List<TrackDTO> cdtracks;
+    @JsonView(View.Summary.class)
     private String genre;
     private List<UserDTO> user;
     @JsonBackReference
