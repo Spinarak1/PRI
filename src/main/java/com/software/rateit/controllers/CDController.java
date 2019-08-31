@@ -60,8 +60,9 @@ public class CDController {
 
     @PostMapping("/cds/{id}/rate")
     public ResponseEntity<CdDTO> rateCD(@PathVariable long id,
+                                        @RequestParam long userId,
                                         @RequestParam float note){
-        return cdService.rateCD(id, note);
+        return cdService.rateCD(id, userId, note);
     }
 
     @JsonView(View.Comment.class)

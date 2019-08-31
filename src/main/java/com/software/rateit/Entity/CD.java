@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "CD")
 public class CD {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int released;
@@ -147,4 +147,5 @@ public class CD {
     public void addTrack(Track track) {
         this.getCdtracks().add(track);
     }
+
 }

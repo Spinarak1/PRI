@@ -15,7 +15,8 @@ public class TrackDTO {
     private String title;
     @JsonView(View.Summary.class)
     private Integer releaseDate;
-    private Set<ArtistDTO> artist;
+//    private Set<ArtistDTO> artist;
+    private String artist;
     private Set<CdDTO> cd;
     private String genre;
 
@@ -43,13 +44,13 @@ public class TrackDTO {
         this.releaseDate = releaseDate;
     }
 
-    public Set<ArtistDTO> getArtist() {
-        return artist;
-    }
-
-    public void setArtist(Set<ArtistDTO> artist) {
-        this.artist = artist;
-    }
+//    public Set<ArtistDTO> getArtist() {
+//        return artist;
+//    }
+//
+//    public void setArtist(Set<ArtistDTO> artist) {
+//        this.artist = artist;
+//    }
 
     public Set<CdDTO> getCd() {
         return cd;
