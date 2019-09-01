@@ -10,23 +10,25 @@ import java.util.List;
 public class Track {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private Integer releaseDate;
-    @JsonBackReference
-    @ManyToMany(mappedBy = "tracks",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Artist> artist;
+//    @JsonBackReference
+//    @ManyToMany(mappedBy = "tracks",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Artist> artist;
+    @Column(name = "name")
+    private String artist;
     @JsonBackReference
     @ManyToMany(mappedBy = "cdtracks",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CD> cd;
     private String genre;
 
     public Track() {}
-    public Track(String title, int releaseDate, List<Artist> artist, List<CD> cd, String genre) {
+    public Track(String title, int releaseDate,  List<CD> cd, String genre) {
         this.title = title;
         this.releaseDate = releaseDate;
-        this.artist = artist;
+       // this.artist = artist;
         this.cd = cd;
         this.genre = genre;
     }
@@ -55,13 +57,13 @@ public class Track {
         this.releaseDate = releaseDate;
     }
 
-    public List<Artist> getArtist() {
-        return artist;
-    }
-
-    public void setArtist(List<Artist> artist) {
-        this.artist = artist;
-    }
+//    public List<Artist> getArtist() {
+//        return artist;
+//    }
+//
+//    public void setArtist(List<Artist> artist) {
+//        this.artist = artist;
+//    }
 
     public List<CD> getCd() {
         return cd;

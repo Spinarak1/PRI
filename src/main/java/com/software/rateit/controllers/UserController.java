@@ -64,6 +64,12 @@ public class UserController {
         return service.changePassword(id, passwordChangeDTO);
     }
 
+    @PostMapping("/users/{id}/change-email")
+    public ResponseEntity<UserDTO> changeEmail(@PathVariable long id,
+                                                  @RequestBody ChangeEmailDTO changeEmailDTO){
+        return service.changeEmail(changeEmailDTO, id);
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
         return service.login(loginDTO);

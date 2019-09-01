@@ -30,4 +30,5 @@ public interface UserService {
     ResponseEntity<Void> deleteComment(long commentId, long userId);
     ResponseEntity<InputStreamResource> generateRaport(int days);
     ResponseEntity<List<RateDTO>> getRatedAlbums(long userId);
+    ResponseEntity<UserDTO> changeEmail(ChangeEmailDTO changeEmailDTO, long id);
 }

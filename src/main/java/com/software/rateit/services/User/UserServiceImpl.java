@@ -406,6 +406,31 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(rated, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<UserDTO> changeEmail(ChangeEmailDTO changeEmailDTO, long id) {
+        if(!changeEmailDTO.getNewEmail().equals(changeEmailDTO.getConfirmEmail()) && changeEmailDTO.getNewEmail() != null) {
+            throw new AuthenticationException("Email does not match");
+        }
+
+        User user = repository.findOneById(id);
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        if(!user.getEmail().equals(changeEmailDTO.getOldEmail())) {
+            throw new AuthenticationException("Old email incorrect");
+        }
+
+        if(!validateEmail(changeEmailDTO.getNewEmail())){
+            throw new AuthenticationException("Not a valid email");
+        }
+        user.setEmail(changeEmailDTO.getNewEmail());
+        User response = repository.save(user);
+//        simpleEmail(response.getEmail(), "RateIt: password change", "Hello " + response.getNick()+ "!\n" +
+//                "You have successfully changed your password!\n\nBest regards,\nRateIt team!");
+        return new ResponseEntity<>(mapper.mapToUserDTOWithCollections(response), HttpStatus.OK);
+    }
+
     private Boolean validateEmail(String email) {
         Pattern pattern;
         Matcher matcher;
