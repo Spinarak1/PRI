@@ -165,13 +165,15 @@ public class CdServiceImpl implements CdService {
         }
         if(rate == null) {
             rateRepository.save(new Rate(note, id, userId));
+            cd.setRatingCount(cd.getRatingCount() + 1);
+            cd.setSumOfRating(cd.getSumOfRating() + note);
         } else {
+            cd.setSumOfRating(cd.getSumOfRating() - rate.getRating() + note);
             rate.setRating(note);
             rateRepository.save(rate);
+
         }
 
-        cd.setRatingCount(cd.getRatingCount() + 1);
-        cd.setSumOfRating(cd.getSumOfRating() + note);
         cd.setRating(cd.getSumOfRating()/cd.getRatingCount());
 
         CD response = cdRepository.save(cd);
