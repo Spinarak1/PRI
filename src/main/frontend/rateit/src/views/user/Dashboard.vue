@@ -1,10 +1,11 @@
 <template>
-    <div style="background: #414141; height: 100%" >
+    <div style="background: #414141; height: 100%">
 
-        <v-navigation-drawer app  v-model="drawer" color="#515151" class="py-12 ">
-            <v-spacer class="py-1"></v-spacer>
-            <v-list dark class="mt-5">
+        <v-navigation-drawer  app  v-model="drawer" color="#515151" class="py-12 " >
+            <v-spacer class="py-2"></v-spacer>
+            <v-list dark class="mt-5" >
                 <v-list-item
+                        @click="dash"
                         color="#FFA255"
                         class="tile"
                         v-for="link in links"
@@ -21,7 +22,6 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-divider></v-divider>
 
             </v-list>
 
@@ -64,8 +64,10 @@
 
         </v-navigation-drawer>
 
-        <component :is="component"></component>
-    <div v-if="false">
+        <component @switchComp="compVisible = false" @reviveComp="compVisible = true"  :is="component"></component>
+
+        <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
+    <div v-if="compVisible">
         <v-container fluid >
             <v-row class="my-3 ml-3">
                 <v-col
@@ -88,8 +90,8 @@
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
-                                max-width="150"
-                                max-height="150"
+                                max-width="100"
+                                max-height="100"
                         ></v-img>
                         <v-card-title>  <h5>{{ record.artist }}</h5>  </v-card-title>
                         <v-card-text style="color: #FFA255">
@@ -112,7 +114,7 @@
         </v-container>
         <div @click="pagin">
         <v-pagination
-
+                v-if="compVisible"
                 v-model="page"
                 :length="totalPages"
                 :total-visible="7"
@@ -136,6 +138,7 @@
     export default {
         data() {
             return {
+                compVisible: true,
                 component: 'Search',
                 albums: '',
                 albumsDrawer: '',
@@ -231,6 +234,11 @@
 
                 console.log(rateObj);
             },
+
+            dash() {
+               console.log('elo');
+               this.compVisible = true;
+            }
         },
 
         computed: {

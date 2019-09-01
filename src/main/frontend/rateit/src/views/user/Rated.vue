@@ -76,7 +76,8 @@
                     console.log(this.albumID);
                     console.log(rating, id);
 
-                    axios.post(`/api/cds/${this.albumID}/rate?note=${rating}`)
+                    const rate = rating;
+                    axios.post(`/api/cds/${this.albumID}/rate?note=${rate}`)
                         .then(resp => {
                             console.log(resp);
                             this.userRate = null;

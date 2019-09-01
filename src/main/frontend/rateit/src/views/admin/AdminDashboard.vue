@@ -12,8 +12,9 @@
                 v-model="drawer"
                 color="#333399"
                 dark>
-            <v-list class="mt-12">
+            <v-list class="mt-12" style="background: #333399;">
                 <v-list-item
+                        class="mt-1"
                         v-for="item in items"
                         :key="item.title"
                         link
