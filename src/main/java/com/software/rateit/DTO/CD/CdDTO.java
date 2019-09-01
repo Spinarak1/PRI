@@ -10,30 +10,31 @@ import com.software.rateit.DTO.View;
 
 import java.util.List;
 
-@JsonView(View.Comment.class)
 public class CdDTO {
 
     @JsonView({View.Summary.class, View.Comment.class})
     private long id;
     @JsonView({View.Summary.class, View.Comment.class})
     private String name;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private int released;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private float rating;
     private String comment;
     @JsonIgnore
     private int ratingCount;
     @JsonIgnore
     private float sumOfRating;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private String photoURL;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private String artist;
+    @JsonView(View.Comment.class)
     private List<TrackDTO> cdtracks;
-    @JsonView(View.Summary.class)
+    @JsonView({View.Summary.class, View.Comment.class})
     private String genre;
     private List<UserDTO> user;
+    @JsonView(View.Comment.class)
     @JsonBackReference
     private List<CommentsDTO> comments;
 

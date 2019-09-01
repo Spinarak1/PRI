@@ -8,6 +8,7 @@ import com.software.rateit.DTO.CD.CdDTO;
 import com.software.rateit.DTO.Comments.CommentsDTO;
 import com.software.rateit.DTO.Comments.CommentsMapper;
 import com.software.rateit.DTO.PaginationContext;
+import com.software.rateit.DTO.Track.NewTrackDTO;
 import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.Track.TrackMapper;
 import com.software.rateit.DTO.User.UserMapper;
@@ -92,10 +93,21 @@ public class CdServiceImpl implements CdService {
             comment.setId(comments.getId());
             list.add(comment);
         });
+        List<TrackDTO> trackDTOS = new ArrayList<>();
+        cd.getCdtracks().forEach(track1 -> {
+            TrackDTO dto = new TrackDTO();
+            dto.setGenre(track1.getGenre());
+            dto.setId(track1.getId());
+            dto.setReleaseDate(track1.getReleaseDate());
+            dto.setArtist(track1.getArtist());
+            dto.setTitle(track1.getTitle());
+            trackDTOS.add(dto);
+        });
 
         CDWithCommentsDTO response = new CDWithCommentsDTO();
         response.setCd(mapper.mapToCdDTO(cd));
         response.setComments(list);
+        response.getCd().setCdtracks(trackDTOS);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -167,18 +179,33 @@ public class CdServiceImpl implements CdService {
     }
 
     @Override
-    public ResponseEntity<CdDTO> addTrackToAlbum(long cdId, long trackId) {
+    public ResponseEntity<CdDTO> addTrackToAlbum(long cdId, NewTrackDTO newTrackDTO) {
         CD cd = cdRepository.findOneById(cdId);
-        Track track = trackRepository.findOneById(trackId);
+        Track track = new Track();
         if(cd == null) {
             throw new NotFoundException("Album not found");
         }
-        if(track == null) {
-            throw new NotFoundException("Track not found");
-        }
+        track.setTitle(newTrackDTO.getTitle());
+        track.setGenre(cd.getGenre());
+        track.setReleaseDate(cd.getReleased());
+        track.setArtist(cd.getArtist());
         cd.addTrack(track);
+        trackRepository.save(track);
         CD response = cdRepository.save(cd);
-        return new ResponseEntity<>(mapper.mapToCdDTO(response), HttpStatus.OK);
+        List<TrackDTO> trackDTOS = new ArrayList<>();
+        response.getCdtracks().forEach(track1 -> {
+            TrackDTO dto = new TrackDTO();
+            dto.setGenre(track1.getGenre());
+            dto.setId(track1.getId());
+            dto.setReleaseDate(track1.getReleaseDate());
+            dto.setTitle(track1.getTitle());
+            trackDTOS.add(dto);
+        });
+
+        CdDTO responseDTO = mapper.mapToCdDTO(response);
+        responseDTO.setCdtracks(trackDTOS);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @Override
