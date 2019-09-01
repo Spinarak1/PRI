@@ -80,4 +80,12 @@ public class Track {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
 }

@@ -7,6 +7,7 @@ import com.software.rateit.DTO.CD.CDWrapper;
 import com.software.rateit.DTO.CD.CdDTO;
 import com.software.rateit.DTO.Comments.CommentAlbumDTO;
 import com.software.rateit.DTO.Comments.CommentsDTO;
+import com.software.rateit.DTO.Track.NewTrackDTO;
 import com.software.rateit.DTO.Track.TrackDTO;
 import com.software.rateit.DTO.View;
 import com.software.rateit.Entity.CD;
@@ -74,8 +75,8 @@ public class CDController {
 
     @PostMapping("/cds/{id}/add-track")
     public ResponseEntity<CdDTO> addTrackToAlbum(@PathVariable long id,
-                                                    @RequestParam long track){
-        return cdService.addTrackToAlbum(id, track);
+                                                 @RequestBody NewTrackDTO newTrackDTO){
+        return cdService.addTrackToAlbum(id, newTrackDTO);
     }
 
     @PutMapping("/cds/{id}")

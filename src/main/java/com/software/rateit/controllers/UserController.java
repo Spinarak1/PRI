@@ -48,6 +48,7 @@ public class UserController {
         return service.getUsersCds(id);
     }
 
+    @JsonView(View.Summary.class)
     @GetMapping("/users/{id}/rated")
     public ResponseEntity<List<RateDTO>> getRatedAlbums(@PathVariable long id){
         return service.getRatedAlbums(id);

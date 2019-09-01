@@ -399,7 +399,7 @@ public class UserServiceImpl implements UserService {
         List<RateDTO> rated = new ArrayList<>();
         rates.forEach(rate -> {
             RateDTO rateDTO = new RateDTO();
-            rateDTO.setAlbum(cdRepository.findOneById(rate.getCd()));
+            rateDTO.setAlbum(cdMapper.mapToCdDTO(cdRepository.findOneById(rate.getCd())));
             rateDTO.setNote(rate.getRating());
             rated.add(rateDTO);
         });
