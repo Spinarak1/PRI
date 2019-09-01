@@ -1,9 +1,9 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div style="background: #414141; height: 100%">
 
         <v-navigation-drawer  app  v-model="drawer" color="#515151" class="py-12 " >
             <v-spacer class="py-2"></v-spacer>
-            <v-list dark class="mt-5" >
+            <v-list dark class="mt-5" style="background: #515151;">
                 <v-list-item
                         @click="dash"
                         color="#FFA255"
@@ -55,12 +55,34 @@
                     small
             >Add to owned</v-btn>
 
-            <v-btn
-                    style="font-size: 10px; color: #FFA255"
-                    text
-                    @click="rateAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.rating, albumsDrawer.released)"
-                    small
-            >Rate this album</v-btn>
+            <h5 class="white--text ml-1">Rate it!</h5>
+            <div @click="rateAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.rating, albumsDrawer.released)"
+            >
+                <v-rating
+                        size="30"
+                        v-model="modalRating"
+                        color="yellow darken-3"
+                        background-color="grey darken-1"
+                        empty-icon="$vuetify.icons.ratingFull"
+                        half-increments
+                        hover
+                ></v-rating>
+            </div>
+
+            <v-textarea
+                    v-model="comment"
+                    @keypress.13="addComent(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.rating, albumsDrawer.released)"
+                    name="input-3-1"
+                    label="Write a comment"
+            ></v-textarea>
+
+            <v-card
+
+                style="background: #696969"
+                class="mx-3" v-for="comment in listOfComments">
+                <p class="subheading">{{comment.user.nick}}: {{comment.content}}</p>
+            </v-card>
+
 
         </v-navigation-drawer>
 
@@ -97,6 +119,7 @@
                         <v-card-text style="color: #FFA255">
                             <span class="subheading"> {{ record.name }} </span>
                             <span> ({{ record.released }}) </span><br>
+
                             <v-rating
                                     size="30"
                                     v-model="record.rating"
@@ -147,6 +170,10 @@
                 page: 1,
                 totalPages: null,
 
+                modalRating: null,
+                comment: '',
+                listOfComments: '',
+
                 links: [
                     { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
                     { icon: 'person', text: 'My Account', route: '/user' },
@@ -185,7 +212,6 @@
                     released: released,
                 };
 
-                // TODO album details
                 axios.get(`/api/cds/${id}`)
                     .then(resp => {
                         console.log(resp)
@@ -200,12 +226,14 @@
             },
 
             drawerSwitch() {
-                this.rightDrawer = !this.rightDrawer
+                this.rightDrawer = !this.rightDrawer;
+
             },
 
             handler(id, artist, name, rating, released){
                 this.drawerSwitch();
                 this.albumData(id, artist, name, rating, released);
+                this.fetchComments();
             },
 
             addAlbum(id, artist, name, rating, released){
@@ -218,10 +246,23 @@
                     released: released,
                 };
 
-                this.albumInfo(albumObj);   // vuex
+                const userID = this.getUserID;
+                console.log(userID);
+
+                axios.post(`/api/users/${userID}/add-cd/${id}`)
+                    .then(resp => {
+                        console.log(resp);
+                        alert("Album added!")
+                    })
+                    .catch(e => console.log(e));
+
+               // this.albumInfo(albumObj);   // vuex
             },
 
             rateAlbum(id, artist, name, rating, released){
+               console.log('elo')
+                const uId = this.getUserID; //vuex
+
                 const rateObj = {
                     id: id,
                     artist: artist,
@@ -230,15 +271,74 @@
                     released: released
                 };
 
-                this.ratedAlbum(rateObj); //vuex
 
-                console.log(rateObj);
+                    axios.post(`/api/cds/${id}/rate?note=${this.modalRating}&userId=${uId}`)
+                        .then(resp => {
+                            console.log(resp);
+                            console.log(`ocena poszła`)
+                            alert("Rate added")
+                            this.modalRating = null;
+                            this.comment = '';
+                        })
+                        .catch(e => console.log(e));
+                //this.ratedAlbum(rateObj); //vuex
+
+               // console.log(rateObj);
+            },
+
+            addComent(id, artist, name, rating, released) {
+                const uId = this.getUserID; //vuex
+               const commentObj = {
+                   content: this.comment,
+                   userId: uId,
+               }
+
+               console.log(commentObj);
+               if(this.comment !== '') {
+                   axios.post(`/api/cds/${id}/add-comment`, commentObj)
+                       .then(resp => {
+                           console.log(resp);
+                           console.log("Komentarz poszedł");
+                           alert("Comment added");
+                           this.comment = '';
+                       })
+                       .catch(e => console.log(e));
+               }
+
+            },
+
+            fetchComments(){
+                console.log(this.albumsDrawer.id)
+
+                axios.get(`/api/cds/${this.albumsDrawer.id}`)
+                    .then(resp => {
+                        console.log('fecz')
+                        console.log(typeof resp.data.comments);
+
+                        this.listOfComments = resp.data.comments;
+                    })
+                    .catch(e => console.log(e));
+
             },
 
             dash() {
                console.log('elo');
                this.compVisible = true;
-            }
+            },
+
+            logout() {
+                const userID = this.getUserID;
+                console.log(userID);
+
+                axios.post(`/api/users/${userID}/logout`)
+                    .then(resp => {
+                        console.log(resp);
+                        alert('You have been logged out');
+                        this.logout() //vuex
+                        this.$router.push('signin')
+                    })
+                    .catch(e => console.log(e));
+            },
         },
 
         computed: {

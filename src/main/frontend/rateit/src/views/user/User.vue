@@ -33,10 +33,10 @@
                 <v-img src="https://olamundo.pl/wp-content/uploads/2014/09/pan-kleks-1160x774.jpg"></v-img>
             </v-avatar>
             <h3 style="text-align: center" class="white--text mb-5">{{getUser.nick}}</h3>
-            <h3 style="text-align: center" class="white--text mb-5"></h3>
+            <h3 style="text-align: center" class="white--text mb-5">{{getUser.id}} ID</h3>
 
             <v-divider></v-divider>
-            <v-list dark class="mt-5" >
+            <v-list dark class="mt-5" style="background: #515151;">
                 <v-list-item
                         v-for="item in sideBar"
                         :key="item.title"
@@ -119,6 +119,8 @@
 
             }
         },
+
+
 
         components: {
             Rated,

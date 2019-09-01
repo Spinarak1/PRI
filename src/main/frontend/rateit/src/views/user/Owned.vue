@@ -18,13 +18,12 @@
                                 max-width="250"
                                 max-height="250"
                         ></v-img>
-                        <v-card-title> {{ record.artist }} </v-card-title>
+                        <v-card-title class="justify-center"> {{ record.artist }} </v-card-title>
                         <v-card-text style="color: #FFA255">
                             <span> {{ record.name }} </span>
                             <span> ({{ record.released }}) </span><br>
                             <v-rating
-
-                                    @click=""
+                                    readonly
                                     v-model="record.rating"
                                     size="30"
                                     color="yellow darken-3"
@@ -43,6 +42,8 @@
 
 <script>
     import { mapGetters } from 'vuex'
+    import axios from 'axios'
+
     export default {
         data() {
             return {
@@ -53,7 +54,8 @@
 
         methods: {
             ...mapGetters([
-                'getAlbums'
+                'getAlbums',
+                'getUserID'
             ]),
 
 
@@ -61,8 +63,18 @@
 
         created() {
 
-            const al = this.getAlbums(); // vuex
-            this.albums = al;
+           /*const al = this.getAlbums(); // vuex
+            this.albums = al; */
+            const userID = this.getUserID();
+
+            console.log(userID);
+
+            axios.get(`/api/users/${userID}/cds`)
+                .then(resp => {
+                    console.log(resp)
+                    this.albums = resp.data
+                })
+                .catch(e => console.log(e));
         }
     }
 </script>

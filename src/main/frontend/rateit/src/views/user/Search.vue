@@ -175,12 +175,34 @@
                     small
             >Add to owned</v-btn>
 
-            <v-btn
-                    @click="rateAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.genre, albumsDrawer.rating, albumsDrawer.released)"
-                    style="font-size: 10px; color: #FFA255"
-                    text
-                    small
-            >Rate this album</v-btn>
+            <h5 class="white--text ml-1">Rate it!</h5>
+            <div @click="rateAlbum(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.rating, albumsDrawer.released)"
+            >
+                <v-rating
+                        size="30"
+                        v-model="modalRating"
+                        color="yellow darken-3"
+                        background-color="grey darken-1"
+                        empty-icon="$vuetify.icons.ratingFull"
+                        half-increments
+                        hover
+                ></v-rating>
+            </div>
+
+            <v-textarea
+                    v-model="comment"
+                    @keypress.13="addComent(albumsDrawer.id, albumsDrawer.artist, albumsDrawer.name, albumsDrawer.rating, albumsDrawer.released)"
+                    name="input-3-1"
+                    label="Write a comment"
+            ></v-textarea>
+
+            <v-card
+
+                    style="background: #696969"
+                    class="mx-3" v-for="comment in listOfComments">
+                <p class="subheading">{{comment.user.nick}}: {{comment.content}}</p>
+            </v-card>
+
         </v-navigation-drawer>
 
 
@@ -257,6 +279,7 @@
 <script>
     import axios from 'axios'
     import { mapMutations } from 'vuex'
+    import { mapGetters } from 'vuex'
     export default {
         data() {
             return {
@@ -279,10 +302,21 @@
                 rightDrawer: false,
                 albumsDrawer: '',
 
+                modalRating: null,
+                comment: '',
+                listOfComments: '',
+
             }
         },
 
         props: ['compAct'],
+
+        computed: {
+            ...mapGetters([
+                'getUser',
+                'getUserID'
+            ])
+        },
 
         methods: {
 
@@ -473,6 +507,7 @@
 
   albumData(id, artist, name, genre, rating, released) {
       this.rightDrawer = !this.rightDrawer;
+      this.fetchComments();
 
      const albumObj = {
           id: id,
@@ -492,33 +527,89 @@
                 'ratedAlbum'
             ]),
 
-            addAlbum(id, artist, name, genre, rating, released){
+            addAlbum(id, artist, name, rating, released){
                 //console.log(id, artist, name, rating, released);
                 const albumObj = {
                     id: id,
                     artist: artist,
                     name: name,
-                    genre: genre,
                     rating: rating,
                     released: released,
                 };
 
-                this.albumInfo(albumObj);   // vuex
+                const userID = this.getUserID;
+                console.log(userID);
+
+                axios.post(`/api/users/${userID}/add-cd/${id}`)
+                    .then(resp => {
+                        console.log(resp);
+                        alert("Album added!")
+                    })
+                    .catch(e => console.log(e));
+
+                // this.albumInfo(albumObj);   // vuex
             },
 
-            rateAlbum(id, artist, name, genre,  rating, released){
+            rateAlbum(id, artist, name, rating, released){
+                console.log('elo')
+                const uId = this.getUserID; //vuex
+
                 const rateObj = {
                     id: id,
                     artist: artist,
                     name: name,
-                    genre: genre,
                     rating: rating,
                     released: released
                 };
 
-                this.ratedAlbum(rateObj); //vuex
 
-                console.log(rateObj);
+                axios.post(`/api/cds/${id}/rate?note=${this.modalRating}&userId=${uId}`)
+                    .then(resp => {
+                        console.log(resp);
+                        console.log(`ocena poszła`)
+                        alert("Rate added")
+                        this.modalRating = null;
+                        this.comment = '';
+                    })
+                    .catch(e => console.log(e));
+                //this.ratedAlbum(rateObj); //vuex
+
+                // console.log(rateObj);
+            },
+
+            addComent(id, artist, name, rating, released) {
+                const uId = this.getUserID; //vuex
+                const commentObj = {
+                    content: this.comment,
+                    userId: uId,
+                }
+
+                console.log(commentObj);
+                if(this.comment !== '') {
+                    axios.post(`/api/cds/${id}/add-comment`, commentObj)
+                        .then(resp => {
+                            console.log(resp);
+                            console.log("Komentarz poszedł");
+                            alert("Comment added");
+                            this.comment = '';
+                        })
+                        .catch(e => console.log(e));
+                }
+
+            },
+
+            fetchComments(){
+                console.log(this.albumsDrawer.id)
+
+                axios.get(`/api/cds/${this.albumsDrawer.id}`)
+                    .then(resp => {
+                        console.log('fecz')
+                        console.log(typeof resp.data.comments);
+
+                        this.listOfComments = resp.data.comments;
+                    })
+                    .catch(e => console.log(e));
+
             },
 
   resetModal(){

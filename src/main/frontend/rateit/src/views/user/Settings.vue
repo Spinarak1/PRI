@@ -117,13 +117,18 @@
 
             changePicture() {
                 const userID = this.getUserID;
-                console.log(this.selectedFile)
+                //console.log(this.selectedFile)
 
                 const fd = new FormData();
                 fd.append('image', this.selectedFile)
 
                 console.log(fd);
-                axios.post(`/api/users/46/set-avatar`, fd)
+
+                console.log(fd);
+                axios.post('/api/users/1/set-avatar', fd,
+                    { headers: { 'Content-Type': 'multipart/form-data',
+                        'accept': '*/*'}
+                    })
                     .then(resp => {
                         console.log(resp);
                     })
@@ -132,7 +137,7 @@
 
             onFileSelected(event) {
                 this.selectedFile = event.target.files[0];
-                console.log(this.selectedFile);
+               // console.log(this.selectedFile);
 
             }
         }

@@ -3,13 +3,14 @@
         <v-container fluid>
             <v-row class="my-2 mx-2">
                 <v-col xs="12" sm="12" md="4" v-for="rate in ratedAlbum" :key="rate.id" >
+
                     <v-card
                             color="transarent"
                             flat
                             dark
                             hover
                             width="450"
-                            height="600">
+                            height="500">
                         <v-img
                                 src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
                                 aspect-ratio="1"
@@ -17,14 +18,13 @@
                                 max-width="250"
                                 max-height="250"
                         ></v-img>
-                        <v-card-title> {{ rate.artist }} </v-card-title>
+                        <v-card-title class="justify-center"> {{ rate.album.artist }} </v-card-title>
                         <v-card-text style="color: #FFA255" @click="albumId(rate.id)">
-                            <span> {{ rate.name }} </span>
-                            <span> ({{ rate.released }}) </span><br>
+                            <span> {{ rate.album.name }} </span>
+                            <span> ({{ rate.album.released }}) </span><br>
                             <v-rating
-
-                                    @input="showRate"
-                                    :v-model="rate.rating"
+                                    v-model="rate.note"
+                                    readonly
                                     size="30"
                                     color="yellow darken-3"
                                     background-color="grey darken-1"
@@ -32,15 +32,15 @@
                                     half-increments
                                     hover
                             ></v-rating>
-                            <v-textarea
-                                    v-model="comment"
-                                    solo
-                                    label="Write a comment"
-                            ></v-textarea>
-                            <v-btn text @click="addComment(rate.id)">Add</v-btn>
+
+
+                           <div class="mt-5 grey--text">
+
+                           </div>
                         </v-card-text>
 
                     </v-card>
+                    <v-divider></v-divider>
                 </v-col>
             </v-row>
         </v-container>
@@ -60,6 +60,9 @@
                 albumID: null,
                 comment: '',
                 usrId: null,
+                albumCommentsID: '',
+                albumComments: '',
+
             }
         },
 
@@ -69,61 +72,31 @@
                 'getUserID'
             ]),
 
-            showRate(rating) {
-                setTimeout(() => {
-                    this.userRate = rating;
-                    const id = this.albumID;
-                    console.log(this.albumID);
-                    console.log(rating, id);
-
-                    const rate = rating;
-                    axios.post(`/api/cds/${this.albumID}/rate?note=${rate}`)
-                        .then(resp => {
-                            console.log(resp);
-                            this.userRate = null;
-                            this.albumID = null;
-                        })
-                        .catch(e => console.log(e));
-                }, 100);
-
-            },
-
             albumId(id) {
                 this.albumID = id;
                 //console.log(`album id: ${id}`)
             },
 
-            addComment(id) {
-                //console.log(this.comment, id);
-                const uId = this.getUserID(); //vuex
-                this.usrId = uId;
-                //console.log(this.usrId);
-
-                const commentObj = {
-                    content: this.comment,
-                    userId: this.usrId
-                };
-
-                axios.post(`/api/cds/${id}/add-comment`, commentObj)
-                    .then(resp => {
-                        console.log(resp);
-                        alert('Your comment has been saved')
-                    })
-                    .catch(e => console.log(e));
-            }
         },
 
         created() {
-            const ra = this.getRated(); //vuex
-            this.ratedAlbum = ra;
+            /*const ra = this.getRated(); //vuex
+            this.ratedAlbum = ra; */
 
-            /* const al = this.getAlbums(); // vuex
-            this.albums = al; */
+            const uId = this.getUserID(); //vuex
+            this.usrId = uId;
 
-            axios.get('/api/cds?size=10&page=0')
-                .then(resp => console.log(resp) )
+            axios.get(`/api/users/${uId}/rated`)
+                .then(resp => {
+                   // console.log("albumy rated usera o id" + uId + " to: ");
+                   // console.log(resp);
+                    this.ratedAlbum = resp.data;    // tu tez sa piosenki
+                    //console.log(this.ratedAlbum[0].note)
+
+                })
                 .catch(e => console.log(e));
-        }
+        },
+
     }
 </script>
 
