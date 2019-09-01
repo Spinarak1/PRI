@@ -49,6 +49,7 @@
     import Users from "./Users";
     import NewAlbum from "./NewAlbum";
     import Records from './Records'
+    import Download from './Download'
     import axios from 'axios';
     import { mapGetters } from 'vuex';
     import { mapMutations } from 'vuex';
@@ -64,6 +65,7 @@
                     { title: 'Users', icon: 'account_box', component: 'Users' },
                     { title: 'Add new album', icon: 'music_note', component: 'NewAlbum' },
                     { title: 'Records', icon: 'library_music', component: 'Records' },
+                    { title: 'Report download', icon: 'cloud_download', component: 'Download' },
                 ],
             }
         },
@@ -71,7 +73,8 @@
         components: {
             Users,
             NewAlbum,
-            Records
+            Records,
+            Download
         },
 
         computed: {

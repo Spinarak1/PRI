@@ -266,9 +266,7 @@
                 <v-pagination
                      v-model="page"
                     :length="totalPages"
-                    :total-visible="7"
-                     prev-icon="menu-left"
-                     next-icon="menu-right">
+                    :total-visible="7">
 
                 </v-pagination>
             </div>

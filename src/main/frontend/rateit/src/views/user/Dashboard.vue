@@ -141,8 +141,6 @@
                 v-model="page"
                 :length="totalPages"
                 :total-visible="7"
-                prev-icon="menu-left"
-                next-icon="menu-right"
         ></v-pagination>
         </div>
     </div>

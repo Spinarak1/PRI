@@ -79,6 +79,13 @@
                 </tbody>
             </v-simple-table>
         </v-card>
+        <div class="text-center">
+            <v-pagination
+                    v-model="page"
+                    :length="totalPages"
+                    :total-visible="7"
+            ></v-pagination>
+        </div>
     </div>
 </template>
 
@@ -87,9 +94,11 @@ import axios from 'axios'
     export default {
         data() {
             return {
+                page: 1,
                 curSelect: '',
                 searchArea: '',
                 search: ['User by email', 'User by nick', 'User by ID'],
+                totalPages: 1,
 
                 filtered: '',
 
@@ -116,6 +125,15 @@ import axios from 'axios'
                       this.users.push(cur);
                       //console.log(this.users)
                   })
+                  console.log(`Ilość userów:`)
+                  console.log(`${this.users.length}`)
+              })
+              .catch(e => console.log(e));
+
+
+          axios.get('/api/cds')
+              .then(resp => {
+                  console.log(resp);
               })
               .catch(e => console.log(e));
         },
