@@ -30,10 +30,10 @@
                     class="profile mx-10 my-8"
                     style="background: #FFA255"
                     size="164">
-                <v-img src="https://olamundo.pl/wp-content/uploads/2014/09/pan-kleks-1160x774.jpg"></v-img>
+                <v-img :src="activeUser.photoURL"></v-img>
             </v-avatar>
-            <h3 style="text-align: center" class="white--text mb-5">{{getUser.nick}}</h3>
-            <h5 style="text-align: center" class="white--text mb-5">{{getUser.email}}</h5>
+            <h3 style="text-align: center" class="white--text mb-5">{{activeUser.nick}}</h3>
+            <h5 style="text-align: center" class="white--text mb-5">{{activeUser.email}}</h5>
 
             <v-divider></v-divider>
             <v-list dark class="mt-5" style="background: #515151;">
@@ -76,6 +76,7 @@
     export default {
         data() {
             return {
+                activeUser: '',
                 userID: null,
                 currentComponent: null,
                 componentsArray: ['NewUser'],
@@ -118,9 +119,19 @@
                     .catch(e => console.log(e));
 
             }
+
         },
 
-
+        created() {
+            const userid = this.getUserID;
+            console.log(userid);
+            axios.get(`/api/users/${userid}`)
+                .then(resp => {
+                    console.log(resp.data);
+                    this.activeUser = resp.data;
+                })
+                .catch(e => console.log(e));
+        },
 
         components: {
             Rated,

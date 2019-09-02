@@ -17,14 +17,14 @@
                             <v-card-title>Sign up to RateIt</v-card-title>
                             <v-card-text>
                                 <v-form class="px-2 my-4">
-                                    <v-text-field v-model="username" class="pt-5" label="Username" prepend-icon="person"></v-text-field>
-                                    <v-text-field v-model="email" class="pt-5" label="Email" prepend-icon="email"></v-text-field>
-                                    <v-text-field v-model="password" :type="'password'" class="pt-5" label="Password" prepend-icon="https"></v-text-field>
-                                    <v-text-field v-model="conPass" :type="'password'" class="pt-5" label="Confirm password" prepend-icon="replay"></v-text-field>
+                                    <v-text-field hint="at least 5 characters" v-model="username" class="pt-2" label="Username" prepend-icon="person"></v-text-field>
+                                    <v-text-field  v-model="email" class="pt-5" label="Email" prepend-icon="email"></v-text-field>
+                                    <v-text-field hint="at least 6 characters"  v-model="password" :type="'password'" class="pt-5" label="Password" prepend-icon="https"></v-text-field>
+                                    <v-text-field hint="confirm"  v-model="conPass" :type="'password'" class="pt-5" label="Confirm password" prepend-icon="replay"></v-text-field>
                                 </v-form>
                                 <v-btn @click="register()" class="px-4" text>Register</v-btn>
                                 <h4 class="subheading px-4 py-4">Already have an account?</h4>
-                                <v-btn x-small class="text-lowercase px-4" text>Log in here</v-btn>
+                                <v-btn x-small class="text-lowercase px-4" text @click="toLogin">Log in here</v-btn>
                             </v-card-text>
                         </v-card>
                     </v-row>
@@ -53,25 +53,35 @@
 
         methods: {
             register() {
-                const userObj = {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password,
-                    confirmPassword: this.conPass
-                };
 
-                //console.log(userObj);
+                if(this.password.length >= 6 && this.username.length >= 5 ) {
+                    const userObj = {
+                        username: this.username,
+                        email: this.email,
+                        password: this.password,
+                        confirmPassword: this.conPass
+                    };
 
-                axios.post('/api/signup', userObj)
-                    .then(resp => {
-                        console.log(resp);
-                        alert('Your account was created successfully');
-                        this.$router.push('signin')
-                    })
-                    .catch(e => console.log(e));
+                    //console.log(userObj);
 
-                //axios.get('/api/users')
-            }
+                    axios.post('/api/signup', userObj)
+                        .then(resp => {
+                            console.log(resp);
+                            alert('Your account was created successfully');
+                            this.$router.push('signin')
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            alert('Something went wrong, please try again')
+                        });
+                } else {
+                    alert('Password must be at least 6 characters long and username 5.');
+                }
+            },
+
+            toLogin() {
+                this.$router.push('signin')
+            },
         },
 
         components: {

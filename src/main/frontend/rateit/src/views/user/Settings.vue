@@ -15,9 +15,9 @@
             <v-card-title>Change password</v-card-title>
             <v-card-text>
                 <v-form class="px-2">
-                    <v-text-field v-model="curPass" class="pt-5" label="Current password" prepend-icon="https"></v-text-field>
-                    <v-text-field v-model="newPass" class="pt-5" label="New password" prepend-icon="https"></v-text-field>
-                    <v-text-field v-model="confPass" class="pt-5" label="Confirm password" prepend-icon="https"></v-text-field>
+                    <v-text-field v-model="curPass" :type="'password'" class="pt-5" label="Current password" prepend-icon="https"></v-text-field>
+                    <v-text-field v-model="newPass" :type="'password'" class="pt-5" label="New password" prepend-icon="https"></v-text-field>
+                    <v-text-field v-model="confPass" :type="'password'" class="pt-5" label="Confirm password" prepend-icon="https"></v-text-field>
                 </v-form>
                 <v-btn class="px-4" text @click="changePassword()">Change</v-btn>
             </v-card-text>
@@ -58,11 +58,19 @@
                 v-if="pictureChange"
                 color="#515151"
                 width="50vh"
-                height="45vh">
+                class="my-10">
             <v-card-title>Change profile picture</v-card-title>
-            <v-card-text>
-                <input type="file" @change="onFileSelected">
-                <v-btn class="px-4" text @click="changePicture">Change</v-btn>
+            <v-card-text class="my-7">
+                <form enctype="multipart/form-data">
+                    <div class="field">
+                        <input
+                                type="file"
+                                ref="file"
+                                @change="selectFile">
+                    </div>
+                    <v-btn class="px-4 my-5" @click="sendFile" text>Change</v-btn>
+
+                </form>
             </v-card-text>
         </v-card>
     </div>
@@ -87,7 +95,7 @@
                 passwordChange: false,
                 emailChange: false,
                 pictureChange: false,
-                selectedFile: null,
+                file: ""
             }
         },
 
@@ -134,7 +142,29 @@
                      .catch(e => console.log(e));
             },
 
-            changePicture() {
+            selectFile() {
+
+                this.file = this.$refs.file.files[0];
+            },
+
+            sendFile() {
+                const userId = this.getUserID;
+                console.log(userId);
+
+                const formData = new FormData();
+                formData.append('file', this.file);
+
+
+                    axios.post(`/api/users/${userId}/set-avatar`, formData)
+                        .then(resp => {
+                            console.log(resp);
+                            alert('Your avatar has been changed')
+                        })
+                        .catch(e => console.log(e));
+
+            }
+
+            /*changePicture() {
                 const userID = this.getUserID;
                 //console.log(this.selectedFile)
 
@@ -145,8 +175,7 @@
 
                 console.log(fd);
                 axios.post('/api/users/1/set-avatar', fd,
-                    { headers: { 'Content-Type': 'multipart/form-data',
-                        'accept': '*/*'}
+                    { headers: { 'Content-Type': 'multipart/form-data'}
                     })
                     .then(resp => {
                         console.log(resp);
@@ -154,11 +183,11 @@
                     .catch(e => console.log(e));
             },
 
-            onFileSelected(event) {
+           /* onFileSelected(event) {
                 this.selectedFile = event.target.files[0];
                // console.log(this.selectedFile);
 
-            }
+            } */
         }
     }
 </script>
