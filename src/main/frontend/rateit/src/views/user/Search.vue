@@ -148,7 +148,7 @@
         <v-navigation-drawer app right color="#515151" v-model="rightDrawer" class="py-12 ">
             <v-spacer class="py-1"></v-spacer>
             <v-img
-                    src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
+                    :src="albumsDrawer.photourl"
                     aspect-ratio="1"
                     class="grey lighten-2 mt-7"
                     max-width="100"

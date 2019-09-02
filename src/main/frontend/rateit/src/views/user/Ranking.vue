@@ -3,15 +3,6 @@
     <div style="background: #414141; height: 100%" >
         <nav>
             <v-toolbar style="background-color: #515151" height=82 flat>
-                <v-toolbar-title class="display-2" my-3 >
-                    <v-text-field
-                            label="serach"
-                            style="background-color: #646464"
-                            hide-details
-                            prepend-icon="search"
-                            single-line
-                    >Search </v-text-field>
-                </v-toolbar-title>
 
                 <v-spacer></v-spacer>
 
