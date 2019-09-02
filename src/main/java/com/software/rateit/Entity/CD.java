@@ -17,7 +17,7 @@ public class CD {
     private String comment;
     private int ratingCount = 0;
     private float sumOfRating = 0;
-    private String photoURL;
+    private String photoURL = "http://bobjames.com/wp-content/themes/soundcheck/images/default-album-artwork.png";
     private String artist;
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)

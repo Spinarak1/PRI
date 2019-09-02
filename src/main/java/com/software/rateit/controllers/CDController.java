@@ -20,6 +20,9 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -57,6 +60,12 @@ public class CDController {
     @PostMapping("/cds")
     public ResponseEntity<CdDTO> addNewCD(@RequestBody CdDTO cdDTO){
         return cdService.addNewAlbum(cdDTO);
+    }
+
+    @PostMapping("/cds/{id}/add-image")
+    public ResponseEntity<CdDTO> addNewCD(@PathVariable long id,
+                                          @RequestParam("file") MultipartFile file){
+        return cdService.addCdCover(file, id);
     }
 
     @PostMapping("/cds/{id}/rate")
