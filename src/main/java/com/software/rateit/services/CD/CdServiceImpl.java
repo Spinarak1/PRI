@@ -21,6 +21,7 @@ import com.software.rateit.repositories.CDRepository;
 import com.software.rateit.repositories.RateRepository;
 import com.software.rateit.repositories.TrackRepository;
 import com.software.rateit.repositories.UserRepository;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -85,6 +93,9 @@ public class CdServiceImpl implements CdService {
     @Override
     public ResponseEntity<CDWithCommentsDTO> findOneAlbum(long id) {
         CD cd = cdRepository.findOneById(id);
+        if(cd == null){
+            throw new NotFoundException("Album not found");
+        }
         List<CommentsDTO> list = new ArrayList<>();
         cd.getComments().forEach(comments -> {
             CommentsDTO comment = new CommentsDTO();
@@ -149,6 +160,56 @@ public class CdServiceImpl implements CdService {
         CD response = cdRepository.save(mapper.mapToCd(cd));
 
         return new ResponseEntity<>(mapper.mapToCdDTO(response), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CdDTO> addCdCover(MultipartFile file, long id) {
+        CD cd = cdRepository.findOneById(id);
+        StringBuilder stb;
+        try{
+            URL url;
+            url = new URL("https://api.imgur.com/3/image");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            BufferedImage image = null;
+            image = ImageIO.read(file.getInputStream());
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", byteArray);
+            byte[] byteImage = byteArray.toByteArray();
+            String dataImage = Base64.encode(byteImage);
+            String data = URLEncoder.encode("image", "UTF-8") + "="
+                    + URLEncoder.encode(dataImage, "UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Client-ID " + "8e65f97cadbba0f");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+
+            conn.connect();
+            stb = new StringBuilder();
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            BufferedReader rd = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                stb.append(line).append("\n");
+            }
+            wr.close();
+            rd.close();
+
+        } catch (IOException e){
+            throw new NotFoundException("File not found");
+        }
+
+        cd.setPhotoURL(getImageUrl(stb.toString()));
+        CD response = cdRepository.save(cd);
+
+        return new ResponseEntity<>(mapper.mapToCdDTOWithCollections(response), HttpStatus.OK);
     }
 
     @Override
@@ -233,5 +294,15 @@ public class CdServiceImpl implements CdService {
         }
 
         return builder.toString();
+    }
+
+    private String getImageUrl(String response){
+        String stringPattern = "https:\\\\/\\\\/i.imgur.com\\\\/[A-Za-z0-9]+.[a-zA-Z]+";
+        Pattern pattern = Pattern.compile(stringPattern);
+        Matcher matcher = pattern.matcher(response);
+        if(matcher.find())
+            return matcher.group().replaceAll("\\\\", "");
+        else
+            return null;
     }
 }
