@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div style="background: #414141; height: 100%">
 
-        <v-navigation-drawer  app  v-model="drawer" color="#515151" class="py-12 " >
+        <v-navigation-drawer  app  v-model="drawer" color="#515151" class="py-10 " >
             <v-spacer class="py-2"></v-spacer>
             <v-list dark class="mt-5" style="background: #515151;">
                 <v-list-item
@@ -104,11 +104,11 @@
                             @click="handler(record.id, record.artist, record.name, record.rating, record.released)"
                     >
                         <v-img
-                                src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
+                                :src="record.photourl"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
-                                max-width="100"
-                                max-height="100"
+                                max-width="150"
+                                max-height="150"
                         ></v-img>
                         <v-card-title>  <h5>{{ record.artist }}</h5>  </v-card-title>
                         <v-card-text style="color: #FFA255">

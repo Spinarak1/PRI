@@ -31,9 +31,9 @@
             <v-divider dark></v-divider>
         </nav>
 
-        <v-navigation-drawer app  v-model="drawer" color="#515151" class="py-12 ">
+        <v-navigation-drawer app  v-model="drawer" color="#515151"  class="py-12 ">
             <v-spacer class="py-1"></v-spacer>
-            <v-list dark class="mt-5">
+            <v-list dark class="mt-7">
                 <v-list-item
                         color="#FFA255"
                         class="tile"
@@ -51,7 +51,6 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-divider></v-divider>
 
             </v-list>
 

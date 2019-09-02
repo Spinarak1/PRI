@@ -175,21 +175,30 @@ import axios from 'axios'
                             console.log(resp.data);
                             this.filtered = resp.data;
                         })
-                        .catch(e => console.log(e));
+                        .catch(e => {
+                            console.log(e)
+                            alert('This user does not exist')
+                        });
                 } else if(this.curSelect === 'User by email') {
                     axios.get(`/api/user-by-email?email=${this.searchArea}`)
                         .then(resp => {
                             console.log(resp.data);
                             this.filtered = resp.data;
                         })
-                        .catch(e => console.log(e));
+                        .catch(e => {
+                            console.log(e);
+                            alert('This email does not exist');
+                        });
                 } else if(this.curSelect === 'User by ID') {
                     axios.get(`/api/users/${this.searchArea}`)
                         .then(resp => {
                             console.log(resp.data);
                             this.filtered = resp.data;
                         })
-                        .catch(e => console.log(e));
+                        .catch(e => {
+                            console.log(e)
+                            alert('User with this id doesn\'t exis');
+                        });
                 }
             }
         }

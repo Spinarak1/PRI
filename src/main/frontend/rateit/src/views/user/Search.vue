@@ -221,7 +221,7 @@
                             @click="albumData(record.id, record.artist, record.name, record.genre, record.rating, record.released)"
                     >
                         <v-img
-                                src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/a2d57c46794097.58644a82d69c0.png"
+                                :src="filteredAlbums.photourl"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
                                 max-width="100"
