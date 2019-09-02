@@ -37,7 +37,6 @@
 
                 newAlbumId: null,
 
-                songs:['item'],
                 activeSong: '',
             }
         },
@@ -45,7 +44,6 @@
         methods: {
 
             newSong() {
-              this.songs.push('item');
               console.log(this.activeSong)
 
                 const songObj = {
@@ -58,7 +56,10 @@
                         console.log('Song has been added')
                         this.activeSong = '';
                     })
-                    .catch(e => console.log(e));
+                    .catch(e => {
+                        alert('Error occured. Please, try again.')
+                        console.log(e)
+                    });
             },
 
            /* submitSongs() {

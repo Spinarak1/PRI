@@ -30,7 +30,7 @@
         <v-navigation-drawer app right color="#515151" v-model="rightDrawer" class="py-12 ">
             <v-spacer class="py-1"></v-spacer>
             <v-img
-                    :src="albumsDrawer.photourl"
+                    :src="albumsDrawer.photoURL"
                     aspect-ratio="1"
                     class="grey lighten-2 mt-7"
                     max-width="100"
@@ -104,7 +104,7 @@
                             @click="handler(record.id, record.artist, record.name, record.rating, record.released)"
                     >
                         <v-img
-                                :src="record.photourl"
+                                :src="record.photoURL"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
                                 max-width="150"
