@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">#B3FFFFFF</item>
+        <!--item name="android:background">#212121</item-->
+        <item name="android:colorAccent">#EF6C00</item>
+        <item name="android:editTextColor">#FFFFFF</item>
+        <item name="android:colorButtonNormal">#424242</item>
+        <item name="android:textColorHint">#6C6C6C</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>
