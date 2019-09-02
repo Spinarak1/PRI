@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <v-card>
             <v-simple-table v-if="tabVisible">
@@ -21,9 +21,13 @@
                         <span @click="deleteRecord(record.id)">
                             <v-icon>delete</v-icon>
                         </span>
-                        <span @click="setAdmin()">
-                            <v-icon>person_add</v-icon>
-                        </span></td>
+
+                        <span @click="addPhoto(record.id)">
+                            <v-icon>add_photo_alternate</v-icon>
+                        </span>
+
+
+                    </td>
                 </tr>
                 </tbody>
             </v-simple-table>
@@ -36,6 +40,20 @@
                     :total-visible="7">
             </v-pagination>
         </div>
+        <v-card v-if="pic">
+            <v-card-text class="my-7">
+                <form enctype="multipart/form-data">
+                    <div class="field">
+                        <input
+                                type="file"
+                                ref="file"
+                                @change="selectFile">
+                    </div>
+                    <v-btn class="px-4 my-5" @click="sendFile" text>Change</v-btn>
+
+                </form>
+            </v-card-text>
+        </v-card>
 
     </div>
 </template>
@@ -53,10 +71,41 @@
                 searchArea: '',
                 search: ['User by email', 'User by nick', 'User by ID'],
 
+                pic: false,
+                file: "",
+                cdID: '',
             }
         },
 
         methods: {
+
+            selectFile() {
+
+                this.file = this.$refs.file.files[0];
+            },
+
+            sendFile() {
+                const recordId = this.cdID;
+                console.log(this.cdID);
+
+                const formData = new FormData();
+                formData.append('file', this.file);
+
+
+                axios.post(`/api/cds/${recordId}/add-image`, formData)
+                    .then(resp => {
+                        console.log(resp);
+                        alert('Photo added')
+                    })
+                    .catch(e => console.log(e));
+
+            },
+
+            addPhoto(id) {
+                console.log(id);
+                this.cdID = id;
+                this.pic = !this.pic
+            },
 
             deleteRecord(id) {
                //console.log(id);

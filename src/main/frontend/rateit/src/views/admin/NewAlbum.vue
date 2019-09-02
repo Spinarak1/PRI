@@ -13,7 +13,7 @@
                 </v-form>
 
                 <v-form class="my-4">
-                    <div v-for="(song, index) in songs">
+                    <div >
                         <v-text-field v-model="activeSong" label="New song">
                         </v-text-field>
                     </div>
@@ -55,6 +55,8 @@
                 axios.post(`/api/cds/${this.newAlbumId}/add-track`, songObj)
                     .then(resp => {
                         console.log(resp);
+                        console.log('Song has been added')
+                        this.activeSong = '';
                     })
                     .catch(e => console.log(e));
             },
