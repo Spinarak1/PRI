@@ -156,6 +156,7 @@ public class CdServiceImpl implements CdService {
 
     @Override
     public ResponseEntity<CdDTO> addNewAlbum(CdDTO cd) {
+        cd.setPhotoURL("http://bobjames.com/wp-content/themes/soundcheck/images/default-album-artwork.png");
 
         CD response = cdRepository.save(mapper.mapToCd(cd));
 
