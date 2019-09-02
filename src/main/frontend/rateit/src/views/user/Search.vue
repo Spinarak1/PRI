@@ -158,14 +158,9 @@
             <h5 style="color: #FFA255">{{albumsDrawer.name}}</h5>
             <h5 style="color: #FFA255">{{albumsDrawer.genre}}</h5>
             <h5 class="white--text">Tracklist:</h5>
-            <h5 class="white--text">1.	"Fight Fire with Fire" <br>
-                2.	"Ride the Lightning"<br>
-                3.	"For Whom the Bell Tolls"<br>
-                4.	"Fade to Black"<br>
-                5.	"Trapped Under Ice"<br>
-                6.	"Escape"<br>
-                7.	"Creeping Death"<br>
-                8.	"The Call of Ktulu" (instrumental)<br></h5>
+            <h5 class="white--text" v-for="(track, index) in tracks">
+                {{ index+1}}. {{track.title}}
+            </h5>
             <h5 class="white--text">Rating: {{albumsDrawer.rating}}</h5>
 
             <v-btn
@@ -266,9 +261,7 @@
                 <v-pagination
                      v-model="page"
                     :length="totalPages"
-                    :total-visible="7"
-                     prev-icon="menu-left"
-                     next-icon="menu-right">
+                    :total-visible="7">
 
                 </v-pagination>
             </div>
@@ -305,6 +298,8 @@
                 modalRating: null,
                 comment: '',
                 listOfComments: '',
+
+                tracks: '',
 
             }
         },
@@ -517,6 +512,13 @@
           rating: rating,
           released: released,
       };
+
+      axios.get(`/api/cds/${id}/tracks`)
+          .then(resp => {
+              console.log(resp.data);
+              this.tracks = resp.data;
+          })
+          .catch(e => console.log(e));
 
       this.albumsDrawer = albumObj;
   },
