@@ -2,8 +2,7 @@
     <div>
         <v-card
                 style="opacity: 0.85"
-                width="65vh"
-                height="80vh">
+                width="65vh">
             <v-card-title>Add new album</v-card-title>
             <v-card-text class="">
                 <v-form class="px-2 my-4">
@@ -12,6 +11,14 @@
                     <v-text-field v-model="genre" class="pt-5" label="Genre"></v-text-field>
                     <v-text-field v-model="released" class="pt-5" label="Released"></v-text-field>
                 </v-form>
+
+                <v-form class="my-4">
+                    <div v-for="(song, index) in songs">
+                        <v-text-field v-model="activeSong" label="New song">
+                        </v-text-field>
+                    </div>
+                </v-form>
+                <v-btn @click="newSong" text>Add a new song</v-btn>
                 <v-btn @click="albumSubmit" class="px-4" text>Add new album</v-btn>
             </v-card-text>
         </v-card>
@@ -27,10 +34,35 @@
                 recordName: '',
                 genre: '',
                 released: '',
+
+                newAlbumId: null,
+
+                songs:['item'],
+                activeSong: '',
             }
         },
 
         methods: {
+
+            newSong() {
+              this.songs.push('item');
+              console.log(this.activeSong)
+
+                const songObj = {
+                  title: this.activeSong
+                }
+
+                axios.post(`/api/cds/${this.newAlbumId}/add-track`, songObj)
+                    .then(resp => {
+                        console.log(resp);
+                    })
+                    .catch(e => console.log(e));
+            },
+
+           /* submitSongs() {
+                console.log(this.listSongs);
+            },*/
+
             albumSubmit() {
                 const albumObj = {
                     artist: this.artist,
@@ -45,6 +77,8 @@
                     .then(resp => {
                         console.log(resp);
                         alert("You've added a new album")
+
+                        this.newAlbumId = resp.data.id;
                     })
                     .catch(e => {
                         console.log(e);

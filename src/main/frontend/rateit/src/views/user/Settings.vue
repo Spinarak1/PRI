@@ -39,8 +39,9 @@
             <v-card-title>Change password</v-card-title>
             <v-card-text>
                 <v-form class="px-2">
-                    <v-text-field class="pt-5" label="Current email" prepend-icon="mail"></v-text-field>
-                    <v-text-field class="pt-5" label="New email" prepend-icon="mail"></v-text-field>
+                    <v-text-field v-model="curEmail" class="pt-5" label="Current email" prepend-icon="mail"></v-text-field>
+                    <v-text-field v-model="newEmail"  class="pt-5" label="New email" prepend-icon="mail"></v-text-field>
+                    <v-text-field v-model="confEmail"  class="pt-5" label="Confirm email" prepend-icon="mail"></v-text-field>
                 </v-form>
                 <v-btn class="px-4" text @click="changeEmail">Change</v-btn>
             </v-card-text>
@@ -79,6 +80,10 @@
                 newPass: '',
                 confPass: '',
 
+                curEmail: '',
+                newEmail: '',
+                confEmail: '',
+
                 passwordChange: false,
                 emailChange: false,
                 pictureChange: false,
@@ -112,7 +117,21 @@
             },
 
             changeEmail() {
-              alert('change email')
+                const emailObj = {
+                      oldEmail: this.curEmail,
+                     newEmail: this.newEmail,
+                     confirmEmail: this.confEmail
+                 };
+
+                const usrID = this.getUserID;
+
+
+                axios.post(`/api/users/${usrID}/change-email`, emailObj)
+                    .then(resp => {
+                         console.log(resp);
+                         alert('Your email has been changed');
+                     })
+                     .catch(e => console.log(e));
             },
 
             changePicture() {

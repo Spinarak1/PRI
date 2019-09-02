@@ -88,7 +88,7 @@
                             <span> {{ record.name }}  </span>
                             <span> ( {{ record.released }} ) </span><br>
                             <v-rating
-
+                                    readonly
                                     size="30"
                                     v-model="record.rating"
                                     color="yellow darken-3"
