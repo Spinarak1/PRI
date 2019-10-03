@@ -31,4 +31,6 @@
     <string name="login">Login</string>
     <string name="registration">Register</string>
     <string name="configuration">Configuration</string>
+    <string name="CDName">CDName</string>
+    <string name="ArtistName">ArtistName</string>
 </resources>

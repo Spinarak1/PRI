@@ -62,7 +62,7 @@
                             android:id="@+id/textView3"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:text="CDName" />
+                            android:text="@string/CDName" />
                     </TableRow>
 
                     <TableRow
@@ -73,7 +73,7 @@
                             android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:text="ArtistName" />
+                            android:text="@string/ArtistName" />
                     </TableRow>
 
                     <TableRow
