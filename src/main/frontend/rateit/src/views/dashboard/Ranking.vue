@@ -97,7 +97,7 @@
 
 <script>
     import Navbar from "../../components/shared/Navbar";
-    import axios from 'axios'
+    import axios from 'axios/index'
 
     export default {
         data() {

@@ -5,9 +5,11 @@ import Home from './views/Home.vue'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
 
-import Dashboard from './views/user/Dashboard'
+import Dashboard from './views/dashboard/Dashboard'
 import User from './views/user/User'
-import Ranking from './views/user/Ranking'
+import Ranking from './views/dashboard/Ranking'
+
+import Test from './views/user/Test'
 
 import AdminDashboard from './views/admin/AdminDashboard'
 
@@ -57,6 +59,12 @@ export default new Router({
             path: '/admindashboard',
             name: 'admindashboard',
             component: AdminDashboard
+        },
+
+        {
+            path: '/test',
+            name: 'testls',
+            component: Test
         },
     ]
 })

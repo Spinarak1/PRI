@@ -270,7 +270,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import axios from 'axios/index'
     import { mapMutations } from 'vuex'
     import { mapGetters } from 'vuex'
     export default {
